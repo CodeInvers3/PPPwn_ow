@@ -5,4 +5,5 @@ if ! grep -q '/root/run.sh' /etc/rc.local; then
     echo '/root/run.sh &' >> /etc/rc.local
     echo 'exit 0' >> /etc/rc.local
 fi
+chmod +x /root/run.sh
 reboot
