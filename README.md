@@ -5,7 +5,7 @@ Esto sirve para que arranque en un modem que tenga un sistema OpenWrt instalado
 
 - Se requiere Putty para acceder al sistema del modem
 - Necesitas descargar los payload y tener los stage1.bin y stage2.bin para el FW correspondiente
-- Descarga pppwn para el sistema que tenga tu moden puedes verificarlo con el comando "uname -m"
+- Descarga pppwn para el sistema que tenga tu modem/mini-router puedes verificarlo con el comando "uname -m"
 - la instalación es sencilla simplemente copia run.sh, pppwn, stage1.bin y stage2.bin a /root dentro del modem
 - usa los comandos de install.sh para modifical el /etc/rc.local
 - reinicia el modem
