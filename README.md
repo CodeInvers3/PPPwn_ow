@@ -11,5 +11,6 @@ Esto sirve para que arranque en un modem que tenga un sistema OpenWrt instalado
 
 Lo probado con GL-MT300N-V2
 
-https://github.com/stooged/PI-Pwn
-https://github.com/xfangfang/PPPwn_cpp?tab=readme-ov-file
+código de https://github.com/stooged/PI-Pwn
+
+pppwn de https://github.com/xfangfang/PPPwn_cpp
