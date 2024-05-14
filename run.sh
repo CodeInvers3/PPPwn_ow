@@ -1,7 +1,7 @@
 #!/bin/sh
 
-INTERFACE="br-lan" # Aquí el nombre de la interface de ethernet
-FIRMWAREVERSION="750" #colocar aquí la version del firmware
+INTERFACE="br-lan"
+FIRMWAREVERSION="750"
 SHUTDOWN=true
 USBETHERNET=false
 
