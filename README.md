@@ -3,15 +3,15 @@ Una adaptación del código de stooged para que funcione con PPPwn_cpp
 
 Esto sirve para que arranque en un modem que tenga un sistema OpenWrt instalado
 
-- Se requiere Putty para acceder al sistema del modem
+- Se requiere putty para acceder al sistema del modem
 - Necesitas descargar los payload y tener los stage1.bin y stage2.bin para el FW correspondiente
 - Descarga pppwn para el sistema que tenga tu modem/mini-router puedes verificarlo con el comando "uname -m"
-- la instalación es sencilla simplemente copia run.sh, pppwn, stage1.bin y stage2.bin a /root dentro del modem
-- usa los comandos de install.sh para modifical el /etc/rc.local
-- reinicia el modem
+- La instalación es sencilla simplemente copia run.sh, pppwn, stage1.bin y stage2.bin a /root del modem
+- Usa los comandos de install.sh para añadir 2 líneas de comando en /etc/rc.local
+- reinicia el modem si no se reinicia automáticamente
 
-Lo probado con GL-MT300N-V2
+Testeado en mini router GL-MT300N-V2 Mango
 
-código de https://github.com/stooged/PI-Pwn
+Script adaptado de https://github.com/stooged/PI-Pwn
 
-pppwn de https://github.com/xfangfang/PPPwn_cpp
+pppwn_cpp de https://github.com/xfangfang/PPPwn_cpp
