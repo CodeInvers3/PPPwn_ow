@@ -17,7 +17,8 @@ Esto permite el autoarranque en un dispositivo con Wi-Fi que utilice el sistema 
 4. Descargar y copiar los archivos run.sh, install.sh, pppwn, stage1.bin y stage2.bin al directorio /root en tu dispositivo con el comando `cp /mnt/usb/* /root`. Esto puedes hacerlo desde tu memoria USB conectándola al dispositivo.
 5. Ejecutar install.sh o las líneas de comando contenidas en install.sh.
 6. Reiniciar el dispositivo.
-7. Cada vez que enciendas el router y conectes la memoria USB con goldhen.bin, el script run.sh ejecutará el comando pppwn, lo que permitirá el autoexploit.
+  
+Cada vez que enciendas el router y conectes la memoria USB con goldhen.bin, el script run.sh ejecutará el comando pppwn, lo que permitirá el autoexploit.
 
 Probado en mini router GL-MT300N-V2 Mango
 
