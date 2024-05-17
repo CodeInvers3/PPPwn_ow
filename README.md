@@ -1,11 +1,9 @@
 # PPPwn_ow
-Esta es una adaptación del script de Stooged para que funcione con PPPwn_cpp.
-
-Esto permite el autoarranque en un dispositivo con Wi-Fi que utilice el sistema OpenWrt.
+Este es un autorun para PPPwn_cpp permite el autoarranque en cualquier dispositivo que utilice el sistema OpenWrt.
 
 ## Requerimientos:
 
-- Router/Modem con OpenWrt.
+- Router/Modem conexión lan con OpenWrt.
 - Tener instalado PuTTY en tu PC para acceder por el terminal.
 - Descargar stage1.bin y stage2.bin desde el repositorio de Stooged para el firmware correspondiente.
 - Descargar PPPwn_cpp para distribuciones Linux con chip MIPS o el que tu dispositivo tenga, verificar con el comando `uname -m`.
@@ -32,7 +30,7 @@ It enables auto-start on a Wi-Fi device running the OpenWrt system.
 
 ## Requirements:
 
-- Smart Router with OpenWrt.
+- Smart Router lan with OpenWrt.
 - Have PuTTY installed on your PC to access the terminal.
 - Download stage1.bin and stage2.bin from Stooged’s repository for the corresponding firmware.
 - Download PPPwn_cpp for Linux distributions with MIPS chip or whichever your device has, verify with the command `uname -m`.
@@ -51,8 +49,6 @@ It enables auto-start on a Wi-Fi device running the OpenWrt system.
 
 Every time you turn on the router and connect the USB memory with goldhen.bin, the run.sh script will execute the pppwn command, which will allow the auto-exploit.
 
-Script de https://github.com/stooged/PI-Pwn
-
-PPPwn de https://github.com/xfangfang/PPPwn_cpp
+PPPwn from https://github.com/xfangfang/PPPwn_cpp
 
 ### Credits: Stooged / Xfangfang
