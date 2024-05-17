@@ -5,6 +5,7 @@ Esto permite el autoarranque en un dispositivo con Wi-Fi que utilice el sistema 
 
 ## Requerimientos:
 
+- Router/Modem con OpenWrt.
 - Tener instalado PuTTY en tu PC para acceder por el terminal.
 - Descargar stage1.bin y stage2.bin desde el repositorio de Stooged para el firmware correspondiente.
 - Descargar PPPwn_cpp para distribuciones Linux con chip MIPS o el que tu dispositivo tenga, verificar con el comando `uname -m`.
@@ -31,6 +32,7 @@ It enables auto-start on a Wi-Fi device running the OpenWrt system.
 
 ## Requirements:
 
+- Smart Router with OpenWrt.
 - Have PuTTY installed on your PC to access the terminal.
 - Download stage1.bin and stage2.bin from Stooged’s repository for the corresponding firmware.
 - Download PPPwn_cpp for Linux distributions with MIPS chip or whichever your device has, verify with the command `uname -m`.
