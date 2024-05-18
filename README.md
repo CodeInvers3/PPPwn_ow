@@ -1,6 +1,6 @@
 # PPPwn_OpenWrt
 He añadido una interfaz web para arrancar PPPwn_cpp desde un teléfono solamente conectandote al router.
-Descarga la ultima version [https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main](#descargar pppwn_cpp repositorio oficial)
+Descarga la ultima version [descargar pppwn_cpp repositorio oficial](#https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main)
 
 ## Requerimientos:
 
