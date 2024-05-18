@@ -12,8 +12,16 @@ Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nig
 
 ## Instalación
 
-1. Desde el terminal en su router ejecutan el comando `cd ` y depues `wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip`
-2. Despues ejecutar el comando `unzip main` y por ultimo el comando `PPPwn_ow-main/install.sh`
+1. Desde el terminal en su router ejecutan el comando `cd `
+2. Depues ejecute el comando `wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip`
+3. Ejecutar el comando `unzip main` siguiendo ejecuta el comando `chmod +x PPPwn_ow-main/install.sh`
+4. Por último ejecuta el comando `PPPwn_ow-main/install.sh`
+5. Verificar que chip tiene tu dispositivo router con `uname -m` de acuerdo a eso escoje cual ejecutable pppwn debes descargar.
+6. Busca el ejecutable pppwn en el [repositorio oficial](https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main)
+7. Descargar el repositorio con el comando `wget url_de_tu_pppwn`
+8. Descomprime el archivo descargado con unzip `unzip pppwn_archivo.zip` y despues borralo con `pppwn_archivo.zip`
+9. Descomprime el archivo `tar -xzvf pppwn.tar.gz` y despues borralo con `rm pppwn.tar.gz`
+10. Por último ejecuta el comando `chmod +x pppwn`
 
 ## Pasos para el procedimiento:
 
