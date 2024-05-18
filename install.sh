@@ -9,3 +9,4 @@ rm -r PPPwn_ow-main main
 chmod +x /www/cgi-bin/wpwn.cgi
 
 echo "Installation completed!"
+exit 0
