@@ -1,5 +1,6 @@
-# PPPwn_ow
-Este es un autorun para PPPwn_cpp permite el autoarranque en cualquier dispositivo que utilice el sistema OpenWrt.
+# PPPwn_OpenWrt
+He añadido una interfaz web para arrancar PPPwn_cpp desde un teléfono solamente conectandote al router.
+Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main).
 
 ## Requerimientos:
 
