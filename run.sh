@@ -15,12 +15,12 @@ while true; do
     break
     fi
     if [ "$ret" -ge 1 ]; then
-        echo "\n$ret\n" > /root/state.txt
-        echo -e "\nConsole PPPwned!\n" >> /root/state.txt
+        echo "\n$ret\n" > ~/state.txt
+        echo -e "\nConsole PPPwned!\n" >> ~/state.txt
         break
     else
         COUNTNUM=$((COUNTNUM+1))
-        echo -e "\nFailed retrying...\n" > /root/state.txt
+        echo -e "\nFailed retrying...\n" > ~/state.txt
         ip link set $INTERFACE down
         sleep 5
         ip link set $INTERFACE up

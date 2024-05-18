@@ -1,9 +1,10 @@
 #!/bin/sh /etc/rc.common
 
-if ! grep -q '/root/run.sh' /etc/rc.local; then
-    sed -i '/exit 0/d' /etc/rc.local
-    echo '/root/run.sh &' >> /etc/rc.local
-    echo 'exit 0' >> /etc/rc.local
-fi
-chmod +x /root/run.sh
-reboot
+mv -f ~/PPPwn_ow-main/www/pppwn/* /www
+mv -f ~/PPPwn_ow-main/www/pppwn.html /www
+mv -f ~/PPPwn_ow-main/www/cgi-bin/wpwn.cgi /www/cgi-bin
+rm -r ~/PPPwn_ow-main/www
+mv -f ~/PPPwn_ow-main/run.sh ~/
+rm -r PPPwn_ow-main main
+
+chmod +x /www/cgi-bin/wpwn.cgi
