@@ -1,0 +1,127 @@
+/*
+ * Custom design Kausari Films
+ */
+
+
+body{
+	font-family: Arial;
+	color: #1b1b1b;
+	background-color: #290e2f;
+	background-image: url(https://kde.org/reusable-assets/home-blur.jpg);
+	background-position: center;
+	background-repeat: no-repeat;
+	font-size: 18px;
+}
+
+#app-v-pppwn, #footer, #header{
+	max-width: 750px;
+	background-color: #ffffffa1;
+	color: #fcec8f;
+}
+
+#app-v-pppwn fieldset{
+	border-radius: 10px;
+	color: #1b1b1b;
+	background-color: #f1fbff88;
+	border:none;
+}
+
+#header{
+	background: transparent;
+	text-transform: uppercase;
+}
+
+#header h1{
+	color: hsl(146, 100%, 97%);
+	text-shadow: #1b1b1b 1px 4px 4px;
+}
+
+#header .top-title{
+	line-height: 80px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.btn-form{
+	background-color: #1eb4c2 !important;
+	color: aliceblue !important;
+	border-color: #a6e5ed !important;
+}
+
+.btn-form:focus{
+	background-color: rgb(5, 122, 126) !important;
+}
+
+.group-center{
+	display: block;
+	margin-left: auto;
+	position: relative;
+}
+
+#task-log .view{
+	border-radius: 10px;
+	background-color: #1b1b1b;
+	padding: 10px;
+	color: #FFF;
+	height: 150px;
+	font-size: 10pt;
+	overflow-y: auto;
+}
+
+#footer{
+	padding: 20px;
+}
+
+#footer a{
+	color: rgb(101, 44, 248);
+}
+
+.expand-slc{
+	width: 80%;
+}
+
+@media screen and (max-width: 430px){
+
+	.container-background video{
+		display:none;
+	}
+
+	.container-background img{
+		display: inherit;
+		margin: 0;
+		width: 100%;
+		position: absolute;
+	}
+
+}
+
+@media (min-width: 320px) and (max-width: 463px){
+	
+	.container-background video{
+		display:none;
+	}
+	
+	.container-background img{
+		display: inherit;
+		margin: 0;
+		width: 100%;
+		position: absolute;
+	}
+
+}
+
+@media (max-width: 1024px) {
+	
+	.container-background video{
+		display:none;
+	}
+	
+	.container-background img{
+		display: inherit;
+		margin: 0;
+		width: 100%;
+		position: absolute;
+	}
+
+}
+  

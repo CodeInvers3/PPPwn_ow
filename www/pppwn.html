@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PPPWN exploit Mini-Router</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="pppwn/assets/css/base.css" />
+        <link rel="stylesheet" href="pppwn/assets/css/custom.css" />
+        <script type="text/javascript" src="pppwn/assets/js/jquery.min.js"></script>
+        <script type="text/javascript" src="pppwn/assets/js/underscore-min.js"></script>
+        <script type="text/javascript" src="pppwn/assets/js/backbone-min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div id="header" class="content">
+                <div class="text-center top-title">
+                    <h1>Web pppwn launcher</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div id="app-v-pppwn" class="content">
+                <script type="text/template" id="appWeb">
+                    <form class="form">
+                        <fieldset>
+                            <div class="row">
+                                <div class="field-group col-4">
+                                    <div class="top-label"><label for="select-ifc">Path file</label></div>
+                                    <div class="box">
+                                        <input name="path" required type="text" class="sec-auto" value="/root">
+                                    </div>
+                                </div>
+                                <div class="field-group col-4">
+                                    <div class="top-label"><label for="select-ifc">Ethernet</label></div>
+                                    <select required id="select-ifc" size="5" class="expand-slc box" name="adapter">
+                                        <% interfaces.forEach(function(option, index){ %>
+                                        <option value="<%= option %>"><%= option %></option>
+                                        <% }); %>
+                                    </select>
+                                </div>
+                                <div class="field-group col-4">
+                                    <div class="top-label"><label for="select-fw">Firmware</label></div>
+                                    <select required id="select-fw" class="expand-slc box" size="5" name="firmware">
+                                        <% firmware.forEach(function(option, index){ %>
+                                            <option value="<%= option.value %>"><%= option.version %></option>
+                                        <% }); %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="field-group box">
+                                <div class="col-group group-center">
+                                    <button type="button" id="id_run" class="btn-form input-attach sec-auto">Run exploit</button>
+                                    <button type="button" id="id_stop" class="btn-form input-attach sec-auto">Stop</button>
+                                    <button type="button" id="id_enable" class="btn-form input-attach sec-auto">Enable Auto</button>
+                                </div>
+                            </div>
+                            <div id="task-log">
+                                <div class="view">#</div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </script>
+            </div>
+        </div>
+        <div class="container">
+            <div id="footer" class="content">
+                <sub><a href="https://twitter.com/Manyajmz/">Site</a></sub>
+                <sub> | </sub>
+                <sub><a href="https://github.com/CodeInvers3/PPPwn_ow">Github</a></sub>
+            </div>
+        </div>
+        <script src="pppwn/main.js"></script>
+    </body>
+</html>
