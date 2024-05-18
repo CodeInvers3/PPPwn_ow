@@ -3,7 +3,7 @@
 INTERFACE="br-lan"
 FIRMWAREVERSION="750"
 COUNTNUM=0
-RETRYMAX=5
+ATTEMPTSMAX=5
 
 ifconfig $INTERFACE down
 sleep 5
@@ -11,7 +11,7 @@ ifconfig $INTERFACE up
 
 while true; do
     ret=$(/root/pppwn --interface $INTERFACE --fw $FIRMWAREVERSION --stage1 /root/stage1_$FIRMWAREVERSION.bin --stage2 /root/stage2_$FIRMWAREVERSION.bin --auto-retry)
-    if [ "$COUNTNUM" -eq "$RETRYMAX" ]; then
+    if [ "$COUNTNUM" -eq "$ATTEMPTSMAX" ]; then
     break
     fi
     if [ "$ret" -ge 1 ]; then
