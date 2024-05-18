@@ -6,7 +6,7 @@ adapter="br-lan"
 firmware="1100"
 token="token_id"
 countattempts=0
-signalfile="/www/stop"
+signalfile="/www/pppwn/stop"
 
 read postData
 
@@ -66,10 +66,6 @@ if [ "$token" = "token_id" ]; then
                 ip link set $adapter up
             fi
             if [ -f "$signalfile" ]; then
-                pids=$(pgrep pppwn)
-                for pid in $pids; do
-                    kill $pid
-                done
                 pids=$(pgrep /root/pppwn)
                 for pid in $pids; do
                     kill $pid
@@ -81,6 +77,11 @@ if [ "$token" = "token_id" ]; then
         done
 
     elif [ "$task" = "stop" ]; then
+
+        pids=$(pgrep pppwn)
+        for pid in $pids; do
+            kill $pid
+        done
 
         echo "Stopped!" > "$signalfile"
 

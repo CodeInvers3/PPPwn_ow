@@ -5,9 +5,9 @@ FIRMWAREVERSION="750"
 COUNTNUM=0
 ATTEMPTSMAX=5
 
-ifconfig $INTERFACE down
+ip link set $INTERFACE down
 sleep 5
-ifconfig $INTERFACE up
+ip link set $INTERFACE up
 
 while true; do
     ret=$(/root/pppwn --interface $INTERFACE --fw $FIRMWAREVERSION --stage1 /root/stage1_$FIRMWAREVERSION.bin --stage2 /root/stage2_$FIRMWAREVERSION.bin --auto-retry)
@@ -21,8 +21,8 @@ while true; do
     else
         COUNTNUM=$((COUNTNUM+1))
         echo -e "\nFailed retrying...\n" > /root/state.txt
-        ifconfig $INTERFACE down
+        ip link set $INTERFACE down
         sleep 5
-        ifconfig $INTERFACE up
+        ip link set $INTERFACE up
     fi
 done

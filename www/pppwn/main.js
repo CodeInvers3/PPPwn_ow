@@ -45,7 +45,7 @@ var appView = Backbone.View.extend({
         var list = [];
         data.forEach(function(value){
             if(value){
-                list.push(value);
+                list.push(value.trim());
             }
         });
         this.data.interfaces = list;
