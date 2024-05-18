@@ -10,6 +10,11 @@ Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nig
 - Descargar PPPwn_cpp para distribuciones Linux con chip MIPS o el que tu dispositivo tenga, verificar con el comando `uname -m`.
 - Descargar goldhen.bin para el Firmware de tu consola.
 
+## Instalación
+
+1. Desde el terminal en su router ejecutan el comando `cd ` y depues `wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip`
+2. Despues ejecutar el comando `unzip main` y por ultimo el comando `PPPwn_ow-main/install.sh`
+
 ## Pasos para el procedimiento:
 
 1. Conectar tu dispositivo a la PC mediante el cable LAN.
