@@ -1,23 +1,18 @@
 #!/bin/sh
 
 INTERFACE="br-lan"
-FIRMWAREVERSION="750"
-COUNTNUM=0
-ATTEMPTSMAX=5
+FIRMWAREVERSION="1100"
 
 ip link set $INTERFACE down
 sleep 5
 ip link set $INTERFACE up
 
 while true; do
-    ret=$(/root/pppwn --interface $INTERFACE --fw $FIRMWAREVERSION --stage1 /root/stage1_$FIRMWAREVERSION.bin --stage2 /root/stage2_$FIRMWAREVERSION.bin --auto-retry)
-    if [ "$COUNTNUM" -eq "$ATTEMPTSMAX" ]; then
-    break
-    fi
+    ret=$(pppwn --interface $INTERFACE --fw $FIRMWAREVERSION --stage1 ~/offsets/stage1_$FIRMWAREVERSION.bin --stage2 ~/offsets/stage2_$FIRMWAREVERSION.bin --auto-retry)
     if [ "$ret" -ge 1 ]; then
         echo "\n$ret\n" > ~/state.txt
         echo -e "\nConsole PPPwned!\n" >> ~/state.txt
-        break
+        exit 0
     else
         COUNTNUM=$((COUNTNUM+1))
         echo -e "\nFailed retrying...\n" > ~/state.txt

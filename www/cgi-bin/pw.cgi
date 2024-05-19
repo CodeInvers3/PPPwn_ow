@@ -21,7 +21,7 @@ if [ "$token" = "token_id" ]; then
 
     if [ "$task" = "adapters" ]; then
 
-        eths=$(~/pppwn list)
+        eths=$(pppwn list)
         echo "$eths"
 
     elif [ "$task" = "payloads" ]; then
@@ -56,33 +56,28 @@ if [ "$token" = "token_id" ]; then
         while true; do
 
             countattempts=$((countattempts+1))
-            pwn=$($root/pppwn --interface "$adapter" --fw $firmware --stage1 $root/offsets/stage1_$firmware.bin --stage2 $root/offsets/stage2_$firmware.bin --auto-retry)
+            pwn=$(pppwn --interface "$adapter" --fw $firmware --stage1 $root/offsets/stage1_$firmware.bin --stage2 $root/offsets/stage2_$firmware.bin --auto-retry)
             if [ "$pwn" -ge 1 ]; then
                 echo "Exploit success!" > "/www/pppwn/state.txt"
                 exit 0
             else
-                echo "Failed! attempting($countattempts)..." > "/www/pppwn/state.txt"
+                echo "Attempts ($countattempts)" > "/www/pppwn/state.txt"
                 ip link set $adapter down
                 sleep 5
                 ip link set $adapter up
             fi
             if [ -f "$signalfile" ]; then
-                pids=$(pgrep ~/pppwn)
+                pids=$(pgrep pppwn)
                 for pid in $pids; do
                     kill $pid
                 done
-                echo "Termination signal detected. Exiting loop." > "/www/pppwn/state.txt"
+                echo "Exploit pppwn stopped!" > "/www/pppwn/state.txt"
                 exit 0
             fi
 
         done
 
     elif [ "$task" = "stop" ]; then
-
-        pids=$(pgrep pppwn)
-        for pid in $pids; do
-            kill $pid
-        done
 
         echo "stop=true" > "$signalfile"
 
