@@ -53,14 +53,14 @@ if [ "$token" = "token_id" ]; then
         sleep 5
         ip link set $adapter up
         
-        while true; do
+        echo -e "Awating response..."
 
+        while true; do
             countattempts=$((countattempts+1))
-            pwn=$(pppwn --interface "$adapter" --fw $firmware --stage1 $root/offsets/stage1_$firmware.bin --stage2 $root/offsets/stage2_$firmware.bin --auto-retry)
-            echo "pppwn --interface \"$adapter\" --fw $firmware --stage1 $root/offsets/stage1_$firmware.bin --stage2 $root/offsets/stage2_$firmware.bin" > "/www/log"
-            if [ "$pwn" -ge 1 ]; then
+            pw=$(pppwn --interface "$adapter" --fw "$firmware" --stage1 "$root/offsets/stage1_$firmware.bin" --stage2 "$root/offsets/stage2_$firmware.bin" --auto-retry)
+            if [ "$pw" -ge 1 ]; then
                 echo "Exploit success!" > "/www/pppwn/state.txt"
-                exit 0
+                exit 1
             else
                 echo "Attempts ($countattempts)" > "/www/pppwn/state.txt"
                 ip link set $adapter down
@@ -75,7 +75,6 @@ if [ "$token" = "token_id" ]; then
                 echo "Exploit pppwn stopped!" > "/www/pppwn/state.txt"
                 exit 0
             fi
-
         done
 
     elif [ "$task" = "stop" ]; then
