@@ -57,6 +57,7 @@ if [ "$token" = "token_id" ]; then
 
             countattempts=$((countattempts+1))
             pwn=$(pppwn --interface "$adapter" --fw $firmware --stage1 $root/offsets/stage1_$firmware.bin --stage2 $root/offsets/stage2_$firmware.bin --auto-retry)
+            echo "$pwn" > "/www/log"
             if [ "$pwn" -ge 1 ]; then
                 echo "Exploit success!" > "/www/pppwn/state.txt"
                 exit 0

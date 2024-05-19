@@ -94,7 +94,7 @@ var appView = Backbone.View.extend({
                 }
             })
             .then(function(response){
-                $('#task-log').find('.view').append('PPPwn running...').append('<br>');
+                $('#task-log').find('.view').append('PPPwned!').append('<br>');
             })
             .catch(function(error){
                 $('#task-log').find('.view').append(error+'<br>');
