@@ -80,7 +80,6 @@ var appView = Backbone.View.extend({
                 adapter:adapter.val(),
                 firmware:firmware.val()
             });
-            console.log(params.toString());
             fetch('/cgi-bin/pw.cgi', {
                 method: 'POST',
                 headers: {
@@ -95,9 +94,7 @@ var appView = Backbone.View.extend({
                 }
             })
             .then(function(response){
-                $.get('/pppwn/state.txt', function(text){
-                    $('#task-log').find('.view').append(text).append('<br>');
-                });
+                $('#task-log').find('.view').append('PPPwn running...').append('<br>');
             })
             .catch(function(error){
                 $('#task-log').find('.view').append(error+'<br>');
@@ -123,9 +120,7 @@ var appView = Backbone.View.extend({
             })
             .then(function(response){
                 var output = $('#task-log').find('.view');
-                $.get('/pppwn/state.txt', function(text){
-                    output.append(text).append("<br>");
-                });
+                output.append('Stopped!').append("<br>");
             })
             .catch(function(error){
                 $('#task-log').find('.view').append(error+'<br>');

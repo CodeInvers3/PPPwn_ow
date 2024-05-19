@@ -95,5 +95,6 @@ if [ "$token" = "token_id" ]; then
 else
 
     echo "Invalid token!"
+    exit 0
 
 fi
