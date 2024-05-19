@@ -1,7 +1,7 @@
 #!/bin/sh /etc/rc.common
 
 if [ -d "~/offsets" ]; then
-    rm -r ~/offsets
+    rm -r ~/offsets/*
 fi
 if [ -d "/www/pppwn" ]; then
     rm -r /www/pppwn

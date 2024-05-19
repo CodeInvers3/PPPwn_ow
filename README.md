@@ -19,7 +19,7 @@ Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nig
 5. Verifica qué chip tiene tu dispositivo router con `uname -m`. De acuerdo a eso, elige cuál ejecutable pppwn debes descargar.
 6. Busca el ejecutable pppwn en el [repositorio oficial](https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main)
 7. Descarga el repositorio con el comando `wget url_de_tu_pppwn`
-8. Descomprime el archivo descargado con `unzip pppwn_archivo.zip` y después bórralo con `pppwn_archivo.zip`
+8. Descomprime el archivo descargado con `unzip pppwn_archivo.zip` y después bórralo con `rm pppwn_archivo.zip`
 9. Descomprime el archivo `tar -xzvf pppwn.tar.gz` y después bórralo con `rm pppwn.tar.gz`
 10. Por último, ejecuta el comando `chmod +x pppwn` y `mv pppwn /usr/bin`
 12. Copia goldhen.bin a su memoria usb, debe estar formateada en exFat o FAT32
