@@ -80,6 +80,7 @@ var appView = Backbone.View.extend({
                 adapter:adapter.val(),
                 firmware:firmware.val()
             });
+            $('#task-log').find('.view').append('Awaiting...')
             fetch('/cgi-bin/pw.cgi', {
                 method: 'POST',
                 headers: {
