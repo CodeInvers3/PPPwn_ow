@@ -94,8 +94,10 @@ var appView = Backbone.View.extend({
                     throw new Error("Error cannot execute task.");
                 }
             })
-            .then(function(text){
-                $('#task-log').find('.view').append(text).append('<br>');
+            .then(function(response){
+                $.get('/pppwn/state.txt', function(text){
+                    $('#task-log').find('.view').append(text).append('<br>');
+                });
             })
             .catch(function(error){
                 $('#task-log').find('.view').append(error+'<br>');
@@ -119,9 +121,11 @@ var appView = Backbone.View.extend({
                     throw new Error("Error cannot execute task.");
                 }
             })
-            .then(function(text){
+            .then(function(response){
                 var output = $('#task-log').find('.view');
-                output.append(text).append("<br>");
+                $.get('/pppwn/state.txt', function(text){
+                    output.append(text).append("<br>");
+                });
             })
             .catch(function(error){
                 $('#task-log').find('.view').append(error+'<br>');

@@ -93,7 +93,7 @@ if [ "$token" = "token_id" ]; then
             echo "$root/run.sh &" >> /etc/rc.local
             echo 'exit 0' >> /etc/rc.local
         fi
-        echo "Enabled!"
+        echo "Autorun enable!"
 
     fi
 
