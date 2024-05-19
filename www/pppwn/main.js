@@ -7,7 +7,7 @@ var appView = Backbone.View.extend({
             task:'adapters',
             token:'token_id'
         });
-        fetch('/cgi-bin/wpwn.cgi', {
+        fetch('/cgi-bin/pw.cgi', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -81,7 +81,7 @@ var appView = Backbone.View.extend({
                 firmware:firmware.val()
             });
             console.log(params.toString());
-            fetch('/cgi-bin/wpwn.cgi', {
+            fetch('/cgi-bin/pw.cgi', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -108,7 +108,7 @@ var appView = Backbone.View.extend({
                 task:'stop',
                 token:'token_id'
             });
-            fetch('/cgi-bin/wpwn.cgi', {
+            fetch('/cgi-bin/pw.cgi', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -136,7 +136,7 @@ var appView = Backbone.View.extend({
                 task:'enable',
                 token:'token_id'
             });
-            fetch('/cgi-bin/wpwn.cgi', {
+            fetch('/cgi-bin/pw.cgi', {
                 method: 'POST',
                 body: params.toString(),
             }).then(function(response){
