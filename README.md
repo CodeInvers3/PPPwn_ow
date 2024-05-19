@@ -22,7 +22,6 @@ Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nig
 8. Descomprime el archivo descargado con `unzip pppwn_archivo.zip` y después bórralo con `pppwn_archivo.zip`
 9. Descomprime el archivo `tar -xzvf pppwn.tar.gz` y después bórralo con `rm pppwn.tar.gz`
 10. Por último, ejecuta el comando `chmod +x pppwn`
-11. Copia los archivos stage1_XXXX.bin y stage2_XXXX.bin al directorio /root en su dispositivo router. 
 12. Copia goldhen.bin a su memoria usb, debe estar formateada en exFat o FAT32
 13. Conectar todo a la consola PS4 y desde el navegador ingresar a la dirección ip de su router (http://192.168.1.1/pppwn.html)
 
@@ -52,7 +51,6 @@ It enables auto-start on a Wi-Fi device running the OpenWrt system.
 8. Unzip the downloaded file with `unzip pppwn_file.zip` and then delete it with `rm pppwn_file.zip`
 9. Extract the file with `tar -xzvf pppwn.tar.gz` and then delete it with `rm pppwn.tar.gz`
 10. Finally, run the command `chmod +x pppwn`
-11. Copy the files stage1_XXXX.bin and stage2_XXXX.bin to the /root directory on your router device.
 12. Copy goldhen.bin to your USB drive; it must be formatted in exFAT or FAT32.
 13. Connect everything to the PS4 console and from the browser go to your router's IP address (http://192.168.1.1/pppwn.html)
 

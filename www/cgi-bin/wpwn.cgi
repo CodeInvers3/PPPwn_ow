@@ -13,19 +13,20 @@ read postData
 token=$(echo $postData | sed -n 's/^.*token=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 adapter=$(echo $postData | sed -n 's/^.*adapter=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 firmware=$(echo $postData | sed -n 's/^.*firmware=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
-path=$(echo $postData | sed -n 's/^.*path=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
+eroot=$(echo $postData | sed -n 's/^.*root=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 task=$(echo $postData | sed -n 's/^.*task=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
+root=$(echo "$eroot" | sed 's/%2F/\//g')
 
 if [ "$token" = "token_id" ]; then
 
     if [ "$task" = "adapters" ]; then
 
-        eths=$(/root/pppwn list)
+        eths=$(~/pppwn list)
         echo "$eths"
 
     elif [ "$task" = "payloads" ]; then
 
-        payloads=$(ls /root/*.bin)
+        payloads=$(ls ~/offsets/*.bin)
         count=0
         separator=""
         echo "["
@@ -55,7 +56,7 @@ if [ "$token" = "token_id" ]; then
         while true; do
 
             countattempts=$((countattempts+1))
-            pwn=$(/root/pppwn --interface "$adapter" --fw $firmware --stage1 /root/stage1_$firmware.bin --stage2 /root/stage2_$firmware.bin --auto-retry)
+            pwn=$($root/pppwn --interface "$adapter" --fw $firmware --stage1 $root/offsets/stage1_$firmware.bin --stage2 $root/offsets/stage2_$firmware.bin --auto-retry)
             if [ "$pwn" -ge 1 ]; then
                 echo "Exploit success!" > "/www/pppwn/state.txt"
                 exit 0
@@ -66,7 +67,7 @@ if [ "$token" = "token_id" ]; then
                 ip link set $adapter up
             fi
             if [ -f "$signalfile" ]; then
-                pids=$(pgrep /root/pppwn)
+                pids=$(pgrep ~/pppwn)
                 for pid in $pids; do
                     kill $pid
                 done
@@ -83,13 +84,13 @@ if [ "$token" = "token_id" ]; then
             kill $pid
         done
 
-        echo "Stopped!" > "$signalfile"
+        echo "stop=true" > "$signalfile"
 
     elif [ "$task" = "enable" ]; then
 
-        if ! grep -q '/root/run.sh' /etc/rc.local; then
+        if ! grep -q "$root/run.sh" /etc/rc.local; then
             sed -i '/exit 0/d' /etc/rc.local
-            echo '/root/run.sh &' >> /etc/rc.local
+            echo "$root/run.sh &" >> /etc/rc.local
             echo 'exit 0' >> /etc/rc.local
         fi
         echo "Enabled!"

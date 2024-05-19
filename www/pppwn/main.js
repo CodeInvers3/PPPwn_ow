@@ -32,11 +32,22 @@ var appView = Backbone.View.extend({
         this.data = {
             interfaces: [],
             firmware: [
-                {"version":"11.00","value":"1100"},
-                {"version":"10.00","value":"1000"},
-                {"version":"9.00","value":"900"},
                 {"version":"7.50","value":"750"},
-                {"version":"7.00","value":"700"}
+                {"version":"7.55","value":"755"},
+                {"version":"8.00","value":"800"},
+                {"version":"8.03","value":"803"},
+                {"version":"8.50","value":"850"},
+                {"version":"8.52","value":"852"},
+                {"version":"9.00","value":"900"},
+                {"version":"9.03","value":"903"},
+                {"version":"9.04","value":"904"},
+                {"version":"9.50","value":"950"},
+                {"version":"9.60","value":"960"},
+                {"version":"10.00","value":"1000"},
+                {"version":"10.01","value":"1001"},
+                {"version":"10.50","value":"1050"},
+                {"version":"10.70","value":"1071"},
+                {"version":"11.00","value":"1100"}
             ]
         }
         this.render();
@@ -58,17 +69,18 @@ var appView = Backbone.View.extend({
     events: {
         'click #id_run': function(){
 
-            var path = this.$el.find('[name=path]');
+            var root = this.$el.find('[name=root]');
             var adapter = this.$el.find('[name=adapter]');
             var firmware = this.$el.find('[name=firmware]');
 
             var params = new URLSearchParams({
                 task:'run',
                 token:'token_id',
-                path:path.val(),
+                root:root.val(),
                 adapter:adapter.val(),
                 firmware:firmware.val()
             });
+            console.log(params.toString());
             fetch('/cgi-bin/wpwn.cgi', {
                 method: 'POST',
                 headers: {
