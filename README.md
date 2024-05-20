@@ -15,9 +15,9 @@ Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nig
 1. Desde el terminal en su router, ejecuta el comando `cd `
 2. Ejecuta el siguiente comando 
 ```sh
-wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip 
-unzip main 
-chmod +x PPPwn_ow-main/install.sh 
+wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
+unzip main
+chmod +x PPPwn_ow-main/install.sh
 PPPwn_ow-main/install.sh
 ```
 3. Verifica qué chip tiene tu dispositivo router con `uname -m`. De acuerdo a eso, elige cuál ejecutable pppwn debes descargar.
@@ -48,9 +48,9 @@ It enables auto-start on a Wi-Fi device running the OpenWrt system.
 1. From the terminal on your router, run the command `cd`
 2. Run the command 
 ```sh
-wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip 
-unzip main 
-chmod +x PPPwn_ow-main/install.sh 
+wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
+unzip main
+chmod +x PPPwn_ow-main/install.sh
 PPPwn_ow-main/install.sh
 ```
 3. Verify which chip your router device has with `uname -m`. Based on that, choose which pppwn executable you need to download.
