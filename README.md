@@ -6,7 +6,7 @@ Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nig
 
 - Router/Modem conexión lan con OpenWrt.
 - Tener instalado PuTTY en tu PC para acceder por el terminal.
-- Descargar stage1.bin y stage2.bin desde el repositorio de Stooged para el firmware correspondiente.
+- Descargar stage1.bin y stage2.bin desde el repositorio de [Stooged](https://github.com/stooged/PI-Pwn) para el firmware correspondiente.
 - Descargar PPPwn_cpp para distribuciones Linux con chip MIPS o el que tu dispositivo tenga, verificar con el comando `uname -m`.
 - Descargar goldhen.bin para el Firmware de tu consola.
 
