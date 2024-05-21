@@ -32,21 +32,15 @@ var appView = Backbone.View.extend({
         this.data = {
             interfaces: [],
             firmware: [
+                {"version":"7.00","value":"700"},
                 {"version":"7.50","value":"750"},
-                {"version":"7.55","value":"755"},
                 {"version":"8.00","value":"800"},
-                {"version":"8.03","value":"803"},
                 {"version":"8.50","value":"850"},
-                {"version":"8.52","value":"852"},
                 {"version":"9.00","value":"900"},
                 {"version":"9.03","value":"903"},
-                {"version":"9.04","value":"904"},
                 {"version":"9.50","value":"950"},
-                {"version":"9.60","value":"960"},
                 {"version":"10.00","value":"1000"},
-                {"version":"10.01","value":"1001"},
                 {"version":"10.50","value":"1050"},
-                {"version":"10.70","value":"1071"},
                 {"version":"11.00","value":"1100"}
             ]
         }
@@ -80,7 +74,7 @@ var appView = Backbone.View.extend({
                 adapter:adapter.val(),
                 firmware:firmware.val()
             });
-            $('#task-log').find('.view').append('Awaiting...')
+            $('#task-log').find('.view').append('Awaiting...<br>')
             fetch('/cgi-bin/pw.cgi', {
                 method: 'POST',
                 headers: {
