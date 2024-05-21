@@ -31,8 +31,6 @@ PPPwn_ow-main/install.sh
 
 Probado en mini router GL-MT300N-V2 Mango
 
-This is an adaptation of Stooged’s script to work with PPPwn_cpp.
-
 It enables auto-start on a Wi-Fi device running the OpenWrt system.
 
 ## Requirements:
@@ -66,4 +64,4 @@ Every time you turn on the router and connect the USB memory with goldhen.bin, t
 
 PPPwn from https://github.com/xfangfang/PPPwn_cpp
 
-### Credits: Stooged / Xfangfang
+### Credits: Sistro / Xfangfang

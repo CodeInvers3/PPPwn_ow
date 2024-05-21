@@ -49,8 +49,9 @@ var appView = Backbone.View.extend({
     interfaces: function(data){
         var list = [];
         data.forEach(function(value){
-            if(value){
-                list.push(value.trim());
+            var interface = value.trim();
+            if(interface){
+                list.push(interface);
             }
         });
         this.data.interfaces = list;
@@ -74,7 +75,7 @@ var appView = Backbone.View.extend({
                 adapter:adapter.val(),
                 firmware:firmware.val()
             });
-            $('#task-log').find('.view').append('Awaiting...<br>')
+            $('#task-log').find('.view').append('Awaiting response...<br>')
             fetch('/cgi-bin/pw.cgi', {
                 method: 'POST',
                 headers: {
@@ -89,7 +90,7 @@ var appView = Backbone.View.extend({
                 }
             })
             .then(function(response){
-                $('#task-log').find('.view').append('PPPwned!').append('<br>');
+                $('#task-log').find('.view').append(response).append('<br>');
             })
             .catch(function(error){
                 $('#task-log').find('.view').append(error+'<br>');
@@ -115,7 +116,7 @@ var appView = Backbone.View.extend({
             })
             .then(function(response){
                 var output = $('#task-log').find('.view');
-                output.append('Stopped!').append("<br>");
+                output.append('Stopping process...').append("<br>");
             })
             .catch(function(error){
                 $('#task-log').find('.view').append(error+'<br>');

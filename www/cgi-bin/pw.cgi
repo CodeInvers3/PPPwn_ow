@@ -52,8 +52,6 @@ if [ "$token" = "token_id" ]; then
         ip link set $adapter down
         sleep 5
         ip link set $adapter up
-        
-        echo -e "Awating response..."
 
         while true; do
             countattempts=$((countattempts+1))
@@ -67,6 +65,16 @@ if [ "$token" = "token_id" ]; then
                 sleep 5
                 ip link set $adapter up
             fi
+            if [ -f "/www/pppwn/state.txt" ]; then
+                pids=$(pgrep pppwn)
+                for pid in $pids; do
+                    kill $pid
+                done
+                rm "/www/pppwn/state.txt"
+                echo "Attempts ($countattempts)"
+                echo "PPPwn terminated!"
+                exit 1
+            fi
             if [ -f "$signalfile" ]; then
                 pids=$(pgrep pppwn)
                 for pid in $pids; do
@@ -79,7 +87,7 @@ if [ "$token" = "token_id" ]; then
 
     elif [ "$task" = "stop" ]; then
 
-        echo "stop=true" > "$signalfile"
+        echo "true" > "$signalfile"
 
     elif [ "$task" = "enable" ]; then
 
