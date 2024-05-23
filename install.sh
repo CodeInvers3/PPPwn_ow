@@ -1,18 +1,18 @@
 #!/bin/sh /etc/rc.common
 
-if [ -d "~/offsets" ]; then
+if [ -d ~/offsets ]; then
     rm -r ~/offsets/*
 fi
-if [ -d "/www/pppwn" ]; then
+if [ -d /www/pppwn ]; then
     rm -r /www/pppwn
 fi
-if [ -f "/www/pppwn.html" ]; then
+if [ -f /www/pppwn.html ]; then
     rm /www/pppwn.html
 fi
-if [ -f "/www/cgi-bin/pw.cgi" ]; then
+if [ -f /www/cgi-bin/pw.cgi ]; then
     rm /www/cgi-bin/pw.cgi
 fi
-if [ -f "~/run.sh" ]; then
+if [ -f ~/run.sh ]; then
     rm ~/run.sh
 fi
 mv -f ~/PPPwn_ow-main/offsets ~/
