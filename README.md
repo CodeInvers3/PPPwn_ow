@@ -14,9 +14,9 @@ Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nig
 
 1. Desde el terminal en su router, ejecuta este comando
 ```sh
-cd 
 opkg update
 opkg install unzip
+cd 
 wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
 unzip main
 chmod +x PPPwn_ow-main/install.sh
@@ -47,9 +47,9 @@ It enables auto-start on a Wi-Fi device running the OpenWrt system.
 
 1. From the terminal on your router, run the command
 ```sh
-cd 
 opkg update
 opkg install unzip
+cd 
 wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
 unzip main
 chmod +x PPPwn_ow-main/install.sh
