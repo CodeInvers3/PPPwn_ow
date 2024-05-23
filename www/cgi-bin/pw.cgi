@@ -65,16 +65,6 @@ if [ "$token" = "token_id" ]; then
                 sleep 5
                 ip link set $adapter up
             fi
-            if [ -f "/www/pppwn/state.txt" ]; then
-                pids=$(pgrep pppwn)
-                for pid in $pids; do
-                    kill $pid
-                done
-                rm "/www/pppwn/state.txt"
-                echo "Attempts ($countattempts)"
-                echo "PPPwn terminated!"
-                exit 1
-            fi
             if [ -f "$signalfile" ]; then
                 pids=$(pgrep pppwn)
                 for pid in $pids; do
