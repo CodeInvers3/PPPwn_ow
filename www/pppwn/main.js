@@ -15,16 +15,13 @@ var appView = Backbone.View.extend({
             body: params.toString(),
         }).then(function(response){
             if(response.ok){
-                return response.text();
+                return response.json();
             }else{
                 throw new Error("Error cannot execute task.");
             }
         })
-        .then(function(data){
-            var interfaces = data.replace(/\[\+\] PPPwn\+\+ - PlayStation 4 PPPoE RCE by theflow|\[\+\] interfaces:|\r| \r/gi, function(value){
-                return "";
-            });
-            self.interfaces(interfaces.split("\n"));
+        .then(function(dataList){
+            self.interfaces(dataList);
         })
         .catch(function(error){
             $('#task-log').find('.view').append(error+'<br>');
@@ -48,10 +45,9 @@ var appView = Backbone.View.extend({
     },
     interfaces: function(data){
         var list = [];
-        data.forEach(function(value){
-            var interface = value.trim();
-            if(interface){
-                list.push(interface);
+        data.forEach(function(value, index){
+            if(index > 1){
+                list.push(value);
             }
         });
         this.data.interfaces = list;
@@ -75,7 +71,9 @@ var appView = Backbone.View.extend({
                 adapter:adapter.val(),
                 firmware:firmware.val()
             });
-            $('#task-log').find('.view').append('Awaiting response...<br>')
+
+            $('#task-log').find('.view').append('Awaiting response...<br>');
+
             fetch('/cgi-bin/pw.cgi', {
                 method: 'POST',
                 headers: {
@@ -84,23 +82,26 @@ var appView = Backbone.View.extend({
                 body: params.toString(),
             }).then(function(response){
                 if(response.ok){
-                    return response.text();
+                    return response.json();
                 }else{
                     throw new Error("Error cannot execute task.");
                 }
             })
-            .then(function(response){
-                $('#task-log').find('.view').append(response).append('<br>');
+            .then(function(data){
+                $('#task-log').find('.view').append(data.output).append('<br>');
             })
             .catch(function(error){
                 $('#task-log').find('.view').append(error+'<br>');
             });
+
         },
         'click #id_stop': function(){
+
             var params = new URLSearchParams({
                 task:'stop',
                 token:'token_id'
             });
+
             fetch('/cgi-bin/pw.cgi', {
                 method: 'POST',
                 headers: {
@@ -109,30 +110,41 @@ var appView = Backbone.View.extend({
                 body: params.toString(),
             }).then(function(response){
                 if(response.ok){
-                    return response.text();
+                    return response.json();
                 }else{
                     throw new Error("Error cannot execute task.");
                 }
             })
-            .then(function(response){
+            .then(function(data){
                 var output = $('#task-log').find('.view');
-                output.append('Stopping process...').append("<br>");
+                output.append("Stopping process...").append("<br>");
+                output.append(data.output).append("<br>");
             })
             .catch(function(error){
                 $('#task-log').find('.view').append(error+'<br>');
             });
+
         },
         'click #id_enable': function(){
+
+            var root = this.$el.find('[name=root]');
+            var adapter = this.$el.find('[name=adapter]');
+            var firmware = this.$el.find('[name=firmware]');
+            
             var params = new URLSearchParams({
                 task:'enable',
-                token:'token_id'
+                token:'token_id',
+                root:root.val(),
+                adapter:adapter.val(),
+                firmware:firmware.val()
             });
+
             fetch('/cgi-bin/pw.cgi', {
                 method: 'POST',
                 body: params.toString(),
             }).then(function(response){
                 if(response.ok){
-                    return response.text();
+                    return response.json();
                 }else{
                     throw new Error("Error cannot execute task.");
                 }
@@ -140,10 +152,11 @@ var appView = Backbone.View.extend({
             .catch(function(error){
                 $('#task-log').find('.view').append(error+'<br>');
             })
-            .then(function(text){
+            .then(function(data){
                 var output = $('#task-log').find('.view');
-                output.append(text).append("<br>");
+                output.append(data.output).append("<br>");
             });
+
         }
     }
 });

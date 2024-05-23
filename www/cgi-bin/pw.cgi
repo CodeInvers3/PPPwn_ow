@@ -2,8 +2,6 @@
 echo "Content-Type: application/json"
 echo ""
 
-adapter="br-lan"
-firmware="1100"
 token="token_id"
 countattempts=0
 signalfile="/www/pppwn/stop"
@@ -20,9 +18,12 @@ root=$(echo "$eroot" | sed 's/%2F/\//g')
 if [ "$token" = "token_id" ]; then
 
     if [ "$task" = "adapters" ]; then
-
-        eths=$(pppwn list)
-        echo "$eths"
+    
+        echo "["
+        parts=$(pppwn list | sed "s/\s*$/\",/")
+        eths=$(echo "$parts" | sed "s/^\s*/\"/")
+        echo $eths | sed "s/,$//"
+        echo "]";
 
     elif [ "$task" = "payloads" ]; then
 
@@ -58,26 +59,28 @@ if [ "$token" = "token_id" ]; then
             pw=$(pppwn --interface "$adapter" --fw "$firmware" --stage1 "$root/offsets/stage1_$firmware.bin" --stage2 "$root/offsets/stage2_$firmware.bin" --auto-retry)
             if [ "$pw" -ge 1 ]; then
                 echo "Exploit success!" > "/www/pppwn/state.txt"
+                echo -e "{\"output\":\"Exploit success!\"}"
                 exit 1
-            else
-                echo "Attempts ($countattempts)" > "/www/pppwn/state.txt"
-                ip link set $adapter down
-                sleep 5
-                ip link set $adapter up
-            fi
-            if [ -f "$signalfile" ]; then
+            elif [ -f "$signalfile" ]; then
                 pids=$(pgrep pppwn)
                 for pid in $pids; do
                     kill $pid
                 done
                 echo "Exploit pppwn stopped!" > "/www/pppwn/state.txt"
+                echo -e "{\"output\":\"PPPwn stopped!\"}"
                 exit 0
+            else
+                echo "Attempts ($countattempts)" > "/www/pppwn/state.txt"
+                ip link set $adapter down
+                sleep 5
+                ip link set $adapter up
+                echo -e "{\"output\":\"Attempts ($countattempts)\"}"
             fi
         done
 
     elif [ "$task" = "stop" ]; then
 
-        echo "true" > "$signalfile"
+        echo "1" > "$signalfile"
 
     elif [ "$task" = "enable" ]; then
 
@@ -86,7 +89,23 @@ if [ "$token" = "token_id" ]; then
             echo "$root/run.sh &" >> /etc/rc.local
             echo 'exit 0' >> /etc/rc.local
         fi
-        echo "Autorun enable!"
+        
+        if grep -q "INTERFACE=" "$root/run.sh"; then
+            sed -i "s/INTERFACE=\".*\"/INTERFACE=\"$adapter\"/" "$root/run.sh"
+        fi
+        if grep -q "FIRMWARE=" "$root/run.sh"; then
+            sed -i "s/FIRMWARE=\".*\"/FIRMWARE=\"$firmware\"/" "$root/run.sh"
+        fi
+
+        echo "{\"output\":\"Autorun enable!\"}"
+
+    elif [ "$task" = "disable" ]; then
+
+        if grep -q "$root/run.sh" "$root/run.sh"; then
+            sed -i "/$root/run.sh/d" "$root/run.sh"
+        fi
+
+        echo "{\"output\":\"Autorun disabled!\"}"
 
     fi
 
