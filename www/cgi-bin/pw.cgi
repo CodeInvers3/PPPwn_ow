@@ -61,7 +61,7 @@ if [ "$token" = "token_id" ]; then
                 echo "Exploit success!" > "/www/pppwn/state.txt"
                 echo -e "{\"output\":\"Exploit success!\"}"
                 exit 1
-            elif [ -f "$signalfile" ]; then
+            elif [ -f $signalfile ]; then
                 pids=$(pgrep pppwn)
                 for pid in $pids; do
                     kill $pid
@@ -80,7 +80,8 @@ if [ "$token" = "token_id" ]; then
 
     elif [ "$task" = "stop" ]; then
 
-        echo "1" > "$signalfile"
+        echo "1" > $signalfile
+        echo "{\"output\":\"Waiting response...\"}"
 
     elif [ "$task" = "enable" ]; then
 
