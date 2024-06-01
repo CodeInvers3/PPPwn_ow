@@ -26,16 +26,22 @@ var appView = Backbone.View.extend({
     render: function(response){
         var self = this, interfaces = [];
         $.each(response.get('interfaces'), function(index, item){
-            if(index > 1){
+            if(item.adapter != "[+] PPPwn++ - PlayStation 4 PPPoE RCE by theflow" && item.adapter != "[+] interfaces:"){
                 interfaces.push(item);
             }
         });
+        
         response.set('interfaces', interfaces);
-        console.log(response.toJSON())
-        this.$el.html(this.template(response.toJSON()));
+        var data = response.toJSON();
+        this.$el.html(this.template(data));
+
         if(response.get('running')){
-            $('button#action_pw').addClass('active');
-            $('button#action_pw').prop('task', 'run').text('Stop');
+            this.$('button#action_pw').addClass('active').prop('task', 'run').text('Stop');
+        }
+        
+        if(data.output){
+            console.log(data.output)
+            this.$('#task-log .view').append(data.output+'<br>');
         }
         return this;
     },
@@ -79,54 +85,10 @@ var appView = Backbone.View.extend({
                     adapter:adapter.val(),
                     firmware:firmware.val()
                 }
-            }).then(function(data){
-                console.log(data);
-                /*output.append(data.output).append('<br>');
-                if(data.pppwn){
-                    selector.prop('disabled', true).text('Completed!');
-                    output.append(data.output+'<br>');
-                }else{
-                    selector.prop('task', '').text('Execute');
-                }*/
             })
-            .catch(function(error){
-                output.append(error+'<br>');
+            .catch(function(err){
+                output.append(err+'<br>');
             });
-
-            /*var params = new URLSearchParams({
-                task:selector.prop('task'),
-                token:'token_id',
-                root:root.val(),
-                adapter:adapter.val(),
-                firmware:firmware.val()
-            });
-
-            fetch('/cgi-bin/pw.cgi', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: params.toString(),
-            }).then(function(response){
-                if(response.ok){
-                    return response.json();
-                }else{
-                    throw new Error("Error cannot execute task.");
-                }
-            })
-            .then(function(data){
-                console.log(data);
-                output.append(data.output).append('<br>');
-                if(data.pppwn){
-                    selector.prop('disabled', true).text('Completed!');
-                    output.append(data.output+'<br>');
-                }else{
-                    selector.prop('task', '').text('Execute');
-                }
-            })
-            .catch(function(error){
-                output.append(error+'<br>');
-            });*/
 
         },
         'click button#switch_pw': function(event){
@@ -159,21 +121,9 @@ var appView = Backbone.View.extend({
                     adapter:adapter.val(),
                     firmware:firmware.val()
                 },
-            }).then(function(response){
-                console.log(response);
-                if(response.ok){
-                    return response.json();
-                }else{
-                    throw new Error("Error cannot execute task.");
-                }
             })
-            .then(function(data){
-                console.log(data)
-                //var output = $('#task-log').find('.view');
-                //output.append(data.output).append("<br>");
-            })
-            .catch(function(error){
-                $('#task-log').find('.view').append(error+'<br>');
+            .catch(function(err){
+                $('#task-log').find('.view').append(err+'<br>');
             });
 
         }

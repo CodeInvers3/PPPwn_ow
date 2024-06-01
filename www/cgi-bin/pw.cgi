@@ -84,16 +84,7 @@ if [ "$token" = "token_id" ]; then
         while true; do
 
             pppwn --interface "$adapter" --fw "$firmware" --stage1 $root/offsets/stage1_$firmware.bin --stage2 $root/offsets/stage2_$firmware.bin --timeout $timeout --auto-retry
-
-            if [ -f "$signalfile" ]; then
-                pids=$(pgrep pppwn)
-                for pid in $pids; do
-                    kill $pid
-                done
-                echo "{\"stop\":true}" > "/www/pppwn/state.json"
-                exit 1
-            fi
-
+            
             if [ $? -eq 0 ]; then
                 echo "{\"output\":\"Exploit success!\",\"pppwn\":true,\"attempts\":\"$attempts\"}" > "/www/pppwn/state.json"
                 exit 0
@@ -108,13 +99,14 @@ if [ "$token" = "token_id" ]; then
     elif [ "$task" = "stop" ]; then
 
         echo "stop" > $signalfile
+        echo "{\"output\":\"Waiting stop event...\",\"pppwn\":false,\"attempts\":\"$attempts\"}"
 
         pids=$(pgrep pppwn)
         for pid in $pids; do
             kill $pid
         done
 
-        echo "{\"output\":\"Trying stop proccess...\",\"pppwn\":false,\"attempts\":\"$attempts\"}"
+        exit 1
 
     elif [ "$task" = "enable" ]; then
 
