@@ -83,6 +83,22 @@ if [ "$token" = "token_id" ]; then
 
         while true; do
 
+            if [ -f "$signalfile" ]; then
+            
+                echo "{\"output\":\"Waiting response...\"}"
+
+                pids=$(pgrep pppwn)
+                for pid in $pids; do
+                    kill $pid
+                done
+
+                if [ -f "$signalfile" ]; then
+                    rm $signalfile
+                fi
+                
+                exit 1
+            fi
+
             pppwn --interface "$adapter" --fw "$firmware" --stage1 $root/offsets/stage1_$firmware.bin --stage2 $root/offsets/stage2_$firmware.bin --timeout $timeout --auto-retry
             
             if [ $? -eq 0 ]; then
@@ -99,7 +115,7 @@ if [ "$token" = "token_id" ]; then
     elif [ "$task" = "stop" ]; then
 
         echo "stop" > $signalfile
-        echo "{\"output\":\"Waiting stop event...\",\"pppwn\":false,\"attempts\":\"$attempts\"}"
+        echo "{\"output\":\"Execution terminated.\",\"pppwn\":false,\"attempts\":\"$attempts\"}"
 
         pids=$(pgrep pppwn)
         for pid in $pids; do

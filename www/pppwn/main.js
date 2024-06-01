@@ -38,10 +38,11 @@ var appView = Backbone.View.extend({
         if(response.get('running')){
             this.$('button#action_pw').addClass('active').prop('task', 'run').text('Stop');
         }
-        
+        console.log(data)
         if(data.output){
-            console.log(data.output)
             this.$('#task-log .view').append(data.output+'<br>');
+        }else{
+            //this.$('#task-log .view').append(data+'<br>');
         }
         return this;
     },
@@ -85,6 +86,9 @@ var appView = Backbone.View.extend({
                     adapter:adapter.val(),
                     firmware:firmware.val()
                 }
+            })
+            .then(function(data){
+                console.log(data);
             })
             .catch(function(err){
                 output.append(err+'<br>');

@@ -14,11 +14,18 @@ ip link set $interface up
 while true; do
     
     if [ -f "$signalfile" ]; then
+
+        echo "{\"stop\":true}" > "/www/pppwn/state.json"
+
         pids=$(pgrep pppwn)
         for pid in $pids; do
             kill $pid
         done
-        echo "{\"stop\":true}" > "/www/pppwn/state.json"
+
+        if [ -f "$signalfile" ]; then
+            rm $signalfile
+        fi
+        
         exit 1
     fi
     
