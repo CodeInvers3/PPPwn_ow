@@ -50,7 +50,7 @@ var appView = Backbone.View.extend({
         'click button#action_pw': function(event){
 
             var selector = $(event.target);
-            var output = $('#task-log').find('.view');
+            var output = this.$('#task-log .view');
             var root = this.$el.find('[name=root]');
             var adapter = this.$el.find('[name=adapter]');
             var firmware = this.$el.find('[name=firmware]');
@@ -89,6 +89,9 @@ var appView = Backbone.View.extend({
             })
             .then(function(data){
                 console.log(data);
+                if(data.output){
+                    output.append(data.output+'<br>');
+                }
             })
             .catch(function(err){
                 output.append(err+'<br>');
