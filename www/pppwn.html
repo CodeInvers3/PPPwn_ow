@@ -8,17 +8,23 @@
         <script type="text/javascript" src="pppwn/assets/js/jquery.min.js"></script>
         <script type="text/javascript" src="pppwn/assets/js/underscore-min.js"></script>
         <script type="text/javascript" src="pppwn/assets/js/backbone-min.js"></script>
+        <script type="text/javascript" src="pppwn/assets/js/plugin.modal.js"></script>
     </head>
     <body>
         <div class="container">
             <div id="header" class="content">
                 <div class="text-center top-title">
-                    <h1>Web manager</h1>
+                    <h1>PPPwn web</h1>
                 </div>
             </div>
         </div>
         <div class="container">
             <div id="app-v-pppwn" class="content">
+                <div class="box box-fill">
+                    <br>
+                    <div class="preloader center"></div>
+                    <br>
+                </div>
                 <script type="text/template" id="appWeb">
                     <form class="form">
                         <fieldset>
@@ -33,24 +39,28 @@
                                     <div class="top-label"><label for="select-ifc">Ethernet</label></div>
                                     <select required id="select-ifc" size="5" class="expand-slc box" name="adapter">
                                         <% interfaces.forEach(function(option, index){ %>
-                                        <option value="<%= option %>"><%= option %></option>
+                                        <option value="<%= option.adapter %>"><%= option.adapter %></option>
                                         <% }); %>
                                     </select>
                                 </div>
                                 <div class="field-group col-4">
                                     <div class="top-label"><label for="select-fw">Firmware</label></div>
                                     <select required id="select-fw" class="expand-slc box" size="5" name="firmware">
-                                        <% firmware.forEach(function(option, index){ %>
-                                            <option value="<%= option.value %>"><%= option.version %></option>
+                                        <% offsets.forEach(function(option, index){ %>
+                                            <option value="<%= option.version %>"><%= option.version %></option>
                                         <% }); %>
                                     </select>
                                 </div>
                             </div>
                             <div class="field-group box">
                                 <div class="col-group group-center">
-                                    <button type="button" id="id_run" class="btn-form input-attach sec-auto">Execute</button>
-                                    <button type="button" id="id_stop" class="btn-form input-attach sec-auto">Stop</button>
-                                    <button type="button" id="id_enable" class="btn-form input-attach sec-auto">Enable auto</button>
+                                    <button type="button" id="action_pw" class="btn-form input-attach sec-auto">Execute</button>
+                                    <% if(active){ %>
+                                        <button type="button" id="switch_pw" value="off" class="btn-form input-attach sec-auto">Disable run</button>
+                                    <% }else{ %>
+                                        <button type="button" id="switch_pw" value="on" class="btn-form input-attach sec-auto">Enable run</button>
+                                    <% } %>
+                                    <!--<button type="button" id="update_rep" class="btn-form input-attach sec-auto">Update</button>-->
                                 </div>
                             </div>
                             <div id="task-log">
@@ -63,11 +73,13 @@
         </div>
         <div class="container">
             <div id="footer" class="content">
-                <sub><a target="_blank" href="https://paypal.me/MarianoJzm?country.x=US&locale.x=en_US">Donate</a></sub>
+                <sub><a target="_blank" href="https://paypal.me/MarianoJzm?country.x=US&locale.x=en_US">Support me</a></sub>
                 <sub> | </sub>
-                <sub><a target="_blank" href="https://twitter.com/Marianojmz/">Site</a></sub>
+                <sub><a target="_blank" href="#credits">Credits</a></sub>
                 <sub> | </sub>
-                <sub><a target="_blank" href="https://github.com/CodeInvers3/PPPwn_ow">Github</a></sub>
+                <sub><a target="_blank" href="https://twitter.com/Marianojmz/">X</a></sub>
+                <sub> | </sub>
+                <sub><a target="_blank" href="https://github.com/CodeInvers3/">Github</a></sub>
             </div>
         </div>
         <script src="pppwn/main.js"></script>

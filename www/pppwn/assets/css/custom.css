@@ -80,6 +80,50 @@ body{
 	width: 80%;
 }
 
+/* Modal */
+.modal-container{
+	background-color: #FFF;
+	max-width: 500px;
+	margin-top: 10%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.modal-container .modal-content{
+	display: block;
+	background-color: #FFF;
+	padding: 20px;
+	position: relative;
+	font-size: 9pt;
+}
+
+.preloader {
+	width: 70px;
+	height: 70px;
+	border: 10px solid lightgray;
+	border-radius: 50%;
+	border-top-color: darkgray; /* Color del cuarto de círculo */
+	animation: girar 2s infinite linear;
+}
+
+@keyframes girar {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.md-close{
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: block;
+	padding: 10px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
 @media screen and (max-width: 430px){
 
 	.container-background video{

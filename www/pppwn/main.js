@@ -1,78 +1,105 @@
+var state = Backbone.Model.extend({
+    urlRoot: '/cgi-bin/pw.cgi',
+    defaults: {
+        running: false,
+        active: false,
+        interfaces: [],
+        offsets: [],
+        theme: 'default'
+    }
+});
 var appView = Backbone.View.extend({
     el: '#app-v-pppwn',
     template: _.template($('#appWeb').html()),
     initialize: function(){
         var self = this;
-        var params = new URLSearchParams({
-            task:'adapters',
-            token:'token_id'
-        });
-        fetch('/cgi-bin/pw.cgi', {
+        this.model = new state;
+        this.listenTo(this.model, 'sync', this.render);
+        this.model.fetch({
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: params.toString(),
-        }).then(function(response){
-            if(response.ok){
-                return response.json();
-            }else{
-                throw new Error("Error cannot execute task.");
+            data: {
+                task:'initialize',
+                token:'token_id'
             }
-        })
-        .then(function(dataList){
-            self.interfaces(dataList);
-        })
-        .catch(function(error){
-            $('#task-log').find('.view').append(error+'<br>');
         });
-        this.data = {
-            interfaces: [],
-            firmware: [
-                {"version":"7.00","value":"700"},
-                {"version":"7.50","value":"750"},
-                {"version":"8.00","value":"800"},
-                {"version":"8.50","value":"850"},
-                {"version":"9.00","value":"900"},
-                {"version":"9.03","value":"903"},
-                {"version":"9.50","value":"950"},
-                {"version":"10.00","value":"1000"},
-                {"version":"10.50","value":"1050"},
-                {"version":"11.00","value":"1100"}
-            ]
-        }
-        this.render();
     },
-    interfaces: function(data){
-        var list = [];
-        data.forEach(function(value, index){
+    render: function(response){
+        var self = this, interfaces = [];
+        $.each(response.get('interfaces'), function(index, item){
             if(index > 1){
-                list.push(value);
+                interfaces.push(item);
             }
         });
-        this.data.interfaces = list;
-        this.render();
-    },
-    render: function(){
-        this.$el.html(this.template(this.data));
+        response.set('interfaces', interfaces);
+        console.log(response.toJSON())
+        this.$el.html(this.template(response.toJSON()));
+        if(response.get('running')){
+            $('button#action_pw').addClass('active');
+            $('button#action_pw').prop('task', 'run').text('Stop');
+        }
         return this;
     },
     events: {
-        'click #id_run': function(){
+        'click button#action_pw': function(event){
 
+            var selector = $(event.target);
+            var output = $('#task-log').find('.view');
             var root = this.$el.find('[name=root]');
             var adapter = this.$el.find('[name=adapter]');
             var firmware = this.$el.find('[name=firmware]');
 
-            var params = new URLSearchParams({
-                task:'run',
+            if(selector.prop('task') == 'run'){
+
+                output.append("Stopping process...<br>");
+                selector.removeClass('active');
+                selector.prop('task', 'stop').text('Stop');
+
+            }else{
+
+                if(!root.val() || !adapter.val() || !firmware.val()){
+                    $.modal(function (modal) {
+                        modal.loading('...');
+                        modal.content($('<button class="md-close" type="button" onclick="$.modal.close();">X</button><p>Interface and firmware required.</p>'));
+                    });
+                    return;
+                }
+
+                output.append('Awaiting response...<br>');
+                selector.addClass('active');
+                selector.prop('task', 'run').text('Stop');
+
+            }
+
+            this.model.fetch({
+                method: 'POST',
+                data: {
+                    task:selector.prop('task'),
+                    token:'token_id',
+                    root:root.val(),
+                    adapter:adapter.val(),
+                    firmware:firmware.val()
+                }
+            }).then(function(data){
+                console.log(data);
+                /*output.append(data.output).append('<br>');
+                if(data.pppwn){
+                    selector.prop('disabled', true).text('Completed!');
+                    output.append(data.output+'<br>');
+                }else{
+                    selector.prop('task', '').text('Execute');
+                }*/
+            })
+            .catch(function(error){
+                output.append(error+'<br>');
+            });
+
+            /*var params = new URLSearchParams({
+                task:selector.prop('task'),
                 token:'token_id',
                 root:root.val(),
                 adapter:adapter.val(),
                 firmware:firmware.val()
             });
-
-            $('#task-log').find('.view').append('Awaiting response...<br>');
 
             fetch('/cgi-bin/pw.cgi', {
                 method: 'POST',
@@ -88,73 +115,65 @@ var appView = Backbone.View.extend({
                 }
             })
             .then(function(data){
-                $('#task-log').find('.view').append(data.output).append('<br>');
-            })
-            .catch(function(error){
-                $('#task-log').find('.view').append(error+'<br>');
-            });
-
-        },
-        'click #id_stop': function(){
-
-            var params = new URLSearchParams({
-                task:'stop',
-                token:'token_id'
-            });
-
-            fetch('/cgi-bin/pw.cgi', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: params.toString(),
-            }).then(function(response){
-                if(response.ok){
-                    return response.json();
+                console.log(data);
+                output.append(data.output).append('<br>');
+                if(data.pppwn){
+                    selector.prop('disabled', true).text('Completed!');
+                    output.append(data.output+'<br>');
                 }else{
-                    throw new Error("Error cannot execute task.");
+                    selector.prop('task', '').text('Execute');
                 }
             })
-            .then(function(data){
-                var output = $('#task-log').find('.view');
-                output.append("Stopping process...").append("<br>");
-                output.append(data.output).append("<br>");
-            })
             .catch(function(error){
-                $('#task-log').find('.view').append(error+'<br>');
-            });
+                output.append(error+'<br>');
+            });*/
 
         },
-        'click #id_enable': function(){
+        'click button#switch_pw': function(event){
 
+            var selector = $(event.target);
             var root = this.$el.find('[name=root]');
             var adapter = this.$el.find('[name=adapter]');
             var firmware = this.$el.find('[name=firmware]');
-            
-            var params = new URLSearchParams({
-                task:'enable',
-                token:'token_id',
-                root:root.val(),
-                adapter:adapter.val(),
-                firmware:firmware.val()
-            });
+            var task = 'enable';
 
-            fetch('/cgi-bin/pw.cgi', {
+            if(this.model.get('active')){
+                task = 'disable';
+            }else{
+
+                if(!root.val() || !adapter.val() || !firmware.val()){
+                    $.modal(function (modal) {
+                        modal.content($('<button class="md-close" type="button" onclick="$.modal.close();">X</button><p>Interface and firmware required to activate.</p>'));
+                    });
+                    return;
+                }
+
+            }
+
+            this.model.fetch({
                 method: 'POST',
-                body: params.toString(),
+                data: {
+                    task:task,
+                    token:'token_id',
+                    root:root.val(),
+                    adapter:adapter.val(),
+                    firmware:firmware.val()
+                },
             }).then(function(response){
+                console.log(response);
                 if(response.ok){
                     return response.json();
                 }else{
                     throw new Error("Error cannot execute task.");
                 }
             })
+            .then(function(data){
+                console.log(data)
+                //var output = $('#task-log').find('.view');
+                //output.append(data.output).append("<br>");
+            })
             .catch(function(error){
                 $('#task-log').find('.view').append(error+'<br>');
-            })
-            .then(function(data){
-                var output = $('#task-log').find('.view');
-                output.append(data.output).append("<br>");
             });
 
         }
