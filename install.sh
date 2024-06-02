@@ -23,4 +23,4 @@ mv -f ~/PPPwn_ow-main/run.sh ~/
 rm -r PPPwn_ow-main main
 chmod +x /www/cgi-bin/pw.cgi
 echo "Installation completed!"
-exit 1
+exit 0

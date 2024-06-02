@@ -13,13 +13,13 @@ body{
 	font-size: 18px;
 }
 
-#app-v-pppwn, #footer, #header{
+#appWeb, #footer, #header{
 	max-width: 750px;
 	background-color: #ffffffa1;
 	color: #fcec8f;
 }
 
-#app-v-pppwn fieldset{
+#appWeb fieldset{
 	border-radius: 10px;
 	color: #1b1b1b;
 	background-color: #f1fbff88;
@@ -58,14 +58,19 @@ body{
 	position: relative;
 }
 
-#task-log .view{
+#task-log{
+	width: 100%;
+	padding: 15px;
+}
+
+#task-log .output{
 	border-radius: 10px;
 	background-color: #1b1b1b;
 	padding: 10px;
 	color: #FFF;
 	height: 150px;
+	width: 100%;
 	font-size: 10pt;
-	overflow-y: auto;
 }
 
 #footer{

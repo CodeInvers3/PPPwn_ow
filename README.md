@@ -13,29 +13,33 @@ Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nig
 
 ## Instalación
 
-1. Instala unzip si no lo tiene instalado `opkg list-installed | grep unzip`, con el siguiente comando 
-```sh
-opkg update
-opkg install unzip
-```
-2. Desde el terminal en su router, ejecuta este comando
-```sh
-cd 
-wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
-unzip main
-chmod +x PPPwn_ow-main/install.sh
-PPPwn_ow-main/install.sh
-```
-3. Verifica qué chip tiene tu dispositivo router con `uname -m`. De acuerdo a eso, elige cuál ejecutable pppwn debes descargar.
-4. Busca el ejecutable pppwn en el [repositorio oficial](https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main)
-5. Descarga el repositorio con el comando `wget -O pppwn_archivo.zip url_de_tu_pppwn`
-6. Descomprime el archivo descargado con `unzip pppwn_archivo.zip` y después bórralo con `rm pppwn_archivo.zip`
-7. Descomprime el archivo `tar -xzvf pppwn.tar.gz` y después bórralo con `rm pppwn.tar.gz`
-8. Por último, ejecuta el comando `chmod +x pppwn` y `mv pppwn /usr/bin`
-9. Copia goldhen.bin a su memoria usb, debe estar formateada en exFat o FAT32
-10. Conectar todo a la consola PS4 y desde el navegador ingresar a la dirección ip de su router (http://192.168.1.1/pppwn.html)
+1. Verifica si tienes instalado `unzip`:
+    ```sh
+    opkg list-installed | grep unzip
+    ```
+    Si no está instalado, instala `unzip` con el siguiente comando:
+    ```sh
+    opkg update
+    opkg install unzip
+    ```
+2. Desde el terminal en tu router, ejecuta estos comandos:
+    ```sh
+    cd
+    wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
+    unzip main.zip
+    chmod +x PPPwn_ow-main/install.sh
+    ./PPPwn_ow-main/install.sh
+    ```
+    Al final, presiona Enter para completar la instalación.
 
-Probado en mini router GL-MT300N-V2 Mango
+3. Desde tu navegador, accede a la interfaz web creada en `http://<router_ip>/pppwn.html`.
+4. Selecciona la compilación compatible con tu dispositivo router y haz clic en "Instalar". Espera hasta que se complete la instalación.
+5. En caso de que haya un error o no obtengas el resultado esperado en Ethernet, puedes reiniciar la instalación haciendo clic en "Update".
+6. Copia `goldhen.bin` a tu memoria USB. Asegúrate de que esté formateada en exFAT o FAT32.
+7. Conecta todo a la consola PS4 y, desde el navegador, ingresa la dirección IP de tu router.
+
+
+Probado en mini router [GL-MT300N-V2 Mango](https://www.gl-inet.com/products/gl-mt300n-v2/)
 
 It enables auto-start on a Wi-Fi device running the OpenWrt system.
 
@@ -49,32 +53,33 @@ It enables auto-start on a Wi-Fi device running the OpenWrt system.
 
 ## Steps installation:
 
-1. Install unzip if it’s not already `opkg list-installed | grep unzip`, installed using the command
-```sh
-opkg update
-opkg install unzip
-```
-2. From the terminal on your router, run the command
-```sh
-opkg update
-opkg install unzip
-cd 
-wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
-unzip main
-chmod +x PPPwn_ow-main/install.sh
-PPPwn_ow-main/install.sh
-```
-3. Verify which chip your router device has with `uname -m`. Based on that, choose which pppwn executable you need to download.
-4. Look for the pppwn executable in the [official repository](https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main)
-5. Download the repository with the command `wget -O pppwn_file.zip url_of_your_pppwn`
-6. Unzip the downloaded file with `unzip pppwn_file.zip` and then delete it with `rm pppwn_file.zip`
-7. Extract the file with `tar -xzvf pppwn.tar.gz` and then delete it with `rm pppwn.tar.gz`
-8. Finally, run the command `chmod +x pppwn` and `mv pppwn /usr/bin`
-9. Copy goldhen.bin to your USB drive; it must be formatted in exFAT or FAT32.
-10. Connect everything to the PS4 console and from the browser go to your router's IP address (http://192.168.1.1/pppwn.html)
+1. Check if `unzip` is installed:
+    ```sh
+    opkg list-installed | grep unzip
+    ```
+    If it is not installed, install `unzip` with the following command:
+    ```sh
+    opkg update
+    opkg install unzip
+    ```
+2. From the terminal on your router, run these commands:
+    ```sh
+    cd
+    wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
+    unzip main.zip
+    chmod +x PPPwn_ow-main/install.sh
+    ./PPPwn_ow-main/install.sh
+    ```
+    At the end, press Enter to complete the installation.
+3. From your browser, go to the web interface created at `http://<router_ip>/pppwn.html`.
+4. Select the build compatible with your router device and click "Install". Wait until the installation is complete.
+5. If there is an error or you do not get the expected result on Ethernet, you can restart the installation by clicking "Update".
+6. Copy `goldhen.bin` to your USB drive. Make sure it is formatted in exFAT or FAT32.
+7. Connect everything to the PS4 console and, from the browser, go to the IP address of your router.
+
 
 Every time you turn on the router and connect the USB memory with goldhen.bin, the run.sh script will execute the pppwn command, which will allow the auto-exploit.
 
 PPPwn from https://github.com/xfangfang/PPPwn_cpp
 
-### Credits: Sistro / Xfangfang
+### Credits: TheFlowTheOfficialFloW / Sistro / Xfangfang

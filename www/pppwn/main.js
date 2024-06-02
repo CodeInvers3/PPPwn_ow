@@ -1,121 +1,89 @@
-var state = Backbone.Model.extend({
+var Pwg = Backbone.Model.extend({
     urlRoot: '/cgi-bin/pw.cgi',
     defaults: {
+        pppwn: false,
+        compiles: [],
+        pppwned: false,
         running: false,
-        active: false,
+        autorun: false,
         interfaces: [],
         offsets: [],
         theme: 'default'
     }
 });
-var appView = Backbone.View.extend({
-    el: '#app-v-pppwn',
-    template: _.template($('#appWeb').html()),
-    initialize: function(){
-        var self = this;
-        this.model = new state;
-        this.listenTo(this.model, 'sync', this.render);
-        this.model.fetch({
-            method: 'POST',
-            data: {
-                task:'initialize',
-                token:'token_id'
-            }
-        });
-    },
-    render: function(response){
-        var self = this, interfaces = [];
-        $.each(response.get('interfaces'), function(index, item){
-            if(item.adapter != "[+] PPPwn++ - PlayStation 4 PPPoE RCE by theflow" && item.adapter != "[+] interfaces:"){
-                interfaces.push(item);
-            }
-        });
-        
-        response.set('interfaces', interfaces);
-        var data = response.toJSON();
-        this.$el.html(this.template(data));
 
-        if(response.get('running')){
-            this.$('button#action_pw').addClass('active').prop('task', 'run').text('Stop');
-        }
-        console.log(data)
-        if(data.output){
-            this.$('#task-log .view').append(data.output+'<br>');
-        }else{
-            //this.$('#task-log .view').append(data+'<br>');
-        }
-        return this;
+var pwg = new Pwg();
+var appView = Backbone.View.extend({
+    templates: {
+        web: _.template($('#webTpl').html()),
+        msg: _.template($('#msgTpl').html())
     },
     events: {
         'click button#action_pw': function(event){
 
-            var selector = $(event.target);
-            var output = this.$('#task-log .view');
-            var root = this.$el.find('[name=root]');
-            var adapter = this.$el.find('[name=adapter]');
-            var firmware = this.$el.find('[name=firmware]');
+            var self = this;
+            var button = $(event.target);
+            var task = button.prop('task');
 
-            if(selector.prop('task') == 'run'){
+            if(task == 'stop'){
 
-                output.append("Stopping process...<br>");
-                selector.removeClass('active');
-                selector.prop('task', 'stop').text('Stop');
+                button.prop('task', 'start').addClass('active').text('Execute');
 
-            }else{
+            }else
+            if(task == 'start'){
 
-                if(!root.val() || !adapter.val() || !firmware.val()){
+                if(!this.inputRoot.val() || !this.inputAdapter.val() || !this.inputFirmware.val()){
                     $.modal(function (modal) {
-                        modal.loading('...');
-                        modal.content($('<button class="md-close" type="button" onclick="$.modal.close();">X</button><p>Interface and firmware required.</p>'));
+                        modal.content(self.templates.msg({message: 'Interface and firmware are required to execute.'}));
                     });
                     return;
                 }
-
-                output.append('Awaiting response...<br>');
-                selector.addClass('active');
-                selector.prop('task', 'run').text('Stop');
+                
+                button.prop('task', 'stop').removeClass('active').text('Stop');
 
             }
-
+            
             this.model.fetch({
                 method: 'POST',
                 data: {
-                    task:selector.prop('task'),
+                    task:task,
                     token:'token_id',
-                    root:root.val(),
-                    adapter:adapter.val(),
-                    firmware:firmware.val()
+                    root:this.inputRoot.val(),
+                    adapter:this.inputAdapter.val(),
+                    firmware:this.inputFirmware.val()
+                },
+                success: function(){
+                    self.textareaOut.append("Awaiting response\n");
                 }
-            })
-            .then(function(data){
-                console.log(data);
-                if(data.output){
-                    output.append(data.output+'<br>');
+            }).then(function(response){
+                if(response.output){
+                    self.textareaOut.append(response.output+"\n");
                 }
-            })
-            .catch(function(err){
-                output.append(err+'<br>');
+            }).catch(function(err, textStatus, errorThrown){
+                if(err.responseText) self.textareaOut.append(err.responseText+"\n");
+                if(err.textStatus) self.textareaOut.append(err.textStatus+"\n");
             });
 
         },
         'click button#switch_pw': function(event){
 
-            var selector = $(event.target);
-            var root = this.$el.find('[name=root]');
-            var adapter = this.$el.find('[name=adapter]');
-            var firmware = this.$el.find('[name=firmware]');
-            var task = 'enable';
+            var self = this;
+            var button = $(event.target);
+            var task = button.prop('task');
 
-            if(this.model.get('active')){
-                task = 'disable';
-            }else{
+            if(task = 'disable'){
+                button.prop('task', 'enable').text('Enable autorun');
+            }else
+            if(task = 'enable'){
 
-                if(!root.val() || !adapter.val() || !firmware.val()){
+                if(!this.inputRoot.val() || !this.inputAdapter.val() || !this.inputFirmware.val()){
                     $.modal(function (modal) {
-                        modal.content($('<button class="md-close" type="button" onclick="$.modal.close();">X</button><p>Interface and firmware required to activate.</p>'));
+                        modal.content(self.templates.msg({message: 'Interface and firmware are required to enable autorun'}));
                     });
                     return;
                 }
+
+                button.prop('task', 'disable').text('Disable autorun');
 
             }
 
@@ -124,16 +92,129 @@ var appView = Backbone.View.extend({
                 data: {
                     task:task,
                     token:'token_id',
-                    root:root.val(),
-                    adapter:adapter.val(),
-                    firmware:firmware.val()
+                    root:this.inputRoot.val(),
+                    adapter:this.inputAdapter.val(),
+                    firmware:this.inputFirmware.val()
+                }
+            }).then(function(response){
+                if(response.output){
+                    self.textareaOut.append(response.output+"\n");
+                }
+            }).catch(function(err){
+                self.textareaOut.append(err.responseText+"\n");
+            });
+
+        },
+        'click button#update_rep': function(event){
+
+            $.modal(function(modal){
+                modal.content($('<div class="preloader center"></div>'));
+            });
+
+            this.model.fetch({
+                method: 'POST',
+                data: {
+                    task:'update',
+                    token:'token_id'
                 },
-            })
-            .catch(function(err){
-                $('#task-log').find('.view').append(err+'<br>');
+                success: this.state.bind(this)
+            }).then(function(response){
+                $.modal.close();
+            }).catch(function(err){
+                $.modal.close();
+                $.modal(function(modal){
+                    modal.content(self.templates.msg({message: err.responseText}));
+                });
+            });
+
+        },
+        'click button#install_pw': function(event){
+
+            if(!this.inputOption.val()) return;
+
+            $.modal(function(modal){
+                modal.content($('<div class="preloader center"></div>'));
+            });
+
+            this.model.fetch({
+                method: 'POST',
+                data: {
+                    task:'setup',
+                    token:'token_id',
+                    option:this.inputOption.val()
+                },
+                success: this.state.bind(this)
+            }).then(function(){
+                $.modal.close();
+            }).catch(function(err){
+                $.modal.close();
+                $.modal(function(modal){
+                    modal.content(self.templates.msg({message: err.responseText}));
+                });
             });
 
         }
+    },
+    state: function(response){
+        pwg.fetch({
+            method: 'POST',
+            data: {
+                task:'state',
+                token:'token_id'
+            },
+            success: this.render.bind(this)
+        });
+    },
+    render: function(response){
+
+        var self = this, interfaces = [];
+
+        $.each(response.get('interfaces'), function(index, item){
+            if(item.adapter != "[+] PPPwn++ - PlayStation 4 PPPoE RCE by theflow" && item.adapter != "[+] interfaces:"){
+                interfaces.push(item);
+            }
+        });
+        
+        response.set('interfaces', interfaces);
+
+        var data = response.toJSON();
+
+        this.$el.html(this.templates.web(data));
+
+        this.textareaOut = this.$('#task-log .output');
+        this.buttonAction = this.$('button#action_pw');
+        this.buttonSwitch = this.$('button#switch_pw');
+        this.buttonUpdate = this.$('button#update_rep');
+        this.buttonInstall = this.$('button#install_pw');
+        this.inputRoot = this.$('[name=root]');
+        this.inputAdapter = this.$('[name=adapter]');
+        this.inputFirmware = this.$('[name=firmware]');
+        this.inputOption = this.$('[name=option]');
+
+        console.log(this.model.get('autorun'));
+
+        if(this.model.get('running')){
+            this.buttonAction.prop('task', 'stop').text('Stop');
+        }else{
+            this.buttonAction.prop('task', 'start').text('Execute');
+        }
+
+        if(this.model.get('autorun')){
+            this.buttonSwitch.prop('task', 'disable').text('Disable autorun');
+        }else{
+            this.buttonSwitch.prop('task', 'enable').text('Enable autorun');
+        }
+        
+        return this;
+
+    },
+    initialize: function(){
+        this.loading = this.$('#loading_ide');
+        this.state();
     }
 });
-new appView();
+
+new appView({
+    model: pwg,
+    el: '#appWeb'
+});

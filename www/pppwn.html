@@ -19,55 +19,73 @@
             </div>
         </div>
         <div class="container">
-            <div id="app-v-pppwn" class="content">
-                <div class="box box-fill">
+            <div id="appWeb" class="content">
+                <div id="loading_ide" class="box box-fill">
                     <br>
                     <div class="preloader center"></div>
                     <br>
                 </div>
-                <script type="text/template" id="appWeb">
+                <script type="text/template" id="webTpl">
                     <form class="form">
-                        <fieldset>
-                            <div class="row">
-                                <div class="field-group col-4">
-                                    <div class="top-label"><label for="select-ifc">Root</label></div>
-                                    <div class="box">
-                                        <input name="root" required type="text" class="sec-auto" value="/root">
+                        <% if(pppwn){ %>
+                            <fieldset>
+                                <div class="row">
+                                    <div class="field-group col-4">
+                                        <div class="top-label"><label for="select-ifc">Root</label></div>
+                                        <div class="box">
+                                            <input name="root" required type="text" class="sec-auto" value="/root">
+                                        </div>
+                                    </div>
+                                    <div class="field-group col-4">
+                                        <div class="top-label"><label for="select-ifc">Ethernet</label></div>
+                                        <select required id="select-ifc" size="5" class="expand-slc box" name="adapter">
+                                            <% interfaces.forEach(function(option, index){ %>
+                                            <option value="<%= option.adapter %>"><%= option.adapter %></option>
+                                            <% }); %>
+                                        </select>
+                                    </div>
+                                    <div class="field-group col-4">
+                                        <div class="top-label"><label for="select-fw">Firmware</label></div>
+                                        <select required id="select-fw" class="expand-slc box" size="5" name="firmware">
+                                            <% offsets.forEach(function(option, index){ %>
+                                                <option value="<%= option.version %>"><%= option.version %></option>
+                                            <% }); %>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="field-group col-4">
-                                    <div class="top-label"><label for="select-ifc">Ethernet</label></div>
-                                    <select required id="select-ifc" size="5" class="expand-slc box" name="adapter">
-                                        <% interfaces.forEach(function(option, index){ %>
-                                        <option value="<%= option.adapter %>"><%= option.adapter %></option>
-                                        <% }); %>
-                                    </select>
+                                <div class="field-group box">
+                                    <div class="col-group group-center">
+                                        <button type="button" id="action_pw" class="btn-form input-attach sec-auto"></button>
+                                        <button type="button" id="switch_pw" class="btn-form input-attach sec-auto"></button>
+                                        <button type="button" id="update_rep" class="btn-form input-attach sec-auto">Update</button>
+                                    </div>
                                 </div>
-                                <div class="field-group col-4">
-                                    <div class="top-label"><label for="select-fw">Firmware</label></div>
-                                    <select required id="select-fw" class="expand-slc box" size="5" name="firmware">
-                                        <% offsets.forEach(function(option, index){ %>
-                                            <option value="<%= option.version %>"><%= option.version %></option>
-                                        <% }); %>
-                                    </select>
+                                <div id="task-log">
+                                    <textarea readonly class="output"></textarea>
                                 </div>
-                            </div>
-                            <div class="field-group box">
-                                <div class="col-group group-center">
-                                    <button type="button" id="action_pw" class="btn-form input-attach sec-auto">Execute</button>
-                                    <% if(active){ %>
-                                        <button type="button" id="switch_pw" value="off" class="btn-form input-attach sec-auto">Disable run</button>
-                                    <% }else{ %>
-                                        <button type="button" id="switch_pw" value="on" class="btn-form input-attach sec-auto">Enable run</button>
-                                    <% } %>
-                                    <!--<button type="button" id="update_rep" class="btn-form input-attach sec-auto">Update</button>-->
+                            </fieldset>
+                        <% }else{ %>
+                            <fieldset>
+                                <div class="field-group">
+                                    <div class="box box-fill">
+                                        <div class="center">
+                                            <label>Select pppwn</label>
+                                            <select name="option">
+                                            <% compiles.forEach(function(option, index){ %>
+                                                <option value="<%= option.type %>"><%= option.label %></option>
+                                            <% }); %>
+                                            </select>
+                                            <button type="button" id="install_pw" class="btn btn-form">Install</button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div id="task-log">
-                                <div class="view"></div>
-                            </div>
-                        </fieldset>
+                            </fieldset>
+                        <% } %>
                     </form>
+                </script>
+                <script type="text/template" id="msgTpl">
+                    <button class="md-close" type="button" onclick="$.modal.close();">X</button>
+                    <p class="message"><%= message %></p>
                 </script>
             </div>
         </div>
