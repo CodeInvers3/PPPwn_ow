@@ -67,7 +67,7 @@ This activation method works for devices with the OpenWrt Linux system as long a
 2. From the terminal on your router, run these commands:
     ```sh
     cd
-    wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
+    wget -O main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
     unzip main.zip
     chmod +x PPPwn_ow-main/install.sh
     ./PPPwn_ow-main/install.sh

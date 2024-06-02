@@ -239,7 +239,7 @@ if [ "$token" = "token_id" ]; then
             "$(opkg install unzip)"
         fi
         
-        "$(wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip)"
+        "$(wget -O main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip)"
         "$(unzip main)"
 
         "$(mv -f ~/PPPwn_ow-main/offsets ~/)"
