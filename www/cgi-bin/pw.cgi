@@ -199,6 +199,7 @@ if [ "$token" = "token_id" ]; then
         fi
 
         chmod +x /etc/rc.local
+        chmod +x /root/run.sh
         echo "{\"output\":\"Autorun enable\"}"
 
     ;;

@@ -70,10 +70,10 @@ var appView = Backbone.View.extend({
             var button = $(event.target);
             var task = button.prop('task');
 
-            if(task = 'disable'){
+            if(task == 'disable'){
                 button.prop('task', 'enable').text('Enable autorun');
             }else
-            if(task = 'enable'){
+            if(task == 'enable'){
 
                 if(!this.inputRoot.val() || !this.inputAdapter.val() || !this.inputFirmware.val()){
                     $.modal(function (modal) {
@@ -85,7 +85,7 @@ var appView = Backbone.View.extend({
                 button.prop('task', 'disable').text('Disable autorun');
 
             }
-
+            
             this.model.fetch({
                 method: 'POST',
                 data: {
