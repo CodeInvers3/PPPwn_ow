@@ -7,9 +7,9 @@ Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nig
 
 - Router/Modem conexión lan con OpenWrt.
 - Tener instalado PuTTY en tu PC para acceder por el terminal.
-- Descargar stage1.bin y stage2.bin desde el repositorio de [Sistro](https://github.com/SiSTR0/PPPwn/releases) para el firmware correspondiente.
-- Descargar PPPwn_cpp para distribuciones Linux con chip MIPS o el que tu dispositivo tenga, verificar con el comando `uname -m`.
-- Descargar goldhen.bin para el Firmware de tu consola.
+- Verificar PPPwn_cpp para distribuciones Linux OpenWrt, verificar con el comando `uname -m` recomiendo instalar la compilación MIPSEL.
+- Descargar goldhen.bin para el Firmware de tu consola [Sistro](https://github.com/SiSTR0/PPPwn/releases).
+- Memoria USB 1GB o más
 
 ## Instalación
 
@@ -41,15 +41,17 @@ Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nig
 
 Probado en mini router [GL-MT300N-V2 Mango](https://www.gl-inet.com/products/gl-mt300n-v2/)
 
-It enables auto-start on a Wi-Fi device running the OpenWrt system.
+---
+
+This activation method works for devices with the OpenWrt Linux system as long as they can run PPPwn C++. Check the repository of [Xfangfang](https://github.com/xfangfang/PPPwn_cpp) for compatibility.
 
 ## Requirements:
 
-- Smart Router lan with OpenWrt.
-- Have PuTTY installed on your PC to access the terminal.
-- Download stage1.bin and stage2.bin from Sistro [repository](https://github.com/SiSTR0/PPPwn/releases) for the corresponding firmware.
-- Download PPPwn_cpp for Linux distributions with MIPS chip or whichever your device has, verify with the command `uname -m`.
-- Download goldhen.bin for you PS4 FW
+- Router/Modem with LAN connection and OpenWrt.
+- PuTTY installed on your PC to access the terminal.
+- Verify `PPPwn_cpp` for OpenWrt Linux distributions by using the command `uname -m`. It is recommended to install the MIPSEL build.
+- Download `goldhen.bin` for your console's firmware from [Sistro](https://github.com/SiSTR0/PPPwn/releases).
+- USB drive with 1GB or more of storage.
 
 ## Steps installation:
 
