@@ -240,14 +240,14 @@ if [ "$token" = "token_id" ]; then
         fi
         
         "$(wget -O main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip)"
-        "$(unzip main)"
+        "$(unzip main.zip)"
 
         "$(mv -f ~/PPPwn_ow-main/offsets ~/)"
         "$(mv -f ~/PPPwn_ow-main/www/pppwn /www)"
         "$(mv -f ~/PPPwn_ow-main/www/pppwn.html /www)"
         "$(mv -f ~/PPPwn_ow-main/www/cgi-bin/pw.cgi /www/cgi-bin)"
         "$(mv -f ~/PPPwn_ow-main/run.sh ~/)"
-        "$(rm -r PPPwn_ow-main main)"
+        "$(rm -r PPPwn_ow-main main.zip)"
         "$(chmod +x /www/cgi-bin/pw.cgi)"
 
         echo "{\"output\":\"Updated!\",\"reload\":true}"

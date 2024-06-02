@@ -42,6 +42,8 @@ var appView = Backbone.View.extend({
                 button.prop('task', 'stop').removeClass('active').text('Stop');
 
             }
+
+            self.textareaOut.append("Awaiting response\n");
             
             this.model.fetch({
                 method: 'POST',
@@ -51,9 +53,6 @@ var appView = Backbone.View.extend({
                     root:this.inputRoot.val(),
                     adapter:this.inputAdapter.val(),
                     firmware:this.inputFirmware.val()
-                },
-                success: function(){
-                    self.textareaOut.append("Awaiting response\n");
                 }
             }).then(function(response){
                 if(response.output){
@@ -190,8 +189,6 @@ var appView = Backbone.View.extend({
         this.inputAdapter = this.$('[name=adapter]');
         this.inputFirmware = this.$('[name=firmware]');
         this.inputOption = this.$('[name=option]');
-
-        console.log(this.model.get('autorun'));
 
         if(this.model.get('running')){
             this.buttonAction.prop('task', 'stop').text('Stop');
