@@ -25,7 +25,7 @@ Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nig
 2. Desde el terminal en tu router, ejecuta estos comandos:
     ```sh
     cd
-    wget https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
+    wget -O main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
     unzip main.zip
     chmod +x PPPwn_ow-main/install.sh
     ./PPPwn_ow-main/install.sh
