@@ -1,4 +1,5 @@
 #!/bin/sh
+
 echo "Content-Type: application/json"
 echo ""
 
@@ -47,7 +48,7 @@ if [ "$token" = "token_id" ]; then
         fi
 
         cd /root/
-        if command -v "unzip" > /dev/null 2>&1; then
+        if ! command -v "unzip" > /dev/null 2>&1; then
             "$(opkg update)"
             "$(opkg install unzip)"
         fi
@@ -217,7 +218,7 @@ if [ "$token" = "token_id" ]; then
         cd /root/
 
         if [ -d ~/offsets ]; then
-            "$(rm -r ~/offsets/*)"
+            "$(rm -r ~/offsets)"
         fi
         if [ -d /www/pppwn ]; then
             "$(rm -r /www/pppwn)"
@@ -235,7 +236,7 @@ if [ "$token" = "token_id" ]; then
             "$(rm /usr/bin/pppwn)"
         fi
 
-        if command -v "unzip" > /dev/null 2>&1; then
+        if ! command -v unzip > /dev/null 2>&1; then
             "$(opkg update)"
             "$(opkg install unzip)"
         fi
