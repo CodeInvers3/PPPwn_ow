@@ -72,7 +72,7 @@ if [ "$token" = "token_id" ]; then
             echo "\"pppwn\":true,"
             echo "\"interfaces\":["
             parts=$(pppwn list | sed "s/\s*$/\"},/")
-            if [ $? -eq 0 ]; then
+            if [ "$parts" != "" ]; then
                 eths=$(echo "$parts" | sed "s/^\s*/{\"adapter\":\"/")
                 echo $eths | sed "s/,$//"
             fi
