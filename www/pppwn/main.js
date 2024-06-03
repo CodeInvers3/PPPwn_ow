@@ -131,6 +131,8 @@ var appView = Backbone.View.extend({
 
             if(!this.inputOption.val()) return;
 
+            this.buttonInstall.attr('disabled');
+
             $.modal(function(modal){
                 modal.content($('<div class="preloader center"></div>'));
             });
