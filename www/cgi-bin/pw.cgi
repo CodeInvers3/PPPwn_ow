@@ -251,10 +251,7 @@ if [ "$token" = "token_id" ]; then
         "$(chmod +x /www/cgi-bin/pw.cgi)"
 
         echo "{\"output\":\"Updated!\",\"reload\":true}"
-
-        if [ -f /www/cgi-bin/pw.cgi ]; then
-            "$(rm /www/cgi-bin/pw.cgi)"
-        fi
+        
     ;;
     *)
         echo "{\"output\":\"null\"}"
