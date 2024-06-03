@@ -112,7 +112,7 @@ var appView = Backbone.View.extend({
                 modal.content($('<div class="preloader center"></div>'));
             });
             
-            this.model.fetch('/cgi-bin/update.cgi', {
+            this.model.fetch({
                 method: 'POST',
                 data: {
                     task:'update',

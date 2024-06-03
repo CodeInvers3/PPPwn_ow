@@ -14,8 +14,8 @@ fi
 if [ -f /www/cgi-bin/pw.cgi ]; then
     rm /www/cgi-bin/pw.cgi
 fi
-if [ -f /www/cgi-bin/update.sh ]; then
-    rm /www/cgi-bin/update.sh
+if [ -f ~/update.sh ]; then
+    rm ~/update.sh
 fi
 if [ -f ~/run.sh ]; then
     rm ~/run.sh
@@ -25,10 +25,10 @@ mv -f ~/PPPwn_ow-main/offsets ~/
 mv -f ~/PPPwn_ow-main/www/pppwn /www
 mv -f ~/PPPwn_ow-main/www/pppwn.html /www
 mv -f ~/PPPwn_ow-main/www/cgi-bin/pw.cgi /www/cgi-bin
-mv -f ~/PPPwn_ow-main/www/cgi-bin/update.sh /www/cgi-bin
+mv -f ~/PPPwn_ow-main/update.sh ~/
 mv -f ~/PPPwn_ow-main/run.sh ~/
 rm -r PPPwn_ow-main main.zip
+chmod +x ~/update.sh
 chmod +x /www/cgi-bin/pw.cgi
-chmod +x /www/cgi-bin/update.sh
 echo "Installation completed!"
 exit 0
