@@ -1,5 +1,7 @@
 #!/bin/sh /etc/rc.common
 
+cd /root/
+
 if [ -d ~/offsets ]; then
     rm -r ~/offsets
 fi

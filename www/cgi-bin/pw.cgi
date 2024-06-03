@@ -214,9 +214,8 @@ if [ "$token" = "token_id" ]; then
 
     ;;
     "update")
-    
-        /www/cgi-bin/update.sh
-        echo "{\"output\":\"Updated!\",\"reload\":true}"
+
+        /root/update.sh
         
     ;;
     *)

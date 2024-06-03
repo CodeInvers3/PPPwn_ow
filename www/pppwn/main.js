@@ -106,20 +106,22 @@ var appView = Backbone.View.extend({
         },
         'click button#update_rep': function(event){
 
+            var self = this;
+
             $.modal(function(modal){
                 modal.content($('<div class="preloader center"></div>'));
             });
-
-            this.model.fetch({
+            
+            this.model.fetch('/cgi-bin/update.cgi', {
                 method: 'POST',
                 data: {
                     task:'update',
                     token:'token_id'
                 },
                 success: this.state.bind(this)
-            }).then(function(response){
+            }).then(function(){
                 $.modal.close();
-            }).catch(function(err){
+            }).catch(function(error){
                 $.modal.close();
                 $.modal(function(modal){
                     modal.content(self.templates.msg({message: err.responseText}));
