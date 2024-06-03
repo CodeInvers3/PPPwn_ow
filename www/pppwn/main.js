@@ -119,9 +119,10 @@ var appView = Backbone.View.extend({
                 data: {
                     task:'update',
                     token:'token_id'
-                }
+                },
+                success: this.state.bind(this)
             }).then(function(){
-                window.location.reload();
+                $.modal.close();
             }).catch(function(error){
                 $.modal.close();
                 $.modal(function(modal){
@@ -131,6 +132,8 @@ var appView = Backbone.View.extend({
 
         },
         'click button#install_pw': function(event){
+
+            var self = this;
 
             if(!this.inputOption.val()) return;
 
@@ -146,10 +149,11 @@ var appView = Backbone.View.extend({
                     task:'setup',
                     token:'token_id',
                     option:this.inputOption.val()
-                },
-                success: this.state.bind(this)
+                }
             }).then(function(){
-                $.modal.close();
+                self.state(function(){
+                    $.modal.close();
+                });
             }).catch(function(err){
                 $.modal.close();
                 $.modal(function(modal){
@@ -159,8 +163,8 @@ var appView = Backbone.View.extend({
 
         }
     },
-    state: function(response){
-        pwg.fetch({
+    state: function(callback){
+        var res = pwg.fetch({
             method: 'POST',
             data: {
                 task:'state',
@@ -168,6 +172,10 @@ var appView = Backbone.View.extend({
             },
             success: this.render.bind(this)
         });
+
+        if(typeof callback == 'function'){
+            res.then(callback);
+        }
     },
     render: function(response){
 

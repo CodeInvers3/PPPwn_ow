@@ -52,7 +52,7 @@ if [ "$token" = "token_id" ]; then
             "$(opkg update)"
             "$(opkg install unzip)"
         fi
-        if wget -O pppwn_file.zip "$source"; then
+        if wget -O pppwn_file.zip $source; then
             "$(unzip pppwn_file.zip)"
             "$(rm pppwn_file.zip)"
             "$(tar -xzvf pppwn.tar.gz)"
