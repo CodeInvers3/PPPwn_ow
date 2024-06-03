@@ -164,7 +164,7 @@ if [ "$token" = "token_id" ]; then
             echo "$result" > "/www/pppwn/register"
             
             if [ $? -eq 0 ]; then
-                echo "{\"output\":\"Exploit success!\",\"pppwned\":true,\"attempts\":\"$attempts\"}" > "/www/pppwn/state.json"
+                echo "{\"output\":\"Exploit success!\",\"pppwned\":true,\"attempts\":\"$attempts\"}"
                 exit 0
             else
                 attempts=$((attempts+1))
