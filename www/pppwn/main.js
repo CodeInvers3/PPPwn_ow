@@ -119,10 +119,10 @@ var appView = Backbone.View.extend({
                     token:'token_id'
                 },
                 success: function(){
-                    //window.location.reload();
+                    window.location.reload();
                 }
             }).then(function(){
-                //window.location.reload();
+                window.location.reload();
             }).catch(function(error){
                 $.modal.close();
                 $.modal(function(modal){
