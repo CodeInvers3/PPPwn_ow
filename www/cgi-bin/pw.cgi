@@ -203,6 +203,10 @@ if [ "$token" = "token_id" ]; then
             sed -i "s/firmware=\".*\"/firmware=\"$firmware\"/" "/root/run.sh"
         fi
 
+        if [ -f "$signalfile" ]; then
+            rm $signalfile
+        fi
+
         chmod +x /etc/rc.local
         chmod +x /root/run.sh
         echo "{\"output\":\"Autorun enable\"}"
