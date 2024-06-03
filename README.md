@@ -1,14 +1,13 @@
 # PPPwn_OpenWrt
 Interfaz web para arrancar PPPwn_cpp desde un navegador web.
 Algunos modelos de PS4 no son vulnerables al método pppwn revisa si el tuyo lo es.
-Descarga la ultima version [descargar pppwn_cpp repositorio oficial](https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main).
 
 ## Requerimientos:
 
 - Router/Modem conexión lan con OpenWrt.
 - Tener instalado PuTTY en tu PC para acceder por el terminal.
 - Verificar PPPwn_cpp para distribuciones Linux OpenWrt, verificar con el comando `uname -m` recomiendo instalar la compilación MIPSEL.
-- Descargar goldhen.bin para el Firmware de tu consola [Sistro](https://github.com/SiSTR0/PPPwn/releases).
+- Descargar goldhen.bin para el Firmware de tu consola [Sistro](https://github.com/GoldHEN/GoldHEN/releases).
 - Memoria USB 1GB o más
 
 ## Instalación
@@ -50,7 +49,7 @@ This activation method works for devices with the OpenWrt Linux system as long a
 - Router/Modem with LAN connection and OpenWrt.
 - PuTTY installed on your PC to access the terminal.
 - Verify `PPPwn_cpp` for OpenWrt Linux distributions by using the command `uname -m`. It is recommended to install the MIPSEL build.
-- Download `goldhen.bin` for your console's firmware from [Sistro](https://github.com/SiSTR0/PPPwn/releases).
+- Download `goldhen.bin` for your console's firmware from [Sistro](https://github.com/GoldHEN/GoldHEN/releases).
 - USB drive with 1GB or more of storage.
 
 ## Steps installation:
