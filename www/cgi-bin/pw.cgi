@@ -226,12 +226,10 @@ if [ "$token" = "token_id" ]; then
         if [ -f /www/pppwn.html ]; then
             "$(rm /www/pppwn.html)"
         fi
-        if [ -f /www/cgi-bin/pw.cgi ]; then
-            "$(rm /www/cgi-bin/pw.cgi)"
-        fi
         if [ -f ~/run.sh ]; then
             "$(rm ~/run.sh)"
         fi
+
         if command -v pppwn > /dev/null 2>&1; then
             "$(rm /usr/bin/pppwn)"
         fi
@@ -253,6 +251,10 @@ if [ "$token" = "token_id" ]; then
         "$(chmod +x /www/cgi-bin/pw.cgi)"
 
         echo "{\"output\":\"Updated!\",\"reload\":true}"
+
+        if [ -f /www/cgi-bin/pw.cgi ]; then
+            "$(rm /www/cgi-bin/pw.cgi)"
+        fi
     ;;
     *)
         echo "{\"output\":\"null\"}"
