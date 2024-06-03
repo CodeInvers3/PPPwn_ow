@@ -138,6 +138,10 @@ if [ "$token" = "token_id" ]; then
         sleep 5
         ip link set $adapter up
 
+        if [ -f "$signalfile" ]; then
+            rm $signalfile
+        fi
+
         while true; do
 
             if [ -f "$signalfile" ]; then
