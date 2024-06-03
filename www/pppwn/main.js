@@ -58,9 +58,11 @@ var appView = Backbone.View.extend({
                 if(response.output){
                     self.textareaOut.append(response.output+"\n");
                 }
+                button.prop('task', 'start').addClass('active').text('Execute');
             }).catch(function(err, textStatus, errorThrown){
                 if(err.responseText) self.textareaOut.append(err.responseText+"\n");
                 if(err.textStatus) self.textareaOut.append(err.textStatus+"\n");
+                button.prop('task', 'start').addClass('active').text('Execute');
             });
 
         },
