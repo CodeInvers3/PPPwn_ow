@@ -219,8 +219,17 @@ var appView = Backbone.View.extend({
 
     },
     initialize: function(){
+
+        var self = this;
         this.loading = this.$('#loading_ide');
         this.state();
+
+        $('a#credits').click(function(){
+            $.modal(function(modal){
+                modal.content(self.templates.msg({message: 'TheOfficialFloW / SiSTR0 / xfangfang'}));
+            });
+        });
+
     }
 });
 
