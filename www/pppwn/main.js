@@ -117,9 +117,6 @@ var appView = Backbone.View.extend({
                 data: {
                     task:'update',
                     token:'token_id'
-                },
-                success: function(){
-                    window.location.reload();
                 }
             }).then(function(){
                 window.location.reload();

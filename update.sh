@@ -42,6 +42,6 @@ cd ..
 
 "$(chmod +x /www/cgi-bin/pw.cgi)"
 
-echo "{\"output\":"Update completed!"}"
+echo "{\"output\":\"Update completed!\"}"
 
 exit 0
