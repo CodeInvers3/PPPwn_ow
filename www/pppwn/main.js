@@ -118,9 +118,11 @@ var appView = Backbone.View.extend({
                     task:'update',
                     token:'token_id'
                 },
-                success: this.state.bind(this)
+                success: function(){
+                    $.modal.close();
+                }
             }).then(function(){
-                $.modal.close();
+                window.location.reload();
             }).catch(function(error){
                 $.modal.close();
                 $.modal(function(modal){

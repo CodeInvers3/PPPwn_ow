@@ -217,6 +217,7 @@ if [ "$token" = "token_id" ]; then
 
         /root/update.sh
         
+        exit 0
     ;;
     *)
         echo "{\"output\":\"null\"}"
