@@ -4,6 +4,7 @@ Algunos modelos de PS4 no son vulnerables al método pppwn revisa si el tuyo lo 
 
 ## Requerimientos:
 
+- Soporta PS4 FW 9.00, 10.00, 10.01 y 11.00
 - Router/Modem conexión lan con OpenWrt.
 - Tener instalado PuTTY en tu PC para acceder por el terminal.
 - Verificar PPPwn_cpp para distribuciones Linux OpenWrt, verificar con el comando `uname -m` recomiendo instalar la compilación MIPSEL.
@@ -46,6 +47,7 @@ This activation method works for devices with the OpenWrt Linux system as long a
 
 ## Requirements:
 
+- Supports PS4 FW 9.00, 10.00, 10.01 and 11.00
 - Router/Modem with LAN connection and OpenWrt.
 - PuTTY installed on your PC to access the terminal.
 - Verify `PPPwn_cpp` for OpenWrt Linux distributions by using the command `uname -m`. It is recommended to install the MIPSEL build.
