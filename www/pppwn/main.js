@@ -8,7 +8,9 @@ var Pwg = Backbone.Model.extend({
         autorun: false,
         interfaces: [],
         offsets: [],
-        theme: 'default'
+        theme: 'default',
+        adapter: '',
+        firmware: ''
     }
 });
 

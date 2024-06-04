@@ -39,17 +39,25 @@
                                     <div class="field-group col-4">
                                         <div class="top-label"><label for="select-ifc">Ethernet</label></div>
                                         <select required id="select-ifc" size="5" class="expand-slc box" name="adapter">
-                                            <% interfaces.forEach(function(option, index){ %>
+                                        <% interfaces.forEach(function(option, index){ %>
+                                            <% if(adapter == option.adapter){ %>
+                                            <option selected value="<%= option.adapter %>"><%= option.adapter %></option>
+                                            <% }else{ %>
                                             <option value="<%= option.adapter %>"><%= option.adapter %></option>
-                                            <% }); %>
+                                            <% } %>
+                                        <% }); %>
                                         </select>
                                     </div>
                                     <div class="field-group col-4">
                                         <div class="top-label"><label for="select-fw">Firmware</label></div>
                                         <select required id="select-fw" class="expand-slc box" size="5" name="firmware">
-                                            <% offsets.forEach(function(option, index){ %>
-                                                <option value="<%= option.version %>"><%= option.version %></option>
-                                            <% }); %>
+                                        <% offsets.forEach(function(option, index){ %>
+                                            <% if(firmware == option.version){ %>
+                                            <option selected value="<%= option.version %>"><%= option.version %></option>
+                                            <% }else{ %>
+                                            <option value="<%= option.version %>"><%= option.version %></option>
+                                            <% } %>
+                                        <% }); %>
                                         </select>
                                     </div>
                                 </div>

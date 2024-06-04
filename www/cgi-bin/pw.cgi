@@ -107,22 +107,27 @@ if [ "$token" = "token_id" ]; then
                 fi
             done
             echo "],"
+            if [ -f /tmp/pw.conf ];then
+                source /tmp/pw.conf
+                echo "\"adapter\":\"$inputAdapter\","
+                echo "\"firmware\":\"$inputFirmware\","
+            fi
         else
             echo "\"pppwn\":false,"
             echo "\"compiles\":["
             type=$(uname -m)
-            if [ "$type" = "aarch64" ]; then
+            if echo "$type" | grep -q "arch64"; then
                 echo "{\"label\":\"Arch64 Linux\",\"type\":\"aarch64-linux-musl\"}"
-            elif [ "$type" = "arm" ]; then
+            elif echo "$type" | grep -q "arm"; then
                 echo "{\"label\":\"Arm Cortex A7\",\"type\":\"arm-linux-musleabi(cortex_a7)\"},"
                 echo "{\"label\":\"Arm Pi Zero W\",\"type\":\"arm-linux-musleabi(pi_zero_w)\"},"
                 echo "{\"label\":\"Arm MP Core Nov Fp\",\"type\":\"arm-linux-musleabi(mpcorenovfp)\"}"
-            elif [ "$type" = "x86_64" ]; then
+            elif echo "$type" | grep -q "x86_64"; then
                 echo "{\"label\":\"X86-64 Linux\",\"type\":\"x86_64-linux-musl\"}"
-            elif [ "$type" = "mips" ]; then
+            elif echo "$type" | grep -q "mips"; then
                 echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"},"
                 echo "{\"label\":\"MIPS Linux\",\"type\":\"mips-linux-musl\"}"
-            elif [ "$type" = "mipsel" ]; then
+            elif "$type" | grep -q "mipsel"; then
                 echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"}"
             fi
             echo "],"
@@ -144,6 +149,9 @@ if [ "$token" = "token_id" ]; then
         if [ -f "$signalfile" ]; then
             rm $signalfile
         fi
+
+        echo -e "inputAdapter=$adapter\n" > /tmp/pw.conf
+        echo -e "inputFirmware=$firmware" >> /tmp/pw.conf
 
         while true; do
 
