@@ -47,11 +47,12 @@ if [ "$token" = "token_id" ]; then
             source="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/mips-linux-musl.zip"
         fi
 
-        cd /root/
         if ! command -v "unzip" > /dev/null 2>&1; then
             "$(opkg update)"
             "$(opkg install unzip)"
         fi
+
+        cd /tmp/
         if wget -O pppwn_file.zip $source; then
             "$(unzip pppwn_file.zip)"
             "$(rm pppwn_file.zip)"
@@ -60,8 +61,10 @@ if [ "$token" = "token_id" ]; then
             "$(chmod +x pppwn)"
             "$(mv pppwn /usr/bin)"
             echo "{\"output\":\"PPPwn installed!\",\"pppwn\":true}"
+            exit 0
         else
             echo "{\"output\":\"Cannot to get source: $source\"}"
+            exit 1
         fi
 
     ;;
@@ -164,6 +167,9 @@ if [ "$token" = "token_id" ]; then
             echo "$result" > "/www/pppwn/register"
             
             if [ $? -eq 0 ]; then
+                if [ -f "$signalfile" ]; then
+                    rm $signalfile
+                fi
                 echo "{\"output\":\"Exploit success!\",\"pppwned\":true,\"attempts\":\"$attempts\"}"
                 exit 0
             else
@@ -246,17 +252,19 @@ if [ "$token" = "token_id" ]; then
             "$(opkg update)"
             "$(opkg install unzip)"
         fi
+
+        "$(cd /tmp/)"
         
         "$(wget -O main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip)"
         "$(unzip main.zip)"
         
         cd PPPwn_ow-main
         
-        "$(mv -f offsets ~/)"
+        "$(mv -f offsets /root/)"
         "$(mv -f www/pppwn /www)"
         "$(mv -f www/pppwn.html /www)"
         "$(mv -f www/cgi-bin/pw.cgi /www/cgi-bin)"
-        "$(mv -f run.sh ~/)"
+        "$(mv -f run.sh /root/)"
         
         cd ..
         
