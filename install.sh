@@ -6,6 +6,9 @@ if ! command -v pppoe-server >/dev/null 2>&1; then
     opkg update
     opkg install rp-pppoe-server
 fi
+if [ -f /root/main.zip ]; then
+    rm -r /root/main.zip
+fi
 if [ -d /root/offsets ]; then
     rm -r /root/offsets
 fi
@@ -36,9 +39,6 @@ mv -f /tmp/PPPwn_ow-main/run.sh /root/
 
 if [ -d /tmp/PPPwn_ow-main ]; then
     rm -r /tmp/PPPwn_ow-main
-fi
-if [ -f /root/main.zip ]; then
-    rm -r /root/main.zip
 fi
 
 chmod +x /etc/init.d/pppoe-server
