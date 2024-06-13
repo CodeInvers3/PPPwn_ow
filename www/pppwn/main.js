@@ -1,16 +1,19 @@
 var Pwg = Backbone.Model.extend({
     urlRoot: '/cgi-bin/pw.cgi',
     defaults: {
+        pppoe: '',
         pppwn: false,
         compiles: [],
         pppwned: false,
         running: false,
         autorun: false,
         interfaces: [],
-        offsets: [],
+        timeout: 0,
+        version: '',
+        versions: [],
+        offsets: {},
         theme: 'default',
-        adapter: '',
-        firmware: ''
+        adapter: ''
     }
 });
 
@@ -34,7 +37,7 @@ var appView = Backbone.View.extend({
             }else
             if(task == 'start'){
 
-                if(!this.inputRoot.val() || !this.inputAdapter.val() || !this.inputFirmware.val()){
+                if(!this.inputRoot.val() || !this.inputAdapter.val() || !this.inputVersion.val()){
                     $.modal(function (modal) {
                         modal.content(self.templates.msg({message: 'Interface and firmware are required to execute.'}));
                     });
@@ -46,7 +49,7 @@ var appView = Backbone.View.extend({
             }
 
             self.textareaOut.append("Awaiting response\n");
-            
+
             this.model.fetch({
                 method: 'POST',
                 data: {
@@ -54,7 +57,10 @@ var appView = Backbone.View.extend({
                     token:'token_id',
                     root:this.inputRoot.val(),
                     adapter:this.inputAdapter.val(),
-                    firmware:this.inputFirmware.val()
+                    version:this.inputVersion.val(),
+                    stage1:this.offsets['stage1-' + this.inputVersion.val()],
+                    stage2:this.offsets['stage2-' + this.inputVersion.val()],
+                    timeout:this.inputTimeout.val()
                 }
             }).then(function(response){
                 if(response.output){
@@ -79,7 +85,7 @@ var appView = Backbone.View.extend({
             }else
             if(task == 'enable'){
 
-                if(!this.inputRoot.val() || !this.inputAdapter.val() || !this.inputFirmware.val()){
+                if(!this.inputRoot.val() || !this.inputAdapter.val() || !this.inputVersion.val()){
                     $.modal(function (modal) {
                         modal.content(self.templates.msg({message: 'Interface and firmware are required to enable autorun'}));
                     });
@@ -97,7 +103,7 @@ var appView = Backbone.View.extend({
                     token:'token_id',
                     root:this.inputRoot.val(),
                     adapter:this.inputAdapter.val(),
-                    firmware:this.inputFirmware.val()
+                    version:this.inputVersion.val()
                 }
             }).then(function(response){
                 if(response.output){
@@ -163,6 +169,32 @@ var appView = Backbone.View.extend({
                 });
             });
 
+        },
+        'click button#pppoe_pw': function(){
+
+            var self = this;
+
+            this.model.fetch({
+                method: 'POST',
+                data: {
+                    task:'connect',
+                    token:'token_id',
+                    status: this.inputConnect.val()
+                }
+            }).then(function(res){
+                
+                var status = self.model.get('pppoe');
+
+                if(status == 'running'){
+                    self.inputConnect.text('PPPoe stop').val()
+                }else
+                if(status == 'inactive'){
+                    self.inputConnect.text('PPPoe start').val(status)
+                }
+                self.textareaOut.append(res.output+"\n");
+            }).catch(function(){
+                self.textareaOut.append("error\n");
+            });
         }
     },
     state: function(callback){
@@ -195,15 +227,18 @@ var appView = Backbone.View.extend({
 
         this.$el.html(this.templates.web(data));
 
+        this.offsets = data.offsets;
         this.textareaOut = this.$('#task-log .output');
         this.buttonAction = this.$('button#action_pw');
         this.buttonSwitch = this.$('button#switch_pw');
         this.buttonUpdate = this.$('button#update_rep');
         this.buttonInstall = this.$('button#install_pw');
         this.inputRoot = this.$('[name=root]');
+        this.inputTimeout = this.$('[name=timeout]');
         this.inputAdapter = this.$('[name=adapter]');
-        this.inputFirmware = this.$('[name=firmware]');
+        this.inputVersion = this.$('[name=version]');
         this.inputOption = this.$('[name=option]');
+        this.inputConnect = this.$('[id=pppoe_pw]');
 
         if(this.model.get('running')){
             this.buttonAction.prop('task', 'stop').text('Stop');

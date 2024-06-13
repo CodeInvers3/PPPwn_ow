@@ -26,9 +26,9 @@ Algunos modelos de PS4 no son vulnerables al método pppwn revisa si el tuyo lo 
     ```sh
     cd
     wget -O main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
-    unzip main.zip
-    chmod +x PPPwn_ow-main/install.sh
-    ./PPPwn_ow-main/install.sh
+    unzip main.zip -d /tmp
+    chmod +x /tmp/PPPwn_ow-main/install.sh
+    /tmp/PPPwn_ow-main/install.sh
     ```
     Al final, presiona Enter para completar la instalación.
 
@@ -69,9 +69,9 @@ This activation method works for devices with the OpenWrt Linux system as long a
     ```sh
     cd
     wget -O main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
-    unzip main.zip
-    chmod +x PPPwn_ow-main/install.sh
-    ./PPPwn_ow-main/install.sh
+    unzip main.zip -d /tmp
+    chmod +x /tmp/PPPwn_ow-main/install.sh
+    /tmp/PPPwn_ow-main/install.sh
     ```
     At the end, press Enter to complete the installation.
 3. From your browser, go to the web interface created at `http://<router_ip>/pppwn.html`.

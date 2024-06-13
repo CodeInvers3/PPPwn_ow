@@ -11,7 +11,11 @@ read postData
 
 token=$(echo $postData | sed -n 's/^.*token=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 adapter=$(echo $postData | sed -n 's/^.*adapter=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
-firmware=$(echo $postData | sed -n 's/^.*firmware=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
+version=$(echo $postData | sed -n 's/^.*version=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
+stage1=$(echo $postData | sed -n 's/^.*stage1=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
+stage1=$(echo "$stage1" | sed 's/%2F/\//g')
+stage2=$(echo $postData | sed -n 's/^.*stage2=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
+stage2=$(echo "$stage2" | sed 's/%2F/\//g')
 timeout$(echo $postData | sed -n 's/^.*timeout=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 task=$(echo $postData | sed -n 's/^.*task=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 option=$(echo $postData | sed -n 's/^.*option=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
@@ -71,6 +75,10 @@ if [ "$token" = "token_id" ]; then
     "state")
 
         echo "{"
+        if command -v pppoe-server >/dev/null 2>&1; then
+            rspppoe=$(/etc/init.d/pppoe-server status)
+            echo "\"pppoe\":\"$rspppoe\",";
+        fi
         if command -v pppwn > /dev/null 2>&1; then
             echo "\"pppwn\":true,"
             echo "\"interfaces\":["
@@ -89,28 +97,41 @@ if [ "$token" = "token_id" ]; then
                 fi
             fi
             payloads=$(ls /root/offsets/*.bin)
-            count=0
             filename=""
             separator=""
-            echo "\"offsets\":["
+            echo "\"versions\":["
             for payload in $payloads; do
+
                 if echo "$payload" | grep -q "stage1"; then
-                    stage="$payload"
-                fi
-                if echo "$payload" | grep -q "stage2"; then
-                    if [ "$count" -gt "0" ]; then
-                        separator=","
-                    fi
                     filename=$(echo $payload | sed -e 's/.*_//g' -e 's/\.bin//g')
-                    echo "$separator{\"version\":\"$filename\",\"stage_2\":\"$payload\",\"stage_1\":\"$stage\"}"
-                    count=$((count+1))
+                    echo "$separator\"$filename\""
                 fi
+                if [ "$separator" = "" ]; then
+                    separator=","
+                fi
+
             done
-            echo "],"
-            if [ -f /tmp/pw.conf ];then
-                source /tmp/pw.conf
+            separator=""
+            echo "],\"offsets\":{"
+            for payload in $payloads; do
+
+                filename=$(echo $payload | sed -e 's/.*_//g' -e 's/\.bin//g')
+                if echo "$payload" | grep -q "stage1"; then
+                    echo "$separator\"stage1-$filename\":\"$payload\""
+                elif echo "$payload" | grep -q "stage2"; then
+                    echo "$separator\"stage2-$filename\":\"$payload\""
+                fi
+                if [ "$separator" = "" ]; then
+                    separator=","
+                fi
+
+            done
+            echo "},"
+            if [ -f /root/pw.conf ];then
+                source /root/pw.conf
                 echo "\"adapter\":\"$inputAdapter\","
-                echo "\"firmware\":\"$inputFirmware\","
+                echo "\"timeout\":\"$inputTimeout\","
+                echo "\"version\":\"$inputVersion\","
             fi
         else
             echo "\"pppwn\":false,"
@@ -142,62 +163,41 @@ if [ "$token" = "token_id" ]; then
     ;;
     "start")
 
+        if /etc/init.d/pppoe-server status | grep -q "running"; then
+            /etc/init.d/pppoe-server stop
+            sleep 3
+        fi
+
         ip link set $adapter down
         sleep 5
         ip link set $adapter up
 
-        if [ -f "$signalfile" ]; then
-            rm $signalfile
+        echo -e "inputAdapter=$adapter\n" > /root/pw.conf
+        echo -e "inputTimeout=$timeout" >> /root/pw.conf
+        echo -e "inputVersion=$version" >> /root/pw.conf
+
+        attempts=$((attempts+1))
+
+        result=$(pppwn --interface "$adapter" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
+        
+        if [[ "$result" == *"\[\+\] Done\!"* ]]; then
+            /etc/init.d/pppoe-server start
+            echo "{\"output\":\"Exploit success!\",\"pppwned\":true,\"attempts\":\"$attempts\"}"
+            exit 0
+        else
+            echo "{\"output\":\"Exploit interrupted!\",\"pppwned\":false,\"attempts\":\"$attempts\"}"
+            exit 1
         fi
-
-        echo -e "inputAdapter=$adapter\n" > /tmp/pw.conf
-        echo -e "inputFirmware=$firmware" >> /tmp/pw.conf
-
-        while true; do
-
-            if [ -f "$signalfile" ]; then
-            
-                echo "{\"output\":\"Waiting response...\"}"
-
-                pids=$(pgrep pppwn)
-                for pid in $pids; do
-                    kill $pid
-                done
-
-                if [ -f "$signalfile" ]; then
-                    rm $signalfile
-                fi
-                
-                exit 1
-            fi
-
-            result=$(pppwn --interface "$adapter" --fw "$firmware" --stage1 $root/offsets/stage1_$firmware.bin --stage2 $root/offsets/stage2_$firmware.bin --timeout $timeout --auto-retry)
-            echo "$result" > "/www/pppwn/register"
-            
-            if [ $? -eq 0 ]; then
-                if [ -f "$signalfile" ]; then
-                    rm $signalfile
-                fi
-                echo "{\"output\":\"Exploit success!\",\"pppwned\":true,\"attempts\":\"$attempts\"}"
-                exit 0
-            else
-                attempts=$((attempts+1))
-                ip link set $adapter down
-                sleep 5
-                ip link set $adapter up
-            fi
-        done
 
     ;;
     "stop")
-
-        echo "stop" > $signalfile
-        echo "{\"output\":\"Execution terminated.\",\"pppwned\":false,\"attempts\":\"$attempts\"}"
 
         pids=$(pgrep pppwn)
         for pid in $pids; do
             kill $pid
         done
+
+        echo "{\"output\":\"Execution terminated.\",\"pppwned\":false,\"attempts\":\"$attempts\"}"
 
         exit 1
 
@@ -213,8 +213,8 @@ if [ "$token" = "token_id" ]; then
         if grep -q "interface=" "/root/run.sh"; then
             sed -i "s/interface=\".*\"/interface=\"$adapter\"/" "/root/run.sh"
         fi
-        if grep -q "firmware=" "/root/run.sh"; then
-            sed -i "s/firmware=\".*\"/firmware=\"$firmware\"/" "/root/run.sh"
+        if grep -q "version=" "/root/run.sh"; then
+            sed -i "s/version=\".*\"/version=\"$version\"/" "/root/run.sh"
         fi
 
         if [ -f "$signalfile" ]; then
@@ -281,6 +281,21 @@ if [ "$token" = "token_id" ]; then
         echo "{\"output\":\"Update completed!\"}"
         exit 0
         
+    ;;
+    "connect")
+
+        echo "{"
+        if /etc/init.d/pppoe-server status | grep -q "running"; then
+            /etc/init.d/pppoe-server stop
+            echo "\"output\":\"Stop pppoe service\","
+        elif /etc/init.d/pppoe-server status | grep -q "inactive"; then
+            /etc/init.d/pppoe-server start
+            echo "\"output\":\"Start pppoe service\","
+        fi
+        rspppoe=$(/etc/init.d/pppoe-server status)
+        echo "\"pppoe\":\"$rspppoe\""
+        echo "}"
+
     ;;
     *)
         echo "{\"output\":\"null\"}"
