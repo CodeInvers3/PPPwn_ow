@@ -4,7 +4,6 @@ echo "Content-Type: application/json"
 echo ""
 
 token="token_id"
-signalfile="/www/pppwn/stop"
 attempts=0
 
 read postData
@@ -92,9 +91,6 @@ if [ "$token" = "token_id" ]; then
                 echo "\"running\":true,"
             else
                 echo "\"running\":false,"
-                if [ -f "$signalfile" ]; then
-                    rm $signalfile
-                fi
             fi
             payloads=$(ls /root/offsets/*.bin)
             filename=""
@@ -216,9 +212,14 @@ if [ "$token" = "token_id" ]; then
         if grep -q "version=" "/root/run.sh"; then
             sed -i "s/version=\".*\"/version=\"$version\"/" "/root/run.sh"
         fi
-
-        if [ -f "$signalfile" ]; then
-            rm $signalfile
+        if grep -q "timeout=" "/root/run.sh"; then
+            sed -i "s/timeout=\".*\"/timeout=\"$timeout\"/" "/root/run.sh"
+        fi
+        if grep -q "stage1=" "/root/run.sh"; then
+            sed -i "s/stage1=\".*\"/stage1=\"$stage1\"/" "/root/run.sh"
+        fi
+        if grep -q "stage2=" "/root/run.sh"; then
+            sed -i "s/stage2=\".*\"/stage2=\"$stage2\"/" "/root/run.sh"
         fi
 
         chmod +x /etc/rc.local
