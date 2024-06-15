@@ -74,9 +74,23 @@ if [ "$token" = "token_id" ]; then
     "state")
 
         echo "{"
+
+        current_version=$(cat /root/version)
+        latest_version=$(wget -qO- "https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/version" 2>/dev/null)
+
+        if [ -z "$latest_version" ]; then
+            echo "\"update\":false,"
+        else
+            if [ "$current_version" != "$latest_version" ]; then
+                echo "\"update\":true,"
+            else
+                echo "\"update\":false,"
+            fi
+        fi
+
         if command -v pppoe-server >/dev/null 2>&1; then
             rspppoe=$(/etc/init.d/pppoe-server status)
-            echo "\"pppoe\":\"$rspppoe\",";
+            echo "\"pppoe\":\"$rspppoe\","
         fi
         if command -v pppwn > /dev/null 2>&1; then
             echo "\"pppwn\":true,"
@@ -159,6 +173,16 @@ if [ "$token" = "token_id" ]; then
     ;;
     "start")
 
+        if [ -f /root/pw.conf ]; then
+            sed -i "s/inputAdapter=.*/inputAdapter=$adapter/" /root/pw.conf
+            sed -i "s/inputTimeout=.*/inputTimeout=$timeout/" /root/pw.conf
+            sed -i "s/inputVersion=.*/inputVersion=$version/" /root/pw.conf
+        else
+            echo -e "inputAdapter=$adapter\n" > /root/pw.conf
+            echo -e "inputTimeout=$timeout\n" >> /root/pw.conf
+            echo -e "inputVersion=$version\n" >> /root/pw.conf
+        fi
+
         if /etc/init.d/pppoe-server status | grep -q "running"; then
             /etc/init.d/pppoe-server stop
             sleep 3
@@ -167,10 +191,6 @@ if [ "$token" = "token_id" ]; then
         ip link set $adapter down
         sleep 5
         ip link set $adapter up
-
-        echo -e "inputAdapter=$adapter\n" > /root/pw.conf
-        echo -e "inputTimeout=$timeout" >> /root/pw.conf
-        echo -e "inputVersion=$version" >> /root/pw.conf
 
         attempts=$((attempts+1))
 
