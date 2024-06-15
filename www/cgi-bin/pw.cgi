@@ -106,31 +106,39 @@ if [ "$token" = "token_id" ]; then
             else
                 echo "\"running\":false,"
             fi
-            payloads=$(ls /root/offsets/*.bin)
+            payloads1=$(ls /root/stage1/*.bin)
+            payloads2=$(ls /root/stage2/*.bin)
             filename=""
             separator=""
             echo "\"versions\":["
-            for payload in $payloads; do
+            for payload in $payloads1; do
 
-                if echo "$payload" | grep -q "stage1"; then
-                    filename=$(echo $payload | sed -e 's/.*_//g' -e 's/\.bin//g')
-                    echo "$separator\"$filename\""
-                fi
+                filename=$(echo "$payload" | sed -e 's/\.bin$//')
+                echo "$separator\"$filename\""
                 if [ "$separator" = "" ]; then
                     separator=","
                 fi
 
             done
             separator=""
-            echo "],\"offsets\":{"
-            for payload in $payloads; do
+            echo "],\"stage1\":{"
+            for payload in $payloads1; do
 
-                filename=$(echo $payload | sed -e 's/.*_//g' -e 's/\.bin//g')
-                if echo "$payload" | grep -q "stage1"; then
-                    echo "$separator\"stage1-$filename\":\"$payload\""
-                elif echo "$payload" | grep -q "stage2"; then
-                    echo "$separator\"stage2-$filename\":\"$payload\""
+                filename=$(echo "$payload" | sed -e 's/\.bin$//')
+                echo "$separator\"$filename\":\"$payload\""
+
+                if [ "$separator" = "" ]; then
+                    separator=","
                 fi
+
+            done
+            separator=""
+            echo "],\"stage2\":{"
+            for payload in $payloads2; do
+
+                filename=$(echo "$payload" | sed -e 's/\.bin$//')
+                echo "$separator\"$filename\":\"$payload\""
+
                 if [ "$separator" = "" ]; then
                     separator=","
                 fi

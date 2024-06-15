@@ -12,7 +12,8 @@ var Pwg = Backbone.Model.extend({
         timeout: 0,
         version: '',
         versions: [],
-        offsets: {},
+        stage1: {},
+        stage2: {},
         theme: 'default',
         adapter: ''
     }
@@ -59,8 +60,8 @@ var appView = Backbone.View.extend({
                     root:this.inputRoot.val(),
                     adapter:this.inputAdapter.val(),
                     version:this.inputVersion.val(),
-                    stage1:this.offsets['stage1-' + this.inputVersion.val()],
-                    stage2:this.offsets['stage2-' + this.inputVersion.val()],
+                    stage1:this.stage1[this.inputVersion.val()],
+                    stage2:this.stage2[this.inputVersion.val()],
                     timeout:this.inputTimeout.val()
                 }
             }).then(function(response){
@@ -228,7 +229,8 @@ var appView = Backbone.View.extend({
 
         this.$el.html(this.templates.web(data));
 
-        this.offsets = data.offsets;
+        this.stage1 = data.stage1;
+        this.stage2 = data.stage2;
         this.textareaOut = this.$('#task-log .output');
         this.buttonAction = this.$('button#action_pw');
         this.buttonSwitch = this.$('button#switch_pw');
