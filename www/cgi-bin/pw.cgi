@@ -266,8 +266,14 @@ if [ "$token" = "token_id" ]; then
     "update")
 
         "$(cd /root/)"
-        if [ -d ~/offsets ]; then
-            "$(rm -r ~/offsets)"
+        if [ -d /root/offsets ]; then
+            "$(rm -r /root/offsets)"
+        fi
+        if [ -d /root/stage1 ]; then
+            "$(rm -r /root/stage1)"
+        fi
+        if [ -d /root/stage2 ]; then
+            "$(rm -r /root/stage2)"
         fi
         if [ -d /www/pppwn ]; then
             "$(rm -r /www/pppwn)"
@@ -278,8 +284,8 @@ if [ "$token" = "token_id" ]; then
         if [ -f /www/cgi-bin/pw.cgi ]; then
             "$(rm /www/cgi-bin/pw.cgi)"
         fi
-        if [ -f ~/run.sh ]; then
-            "$(rm ~/run.sh)"
+        if [ -f /root/run.sh ]; then
+            "$(rm /root/run.sh)"
         fi
         if command -v pppwn > /dev/null 2>&1; then
             "$(rm /usr/bin/pppwn)"
@@ -296,11 +302,13 @@ if [ "$token" = "token_id" ]; then
         
         cd PPPwn_ow-main
         
-        "$(mv -f offsets /root/)"
+        "$(mv -f version /root/)"
+        "$(mv -f stage1 /root/)"
+        "$(mv -f stage2 /root/)"
+        "$(mv -f run.sh /root/)"
         "$(mv -f www/pppwn /www)"
         "$(mv -f www/pppwn.html /www)"
         "$(mv -f www/cgi-bin/pw.cgi /www/cgi-bin)"
-        "$(mv -f run.sh /root/)"
         
         cd ..
         
