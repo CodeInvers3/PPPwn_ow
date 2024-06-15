@@ -108,12 +108,11 @@ if [ "$token" = "token_id" ]; then
             fi
             payloads1=$(ls /root/stage1/*.bin)
             payloads2=$(ls /root/stage2/*.bin)
-            filename=""
             separator=""
             echo "\"versions\":["
             for payload in $payloads1; do
 
-                filename=$(echo "$payload" | sed -e 's/\.bin$//')
+                filename=$(basename "$payload" | sed 's/\.bin$//')
                 echo "$separator\"$filename\""
                 if [ "$separator" = "" ]; then
                     separator=","
@@ -124,7 +123,7 @@ if [ "$token" = "token_id" ]; then
             echo "],\"stage1\":{"
             for payload in $payloads1; do
 
-                filename=$(echo "$payload" | sed -e 's/\.bin$//')
+                filename=$(basename "$payload" | sed 's/\.bin$//')
                 echo "$separator\"$filename\":\"$payload\""
 
                 if [ "$separator" = "" ]; then
@@ -133,10 +132,10 @@ if [ "$token" = "token_id" ]; then
 
             done
             separator=""
-            echo "],\"stage2\":{"
+            echo "},\"stage2\":{"
             for payload in $payloads2; do
 
-                filename=$(echo "$payload" | sed -e 's/\.bin$//')
+                filename=$(basename "$payload" | sed 's/\.bin$//')
                 echo "$separator\"$filename\":\"$payload\""
 
                 if [ "$separator" = "" ]; then
