@@ -104,6 +104,9 @@ var appView = Backbone.View.extend({
                     task:task,
                     token:'token_id',
                     root:this.inputRoot.val(),
+                    stage1:this.stage1[this.inputVersion.val()],
+                    stage2:this.stage2[this.inputVersion.val()],
+                    timeout:this.inputTimeout.val(),
                     adapter:this.inputAdapter.val(),
                     version:this.inputVersion.val()
                 }

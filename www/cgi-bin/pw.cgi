@@ -146,9 +146,9 @@ if [ "$token" = "token_id" ]; then
             echo "},"
             if [ -f /root/pw.conf ];then
                 source /root/pw.conf
-                echo "\"adapter\":\"$inputAdapter\","
-                echo "\"timeout\":\"$inputTimeout\","
-                echo "\"version\":\"$inputVersion\","
+                echo "\"adapter\":\"$interface\","
+                echo "\"timeout\":\"$timeout\","
+                echo "\"version\":\"$version\","
             fi
         else
             echo "\"pppwn\":false,"
@@ -181,13 +181,13 @@ if [ "$token" = "token_id" ]; then
     "start")
 
         if [ -f /root/pw.conf ]; then
-            sed -i "s/inputAdapter=.*/inputAdapter=$adapter/" /root/pw.conf
-            sed -i "s/inputTimeout=.*/inputTimeout=$timeout/" /root/pw.conf
-            sed -i "s/inputVersion=.*/inputVersion=$version/" /root/pw.conf
+            sed -i "s/interface=.*/interface=$adapter/" /root/pw.conf
+            sed -i "s/timeout=.*/timeout=$timeout/" /root/pw.conf
+            sed -i "s/version=.*/version=$version/" /root/pw.conf
         else
-            echo -e "inputAdapter=$adapter\n" > /root/pw.conf
-            echo -e "inputTimeout=$timeout\n" >> /root/pw.conf
-            echo -e "inputVersion=$version\n" >> /root/pw.conf
+            echo -e "interface=$adapter\n" > /root/pw.conf
+            echo -e "timeout=$timeout\n" >> /root/pw.conf
+            echo -e "version=$version\n" >> /root/pw.conf
         fi
 
         if /etc/init.d/pppoe-server status | grep -q "running"; then
@@ -232,21 +232,38 @@ if [ "$token" = "token_id" ]; then
             echo "/root/run.sh &" >> /etc/rc.local
             echo "exit 0" >> /etc/rc.local
         fi
-        
-        if grep -q "interface=" "/root/run.sh"; then
-            sed -i "s/interface=\".*\"/interface=\"$adapter\"/" "/root/run.sh"
-        fi
-        if grep -q "version=" "/root/run.sh"; then
-            sed -i "s/version=\".*\"/version=\"$version\"/" "/root/run.sh"
-        fi
-        if grep -q "timeout=" "/root/run.sh"; then
-            sed -i "s/timeout=\".*\"/timeout=\"$timeout\"/" "/root/run.sh"
-        fi
-        if grep -q "stage1=" "/root/run.sh"; then
-            sed -i "s/stage1=\".*\"/stage1=\"$stage1\"/" "/root/run.sh"
-        fi
-        if grep -q "stage2=" "/root/run.sh"; then
-            sed -i "s/stage2=\".*\"/stage2=\"$stage2\"/" "/root/run.sh"
+
+        if [ -f /root/pw.conf ]; then
+
+            if grep -q "interface=" "/root/pw.conf"; then
+                sed -i "s/interface=.*/interface=$adapter/" "/root/pw.conf"
+            else
+                echo -e "interface=$adapter" >> "/root/pw.conf"
+            fi
+            if grep -q "version=" "/root/pw.conf"; then
+                sed -i "s/version=.*/version=$version/" "/root/pw.conf"
+            else
+                echo -e "version=$version" >> "/root/pw.conf"
+            fi
+            if grep -q "timeout=" "/root/pw.conf"; then
+                sed -i "s/timeout=.*/timeout=$timeout/" "/root/pw.conf"
+            else
+                echo -e "timeout=$timeout" >> "/root/pw.conf"
+            fi
+            if grep -q "stage1=" "/root/pw.conf"; then
+                sed -i "/stage1=.*/d" "/root/pw.conf"
+                echo -e "stage1=$stage1" >> "/root/pw.conf"
+            fi
+            if grep -q "stage2=" "/root/pw.conf"; then
+                sed -i "/stage2=.*/d" "/root/pw.conf"
+                echo -e "stage2=$stage2" >> "/root/pw.conf"
+            fi
+        else
+            echo -e "interface=$adapter" > /root/pw.conf
+            echo -e "version=$version" >> /root/pw.conf
+            echo -e "timeout=$timeout" >> /root/pw.conf
+            echo -e "stage1=$stage1" >> /root/pw.conf
+            echo -e "stage2=$stage2" >> /root/pw.conf
         fi
 
         chmod +x /etc/rc.local

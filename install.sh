@@ -51,8 +51,8 @@ if [ -d /tmp/PPPwn_ow-main ]; then
     rm -r /tmp/PPPwn_ow-main
 fi
 
-chmod +x /etc/init.d/pppoe-server
 chmod +x /www/cgi-bin/pw.cgi
+chmod +x /root/run.sh
 
 if ! grep -q "list device 'ppp+'" /etc/config/firewall; then
     sed -i "s/option name 'lan'/option name 'lan'\n\t list device 'ppp+'/" /etc/config/firewall
