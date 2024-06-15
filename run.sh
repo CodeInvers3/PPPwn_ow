@@ -19,6 +19,9 @@ if [ $res -eq 0 ]; then
     echo "$res" > "log"
     exit 0
 else
+    if /etc/init.d/pppoe-server status | grep -q "inactive"; then
+        /etc/init.d/pppoe-server start
+    fi
     echo "$res" > "log"
     exit 1
 fi
