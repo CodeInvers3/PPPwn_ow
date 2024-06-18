@@ -209,7 +209,11 @@ var appView = Backbone.View.extend({
                 task:'state',
                 token:'token_id'
             },
-            success: this.render.bind(this)
+            success: this.render.bind(this),
+            error: function(err){
+                $.modal.close();
+                alert(err.responseText);
+            }
         });
 
         if(typeof callback == 'function'){
