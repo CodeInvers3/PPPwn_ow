@@ -59,6 +59,7 @@ fi
 
 chmod +x /root/run.sh
 chmod +x /www/cgi-bin/pw.cgi
+chmod +x /etc/init.d/pppoe-server
 
 if ! grep -q "list device 'ppp+'" /etc/config/firewall; then
     sed -i "s/option name 'lan'/option name 'lan'\n\t list device 'ppp+'/" /etc/config/firewall
