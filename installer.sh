@@ -71,5 +71,7 @@ fi
 
 /etc/init.d/pppoe-server start
 
+rm /tmp/installer.sh
+
 echo "Installation completed!"
 exit 0
