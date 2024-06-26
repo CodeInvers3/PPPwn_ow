@@ -69,7 +69,7 @@ if ! grep -q "list device 'ppp+'" /etc/config/firewall; then
     sed -i "s/option name 'lan'/option name 'lan'\n\t list device 'ppp+'/" /etc/config/firewall
 fi
 
-if [ -f /etc/rc.button/switch ]; then
+if ! grep -q "/root/run.sh" /etc/rc.button/switch; then
     sed -i "s/action=on/action=on\n\n\/root\/run\.sh/" /etc/rc.button/switch
 fi
 

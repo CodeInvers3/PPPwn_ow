@@ -299,11 +299,10 @@ var appView = Backbone.View.extend({
             if(response.ok) return response.json();
         }).then(function(web){
             if(self.webToken != web.token){
+                console.log(self.webToken+' == '+web.token)
                 document.cookie = 'token=; path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
                 self.cookie('token', web.token);
                 self.webToken = web.token;
-            }else{
-                self.webToken = self.cookie('token');
             }
             self.state();
         });
