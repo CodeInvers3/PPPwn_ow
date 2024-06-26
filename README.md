@@ -24,11 +24,9 @@ Algunos modelos de PS4 no son vulnerables al método pppwn revisa si el tuyo lo 
     ```
 2. Desde el terminal en tu router, ejecuta estos comandos:
     ```sh
-    cd
-    wget -O main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
-    unzip main.zip -d /tmp
-    chmod +x /tmp/PPPwn_ow-main/install.sh
-    /tmp/PPPwn_ow-main/install.sh
+    wget -O /tmp/installer.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer.sh
+    chmod +x /tmp/installer.sh
+    /tmp/installer.sh
     ```
     Al final, presiona Enter para completar la instalación.
 3. Copia `goldhen.bin` a tu memoria USB. Asegúrate de que esté formateada en exFAT o FAT32 y conéctala a tu consola.
@@ -66,11 +64,9 @@ This activation method works for devices with the OpenWrt Linux system as long a
     ```
 2. From the terminal on your router, run these commands:
     ```sh
-    cd
-    wget -O main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
-    unzip main.zip -d /tmp
-    chmod +x /tmp/PPPwn_ow-main/install.sh
-    /tmp/PPPwn_ow-main/install.sh
+    wget -O /tmp/installer.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer.sh
+    chmod +x /tmp/installer.sh
+    /tmp/installer.sh
     ```
     At the end, press Enter to complete the installation.
 3. Copy `goldhen.bin` to your USB drive. Make sure it is formatted in exFAT or FAT32 and connect it to your console.

@@ -4,7 +4,6 @@ echo "Content-Type: application/json"
 echo ""
 
 token="token_id"
-attempts=0
 
 read postData
 
@@ -180,36 +179,37 @@ if [ "$token" = "token_id" ]; then
     ;;
     "start")
 
-        if [ -f /root/pw.conf ]; then
-            sed -i "s/interface=.*/interface=$adapter/" /root/pw.conf
-            sed -i "s/timeout=.*/timeout=$timeout/" /root/pw.conf
-            sed -i "s/version=.*/version=$version/" /root/pw.conf
-        else
-            echo -e "interface=$adapter\n" > /root/pw.conf
-            echo -e "timeout=$timeout\n" >> /root/pw.conf
-            echo -e "version=$version\n" >> /root/pw.conf
-        fi
+        if ! pgrep pppwn > /dev/null; then
 
-        if /etc/init.d/pppoe-server status | grep -q "running"; then
-            /etc/init.d/pppoe-server stop
-            sleep 3
-        fi
+            if /etc/init.d/pppoe-server status | grep -q "running"; then
+                /etc/init.d/pppoe-server stop
+                sleep 3
+            fi
+            if [ -f /root/pw.conf ]; then
+                sed -i "s/interface=.*/interface=$adapter/" /root/pw.conf
+                sed -i "s/timeout=.*/timeout=$timeout/" /root/pw.conf
+                sed -i "s/version=.*/version=$version/" /root/pw.conf
+            else
+                echo -e "interface=$adapter\n" > /root/pw.conf
+                echo -e "timeout=$timeout\n" >> /root/pw.conf
+                echo -e "version=$version\n" >> /root/pw.conf
+            fi
+            
+            ip link set $adapter down
+            sleep 5
+            ip link set $adapter up
+            
+            result=$(pppwn --interface "$adapter" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
+            
+            if [[ "$result" == *"\[\+\] Done\!"* ]]; then
+                /etc/init.d/pppoe-server start
+                echo "{\"output\":\"Exploit success!\",\"pppwned\":true}"
+                exit 0
+            else
+                echo "{\"output\":\"Exploit interrupted!\",\"pppwned\":false}"
+                exit 1
+            fi
 
-        ip link set $adapter down
-        sleep 5
-        ip link set $adapter up
-
-        attempts=$((attempts+1))
-
-        result=$(pppwn --interface "$adapter" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
-        
-        if [[ "$result" == *"\[\+\] Done\!"* ]]; then
-            /etc/init.d/pppoe-server start
-            echo "{\"output\":\"Exploit success!\",\"pppwned\":true,\"attempts\":\"$attempts\"}"
-            exit 0
-        else
-            echo "{\"output\":\"Exploit interrupted!\",\"pppwned\":false,\"attempts\":\"$attempts\"}"
-            exit 1
         fi
 
     ;;
@@ -220,7 +220,7 @@ if [ "$token" = "token_id" ]; then
             kill $pid
         done
 
-        echo "{\"output\":\"Execution terminated.\",\"pppwned\":false,\"attempts\":\"$attempts\"}"
+        echo "{\"output\":\"Execution terminated.\",\"pppwned\":false}"
 
         exit 1
 
@@ -281,59 +281,18 @@ if [ "$token" = "token_id" ]; then
 
     ;;
     "update")
-
-        "$(cd /root/)"
-        if [ -d /root/offsets ]; then
-            "$(rm -r /root/offsets)"
-        fi
-        if [ -d /root/stage1 ]; then
-            "$(rm -r /root/stage1)"
-        fi
-        if [ -d /root/stage2 ]; then
-            "$(rm -r /root/stage2)"
-        fi
-        if [ -d /www/pppwn ]; then
-            "$(rm -r /www/pppwn)"
-        fi
-        if [ -f /www/pppwn.html ]; then
-            "$(rm /www/pppwn.html)"
-        fi
-        if [ -f /www/cgi-bin/pw.cgi ]; then
-            "$(rm /www/cgi-bin/pw.cgi)"
-        fi
-        if [ -f /root/run.sh ]; then
-            "$(rm /root/run.sh)"
-        fi
+        
+        "$(wget -O /tmp/installer.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer.sh)"
+        "$(chmod +x /tmp/installer.sh)"
         if command -v pppwn > /dev/null 2>&1; then
             "$(rm /usr/bin/pppwn)"
         fi
-        if ! command -v unzip > /dev/null 2>&1; then
-            "$(opkg update)"
-            "$(opkg install unzip)"
+        /tmp/installer.sh
+        if [ -f /tmp/installer.sh ]; then
+            rm -r /tmp/installer.sh
         fi
-
-        "$(cd /tmp/)"
-        
-        "$(wget -O main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip)"
-        "$(unzip main.zip)"
-        
-        cd PPPwn_ow-main
-        
-        "$(mv -f version /root/)"
-        "$(mv -f stage1 /root/)"
-        "$(mv -f stage2 /root/)"
-        "$(mv -f run.sh /root/)"
-        "$(mv -f www/pppwn /www)"
-        "$(mv -f www/pppwn.html /www)"
-        "$(mv -f www/cgi-bin/pw.cgi /www/cgi-bin)"
-        
-        cd ..
-        
-        "$(rm -r PPPwn_ow-main main.zip)"
-        "$(chmod +x /www/cgi-bin/pw.cgi)"
         echo "{\"output\":\"Update completed!\"}"
-        exit 0
-        
+
     ;;
     "connect")
 
@@ -348,6 +307,13 @@ if [ "$token" = "token_id" ]; then
         rspppoe=$(/etc/init.d/pppoe-server status)
         echo "\"pppoe\":\"$rspppoe\""
         echo "}"
+
+    ;;
+    "button")
+
+        if ! grep -q "action=on" /etc/rc.button/switch; then
+            #sed -i "s/}/}\n\tif \[ \"$action\" == \"on\" ]; then/" /etc/rc.button/switch
+        fi
 
     ;;
     *)

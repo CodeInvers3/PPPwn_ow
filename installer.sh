@@ -1,13 +1,12 @@
 #!/bin/sh /etc/rc.common
 
-cd /tmp/
-
 if ! command -v pppoe-server >/dev/null 2>&1; then
     opkg update
     opkg install rp-pppoe-server
 fi
-if [ -f /root/main.zip ]; then
-    rm -r /root/main.zip
+
+if [ -f /tmp/main.zip ]; then
+    rm -r /tmp/main.zip
 fi
 if [ -d /root/offsets ]; then
     rm -r /root/offsets
@@ -34,6 +33,13 @@ if [ -f /www/cgi-bin/pw.cgi ]; then
     rm /www/cgi-bin/pw.cgi
 fi
 
+wget -O /tmp/main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
+unzip /tmp/main.zip -d /tmp
+
+if [ -f /tmp/main.zip ]; then
+    rm /tmp/main.zip
+fi
+
 mv -f /tmp/PPPwn_ow-main/pppoe/ppp/pap-secrets /etc/ppp
 mv -f /tmp/PPPwn_ow-main/pppoe/ppp/chap-secrets /etc/ppp
 mv -f /tmp/PPPwn_ow-main/pppoe/ppp/pppoe-server-options /etc/ppp
@@ -51,14 +57,18 @@ if [ -d /tmp/PPPwn_ow-main ]; then
     rm -r /tmp/PPPwn_ow-main
 fi
 
-chmod +x /www/cgi-bin/pw.cgi
 chmod +x /root/run.sh
+chmod +x /www/cgi-bin/pw.cgi
 
 if ! grep -q "list device 'ppp+'" /etc/config/firewall; then
     sed -i "s/option name 'lan'/option name 'lan'\n\t list device 'ppp+'/" /etc/config/firewall
 fi
 
-/etc/init.d/pppoe-server start #initialize pppoe-server
+if [ -f /etc/rc.button/switch ]; then
+    sed -i "s/action=on/action=on\n\/root\/run\.sh/" /etc/rc.button/switch
+fi
+
+/etc/init.d/pppoe-server start
 
 echo "Installation completed!"
 exit 0
