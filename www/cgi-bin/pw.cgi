@@ -276,7 +276,6 @@ if [ "$token" = "token_id" ]; then
         if grep -q "/root/run.sh" /etc/rc.local; then
             sed -i '/\/root\/run\.sh/d' /etc/rc.local
         fi
-
         echo "{\"output\":\"Autorun disabled\"}"
 
     ;;

@@ -1,29 +1,36 @@
 #!/bin/sh
 
-source /root/pw.conf
-
-if /etc/init.d/pppoe-server status | grep -q "running"; then
-    /etc/init.d/pppoe-server stop
-fi
-
 if ! pgrep pppwn > /dev/null; then
 
-    ip link set $interface down
-    sleep 5
-    ip link set $interface up
-    
-    res=$(pppwn --interface "$interface" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
+    if [ -f /root/pw.conf ];then
 
-    if [ $res -eq 0 ]; then
-        if /etc/init.d/pppoe-server status | grep -q "inactive"; then
-            /etc/init.d/pppoe-server start
+        source /root/pw.conf
+
+        if /etc/init.d/pppoe-server status | grep -q "running"; then
+            /etc/init.d/pppoe-server stop
+            sleep 3
         fi
-        exit 0
-    else
-        if /etc/init.d/pppoe-server status | grep -q "inactive"; then
-            /etc/init.d/pppoe-server start
+
+        ip link set $interface down
+        sleep 5
+        ip link set $interface up
+
+        echo "$interface, $version, $stage1, $stage2, $timeout" > "/root/log"
+        
+        res=$(pppwn --interface "$interface" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
+        
+        if [ $res -eq 0 ]; then
+            if /etc/init.d/pppoe-server status | grep -q "inactive"; then
+                /etc/init.d/pppoe-server start
+            fi
+            exit 0
+        else
+            if /etc/init.d/pppoe-server status | grep -q "inactive"; then
+                /etc/init.d/pppoe-server start
+            fi
+            exit 1
         fi
-        exit 1
+
     fi
 
 fi
