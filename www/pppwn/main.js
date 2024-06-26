@@ -212,7 +212,6 @@ var appView = Backbone.View.extend({
             success: this.render.bind(this),
             error: function(err){
                 $.modal.close();
-                console.log(err);
                 alert(err.responseText);
             }
         });

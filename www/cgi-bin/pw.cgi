@@ -309,10 +309,10 @@ if [ "$token" = "token_id" ]; then
         echo "}"
 
     ;;
-    "button")
+    "alter1")
 
-        if ! grep -q "action=on" /etc/rc.button/switch; then
-            #sed -i "s/}/}\n\tif \[ \"$action\" == \"on\" ]; then/" /etc/rc.button/switch
+        if [ -f /etc/rc.button/switch ]; then
+            sed -i "s/action=on/action=on\n\n\/root\/run\.sh/" /etc/rc.button/switch
         fi
 
     ;;
