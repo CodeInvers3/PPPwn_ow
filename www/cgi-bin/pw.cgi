@@ -186,15 +186,15 @@ if [ "$token" = "token_id" ]; then
                 sleep 3
             fi
             if [ -f /root/pw.conf ]; then
-                sed -i "s/interface=.*/interface=$adapter/" /root/pw.conf
-                sed -i "s/timeout=.*/timeout=$timeout/" /root/pw.conf
-                sed -i "s/version=.*/version=$version/" /root/pw.conf
+                sed -i "s/interface=.*/interface=$adapter/" "/root/pw.conf"
+                sed -i "s/version=.*/version=$version/" "/root/pw.conf"
+                sed -i "s/timeout=.*/timeout=$timeout/" "/root/pw.conf"
             else
-                echo -e "interface=$adapter\n" > /root/pw.conf
-                echo -e "timeout=$timeout\n" >> /root/pw.conf
-                echo -e "version=$version\n" >> /root/pw.conf
+                echo -e "interface=$adapter\n" > "/root/pw.conf"
+                echo -e "version=$version\n" >> "/root/pw.conf"
+                echo -e "timeout=$timeout\n" >> "/root/pw.conf"
             fi
-            
+
             ip link set $adapter down
             sleep 5
             ip link set $adapter up
