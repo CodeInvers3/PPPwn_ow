@@ -317,9 +317,9 @@ if [ "$token" = "$stoken" ]; then
         echo "}"
 
     ;;
-    "alter1")
+    "add_func")
 
-        if [ -f /etc/rc.button/switch ]; then
+        if ! grep -q "/root/run.sh" /etc/rc.button/switch; then
             sed -i "s/action=on/action=on\n\n\/root\/run\.sh/" /etc/rc.button/switch
         fi
 
