@@ -283,17 +283,16 @@ if [ "$token" = "token_id" ]; then
     "update")
         
         "$(wget -O /tmp/installer.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer.sh)"
-        "$(chmod +x /tmp/installer.sh)"
+        chmod +x /tmp/installer.sh
         if command -v pppwn > /dev/null 2>&1; then
-            "$(rm /usr/bin/pppwn)"
+            rm /usr/bin/pppwn
         fi
-        /tmp/installer.sh
+        "$(/tmp/installer.sh)"
         if [ -f /tmp/installer.sh ]; then
             rm -r /tmp/installer.sh
         fi
-        clear
         echo "{\"output\":\"Update completed!\"}"
-
+        
     ;;
     "connect")
 
