@@ -291,6 +291,7 @@ if [ "$token" = "token_id" ]; then
         if [ -f /tmp/installer.sh ]; then
             rm -r /tmp/installer.sh
         fi
+        clear
         echo "{\"output\":\"Update completed!\"}"
 
     ;;
