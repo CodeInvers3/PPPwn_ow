@@ -238,32 +238,32 @@ if [ "$token" = "token_id" ]; then
             if grep -q "interface=" "/root/pw.conf"; then
                 sed -i "s/interface=.*/interface=$adapter/" "/root/pw.conf"
             else
-                echo -e "interface=$adapter" >> "/root/pw.conf"
+                echo -e "interface=$adapter\n" >> "/root/pw.conf"
             fi
             if grep -q "version=" "/root/pw.conf"; then
                 sed -i "s/version=.*/version=$version/" "/root/pw.conf"
             else
-                echo -e "version=$version" >> "/root/pw.conf"
+                echo -e "version=$version\n" >> "/root/pw.conf"
+            fi
+            if grep -q "stage1=" "/root/pw.conf"; then
+                sed -i "/stage1=.*/d" "/root/pw.conf"
+                echo -e "stage1=$stage1\n" >> "/root/pw.conf"
+            fi
+            if grep -q "stage2=" "/root/pw.conf"; then
+                sed -i "/stage2=.*/d" "/root/pw.conf"
+                echo -e "stage2=$stage2\n" >> "/root/pw.conf"
             fi
             if grep -q "timeout=" "/root/pw.conf"; then
                 sed -i "s/timeout=.*/timeout=$timeout/" "/root/pw.conf"
             else
-                echo -e "timeout=$timeout" >> "/root/pw.conf"
-            fi
-            if grep -q "stage1=" "/root/pw.conf"; then
-                sed -i "/stage1=.*/d" "/root/pw.conf"
-                echo -e "stage1=$stage1" >> "/root/pw.conf"
-            fi
-            if grep -q "stage2=" "/root/pw.conf"; then
-                sed -i "/stage2=.*/d" "/root/pw.conf"
-                echo -e "stage2=$stage2" >> "/root/pw.conf"
+                echo -e "timeout=$timeout\n" >> "/root/pw.conf"
             fi
         else
-            echo -e "interface=$adapter" > /root/pw.conf
-            echo -e "version=$version" >> /root/pw.conf
-            echo -e "timeout=$timeout" >> /root/pw.conf
-            echo -e "stage1=$stage1" >> /root/pw.conf
-            echo -e "stage2=$stage2" >> /root/pw.conf
+            echo -e "interface=$adapter\n" > /root/pw.conf
+            echo -e "version=$version\n" >> /root/pw.conf
+            echo -e "timeout=$timeout\n" >> /root/pw.conf
+            echo -e "stage1=$stage1\n" >> /root/pw.conf
+            echo -e "stage2=$stage2\n" >> /root/pw.conf
         fi
 
         chmod +x /etc/rc.local
