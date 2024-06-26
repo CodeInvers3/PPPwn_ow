@@ -4,6 +4,16 @@ echo "Content-Type: application/json"
 echo ""
 
 token="token_id"
+stoken=""
+token_file="/tmp/token"
+
+if ! [ -f "$token_file" ]; then
+    stoken=$(head -30 /dev/urandom | tr -dc "0123456789" | head -c20)
+    echo "$stoken" > "$token_file"
+    echo "{\"token\":\"$stoken\"}" > "/www/generate.json"
+else
+    stoken=$(cat "$token_file")
+fi
 
 read postData
 
@@ -27,7 +37,7 @@ if [ -z "$root" ]; then
     root="/root"
 fi
 
-if [ "$token" = "token_id" ]; then
+if [ "$token" = "$stoken" ]; then
 
     case "$task" in
     "setup")

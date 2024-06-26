@@ -56,7 +56,7 @@ var appView = Backbone.View.extend({
                 method: 'POST',
                 data: {
                     task:task,
-                    token:'token_id',
+                    token:this.webToken,
                     root:this.inputRoot.val(),
                     adapter:this.inputAdapter.val(),
                     version:this.inputVersion.val(),
@@ -102,7 +102,7 @@ var appView = Backbone.View.extend({
                 method: 'POST',
                 data: {
                     task:task,
-                    token:'token_id',
+                    token:this.webToken,
                     root:this.inputRoot.val(),
                     stage1:this.stage1[this.inputVersion.val()],
                     stage2:this.stage2[this.inputVersion.val()],
@@ -131,10 +131,11 @@ var appView = Backbone.View.extend({
                 method: 'POST',
                 data: {
                     task:'update',
-                    token:'token_id'
+                    token:this.webToken
                 },
                 success: this.state.bind(this)
             }).then(function(){
+                document.cookie = 'token=; path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
                 $.modal.close();
             }).catch(function(error){
                 $.modal.close();
@@ -160,7 +161,7 @@ var appView = Backbone.View.extend({
                 method: 'POST',
                 data: {
                     task:'setup',
-                    token:'token_id',
+                    token:this.webToken,
                     option:this.inputOption.val()
                 }
             }).then(function(){
@@ -176,15 +177,13 @@ var appView = Backbone.View.extend({
 
         },
         'click button#pppoe_pw': function(){
-
             var self = this;
-
             this.model.fetch({
                 method: 'POST',
                 data: {
                     task:'connect',
-                    token:'token_id',
-                    status: this.inputConnect.val()
+                    token:this.webToken,
+                    status:this.inputConnect.val()
                 }
             }).then(function(res){
                 
@@ -202,12 +201,28 @@ var appView = Backbone.View.extend({
             });
         }
     },
+    cookie: function(name, value = null){
+
+        if(value){
+            document.cookie = `${name}=${value}; path=/`;
+        }else{
+            var cookies = document.cookie.split('; ');
+            var info = {};
+            for (var index in cookies) {
+                var parts = cookies[index].split('=');
+                info[parts[0]] = parts[1];
+            }
+            return info[name];
+        }
+
+    },
     state: function(callback){
+
         var res = pwg.fetch({
             method: 'POST',
             data: {
                 task:'state',
-                token:'token_id'
+                token:this.webToken
             },
             success: this.render.bind(this),
             error: function(err){
@@ -219,6 +234,7 @@ var appView = Backbone.View.extend({
         if(typeof callback == 'function'){
             res.then(callback);
         }
+
     },
     render: function(response){
 
@@ -261,6 +277,12 @@ var appView = Backbone.View.extend({
         }else{
             this.buttonSwitch.prop('task', 'enable').text('Enable autorun');
         }
+
+        if(this.model.get('update')){
+            $.modal(function(modal){
+                modal.content(self.templates.msg({message: 'Update available'}));
+            });
+        }
         
         return this;
 
@@ -269,7 +291,21 @@ var appView = Backbone.View.extend({
 
         var self = this;
         this.loading = this.$('#loading_ide');
-        this.state();
+        this.webToken = this.cookie('token');
+        
+        if(this.webToken){
+            this.state();
+        }else{
+            fetch('/generate.json',{
+                method: 'GET'
+            }).then(function(response){
+                if(response.ok) return response.json();
+            }).then(function(web){
+                self.cookie('token', web.token);
+                self.webToken = self.cookie('token');
+                self.state();
+            });
+        }
 
         $('a#credits').click(function(){
             $.modal(function(modal){

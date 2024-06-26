@@ -5,7 +5,7 @@
 body{
 	font-family: Arial;
 	color: #1b1b1b;
-	background-color: #290e2f;
+	background-color: #1053a4c5;
 	background-image: url(https://roboticoverlords.org/wallpapers/arch_nz.png);
 	background-position: center;
 	background-repeat: no-repeat;
@@ -70,6 +70,14 @@ body{
 	height: 150px;
 	width: 100%;
 	font-size: 10pt;
+}
+
+/* Message */
+.message-success{
+	background-color: #32a72e;
+	color:#1b1b1b;
+	position: relative;
+	display: block;
 }
 
 #footer{
