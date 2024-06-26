@@ -20,6 +20,9 @@ fi
 if [ -d /www/pppwn ]; then
     rm -r /www/pppwn
 fi
+if [ -f /root/pw.conf ]; then
+    rm /root/pw.conf
+fi
 if [ -f /root/version ]; then
     rm /root/version
 fi
@@ -49,6 +52,7 @@ mv -f /tmp/PPPwn_ow-main/www/pppwn /www
 mv -f /tmp/PPPwn_ow-main/www/pppwn.html /www
 mv -f /tmp/PPPwn_ow-main/www/cgi-bin/pw.cgi /www/cgi-bin
 mv -f /tmp/PPPwn_ow-main/version /root/
+mv -f /tmp/PPPwn_ow-main/pw.conf /root/
 mv -f /tmp/PPPwn_ow-main/stage1 /root/
 mv -f /tmp/PPPwn_ow-main/stage2 /root/
 mv -f /tmp/PPPwn_ow-main/run.sh /root/
