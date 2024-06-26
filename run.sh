@@ -14,8 +14,6 @@ if ! pgrep pppwn > /dev/null; then
         ip link set $interface down
         sleep 5
         ip link set $interface up
-
-        echo "$interface, $version, $stage1, $stage2, $timeout" > "/root/log"
         
         res=$(pppwn --interface "$interface" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
         
