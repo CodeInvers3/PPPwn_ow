@@ -226,8 +226,7 @@ var appView = Backbone.View.extend({
             },
             success: this.render.bind(this),
             error: function(err){
-                $.modal.close();
-                alert(err.responseText);
+                return  err.responseJSON ? err.responseJSON.message : 'Unknow issue';
             }
         });
 
@@ -235,10 +234,22 @@ var appView = Backbone.View.extend({
             res.then(callback);
         }
 
+        res.catch(function(err) {
+            $.modal.close();
+            $.modal(function(modal){
+                modal.content(self.templates.msg({message: err.responseJSON.output}));
+            });
+        });
+
     },
     render: function(response){
 
         var self = this, interfaces = [];
+
+        if (this.model.get('stored_token')) {
+            document.cookie = 'token=; path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            this.cookie('token', this.model.get('stored_token'));
+        }
 
         $.each(response.get('interfaces'), function(index, item){
             if(item.adapter != "[+] PPPwn++ - PlayStation 4 PPPoE RCE by theflow" && item.adapter != "[+] interfaces:"){
@@ -252,6 +263,7 @@ var appView = Backbone.View.extend({
 
         this.$el.html(this.templates.web(data));
 
+        this.webToken = this.cookie('token');
         this.stage1 = data.stage1;
         this.stage2 = data.stage2;
         this.textareaOut = this.$('#task-log .output');
@@ -291,21 +303,7 @@ var appView = Backbone.View.extend({
 
         var self = this;
         this.loading = this.$('#loading_ide');
-        this.webToken = this.cookie('token');
-        
-        fetch('/generate.json',{
-            method: 'GET'
-        }).then(function(response){
-            if(response.ok) return response.json();
-        }).then(function(web){
-            if(self.webToken != web.token){
-                console.log(self.webToken+' == '+web.token)
-                document.cookie = 'token=; path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                self.cookie('token', web.token);
-                self.webToken = web.token;
-            }
-            self.state();
-        });
+        this.state();
 
         $('a#credits').click(function(){
             $.modal(function(modal){

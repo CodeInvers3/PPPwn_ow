@@ -1,7 +1,6 @@
 #!/bin/sh
 
 echo "Content-Type: application/json"
-echo ""
 
 token="token_id"
 stoken=""
@@ -10,7 +9,6 @@ token_file="/tmp/token"
 if ! [ -f "$token_file" ]; then
     stoken=$(head -30 /dev/urandom | tr -dc "0123456789" | head -c20)
     echo "$stoken" > "$token_file"
-    echo "{\"token\":\"$stoken\"}" > "/www/generate.json"
 else
     stoken=$(cat "$token_file")
 fi
@@ -37,10 +35,19 @@ if [ -z "$root" ]; then
     root="/root"
 fi
 
-if [ "$token" = "$stoken" ]; then
-
-    case "$task" in
+case "$task" in
     "setup")
+
+        if ! [ "$token" = "$stoken" ]; then
+
+            echo "Status: 400 Bad Request"
+            echo ""
+            echo "{\"output\":\"Invalid token!\"}"
+            exit 1
+            
+        fi
+
+        echo ""
 
         source=""
         if [ "$option" = "aarch64-linux-musl" ]; then
@@ -82,10 +89,13 @@ if [ "$token" = "$stoken" ]; then
     ;;
     "state")
 
+        echo ""
         echo "{"
 
         current_version=$(cat /root/version)
         latest_version=$(wget -qO- "https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/version" 2>/dev/null)
+
+        echo "\"stored_token\":\"$stoken\","
 
         if [ -z "$latest_version" ]; then
             echo "\"update\":false,"
@@ -189,6 +199,17 @@ if [ "$token" = "$stoken" ]; then
     ;;
     "start")
 
+        if ! [ "$token" = "$stoken" ]; then
+
+            echo "Status: 400 Bad Request"
+            echo ""
+            echo "{\"output\":\"Invalid token!\""
+            exit 1
+            
+        fi
+
+        echo ""
+
         if ! pgrep pppwn > /dev/null; then
 
             if /etc/init.d/pppoe-server status | grep -q "running"; then
@@ -225,6 +246,17 @@ if [ "$token" = "$stoken" ]; then
     ;;
     "stop")
 
+        if ! [ "$token" = "$stoken" ]; then
+
+            echo "Status: 400 Bad Request"
+            echo ""
+            echo "{\"output\":\"Invalid token!\""
+            exit 1
+            
+        fi
+
+        echo ""
+
         pids=$(pgrep pppwn)
         for pid in $pids; do
             kill $pid
@@ -236,6 +268,17 @@ if [ "$token" = "$stoken" ]; then
 
     ;;
     "enable")
+
+        if ! [ "$token" = "$stoken" ]; then
+
+            echo "Status: 400 Bad Request"
+            echo ""
+            echo "{\"output\":\"Invalid token!\""
+            exit 1
+            
+        fi
+
+        echo ""
 
         if ! grep -q "/root/run.sh" /etc/rc.local; then
             sed -i '/exit 0/d' /etc/rc.local
@@ -282,6 +325,17 @@ if [ "$token" = "$stoken" ]; then
     ;;
     "disable")
 
+        if ! [ "$token" = "$stoken" ]; then
+
+            echo "Status: 400 Bad Request"
+            echo ""
+            echo "{\"output\":\"Invalid token!\""
+            exit 1
+            
+        fi
+
+        echo ""
+
         if grep -q "/root/run.sh" /etc/rc.local; then
             sed -i '/\/root\/run\.sh/d' /etc/rc.local
         fi
@@ -289,6 +343,17 @@ if [ "$token" = "$stoken" ]; then
 
     ;;
     "update")
+
+        if ! [ "$token" = "$stoken" ]; then
+
+            echo "Status: 400 Bad Request"
+            echo ""
+            echo "{\"output\":\"Invalid token!\""
+            exit 1
+            
+        fi
+
+        echo ""
         
         "$(wget -O /tmp/installer.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer.sh)"
         chmod +x /tmp/installer.sh
@@ -303,6 +368,17 @@ if [ "$token" = "$stoken" ]; then
         
     ;;
     "connect")
+
+        if ! [ "$token" = "$stoken" ]; then
+
+            echo "Status: 400 Bad Request"
+            echo ""
+            echo "{\"output\":\"Invalid token!\""
+            exit 1
+            
+        fi
+
+        echo ""
 
         echo "{"
         if /etc/init.d/pppoe-server status | grep -q "running"; then
@@ -319,18 +395,28 @@ if [ "$token" = "$stoken" ]; then
     ;;
     "add_func")
 
+        if ! [ "$token" = "$stoken" ]; then
+
+            echo "Status: 400 Bad Request"
+            echo ""
+            echo "{\"output\":\"Invalid token!\""
+            exit 1
+            
+        fi
+
+        echo ""
+
         if ! grep -q "/root/run.sh" /etc/rc.button/switch; then
             sed -i "s/action=on/action=on\n\n\/root\/run\.sh/" /etc/rc.button/switch
         fi
 
     ;;
     *)
-        echo "{\"output\":\"null\"}"
-        exit 1
-    ;;
-    esac
 
-else
-    echo "{\"output\":\"Invalid token!\"}"
-    exit 1
-fi
+        echo "Status: 400 Bad Request"
+        echo ""
+        echo "{\"output\":\"invalid task\"}"
+        exit 1
+
+    ;;
+esac
