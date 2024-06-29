@@ -70,9 +70,43 @@ var appView = Backbone.View.extend({
                 }
                 button.prop('task', 'start').addClass('active').text('Execute');
             }).catch(function(err, textStatus, errorThrown){
-                if(err.responseText) self.textareaOut.append(err.responseText+"\n");
+                if(err.responseJSON) self.textareaOut.append(err.responseJSON.output+"\n");
                 if(err.textStatus) self.textareaOut.append(err.textStatus+"\n");
                 button.prop('task', 'start').addClass('active').text('Execute');
+            });
+
+        },
+        'click button#params_pw': function(event){
+
+            var self = this;
+
+            if(!this.inputRoot.val() || !this.inputTimeout.val() || !this.inputAdapter.val() || !this.inputVersion.val()){
+                $.modal(function (modal) {
+                    modal.content(self.templates.msg({message: 'Required options fields.'}));
+                });
+                return;
+            }
+            
+            this.model.fetch({
+                method: 'POST',
+                data: {
+                    task:'params',
+                    token:this.webToken,
+                    root:this.inputRoot.val(),
+                    stage1:this.stage1[this.inputVersion.val()],
+                    stage2:this.stage2[this.inputVersion.val()],
+                    timeout:this.inputTimeout.val(),
+                    adapter:this.inputAdapter.val(),
+                    version:this.inputVersion.val()
+                }
+            }).then(function(response){
+                console.log(response);
+                if(response.output){
+                    self.textareaOut.append(response.output+"\n");
+                }
+            }).catch(function(err){
+                console.log(err);
+                self.textareaOut.append(err.responseJSON.output+"\n");
             });
 
         },
@@ -115,7 +149,7 @@ var appView = Backbone.View.extend({
                     self.textareaOut.append(response.output+"\n");
                 }
             }).catch(function(err){
-                self.textareaOut.append(err.responseText+"\n");
+                self.textareaOut.append(err.responseJSON.output+"\n");
             });
 
         },

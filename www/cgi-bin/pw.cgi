@@ -209,7 +209,6 @@ case "$task" in
         fi
 
         echo ""
-
         if ! pgrep pppwn > /dev/null; then
 
             if /etc/init.d/pppoe-server status | grep -q "running"; then
@@ -256,7 +255,6 @@ case "$task" in
         fi
 
         echo ""
-
         pids=$(pgrep pppwn)
         for pid in $pids; do
             kill $pid
@@ -265,6 +263,53 @@ case "$task" in
         echo "{\"output\":\"Execution terminated.\",\"pppwned\":false}"
 
         exit 1
+
+    ;;
+    "params")
+
+        if ! [ "$token" = "$stoken" ]; then
+
+            echo "Status: 400 Bad Request"
+            echo ""
+            echo "{\"output\":\"Invalid token!\"}"
+            exit 1
+            
+        fi
+
+        echo ""
+        if [ -f /root/pw.conf ]; then
+            if grep -q "interface=" "/root/pw.conf"; then
+                sed -i "s/interface=.*/interface=$adapter/" "/root/pw.conf"
+            else
+                echo -e "interface=$adapter" >> "/root/pw.conf"
+            fi
+            if grep -q "version=" "/root/pw.conf"; then
+                sed -i "s/version=.*/version=$version/" "/root/pw.conf"
+            else
+                echo -e "version=$version" >> "/root/pw.conf"
+            fi
+            if grep -q "timeout=" "/root/pw.conf"; then
+                sed -i "s/timeout=.*/timeout=$timeout/" "/root/pw.conf"
+            else
+                echo -e "timeout=$timeout" >> "/root/pw.conf"
+            fi
+            if grep -q "stage1=" "/root/pw.conf"; then
+                sed -i "/stage1=.*/d" "/root/pw.conf"
+                echo -e "stage1=$stage1" >> "/root/pw.conf"
+            fi
+            if grep -q "stage2=" "/root/pw.conf"; then
+                sed -i "/stage2=.*/d" "/root/pw.conf"
+                echo -e "stage2=$stage2" >> "/root/pw.conf"
+            fi
+        else
+            echo -e "interface=$adapter" > /root/pw.conf
+            echo -e "version=$version" >> /root/pw.conf
+            echo -e "timeout=$timeout" >> /root/pw.conf
+            echo -e "stage1=$stage1" >> /root/pw.conf
+            echo -e "stage2=$stage2" >> /root/pw.conf
+        fi
+
+        echo "{\"output\":\"Save settings\"}"
 
     ;;
     "enable")
@@ -279,7 +324,6 @@ case "$task" in
         fi
 
         echo ""
-
         if ! grep -q "/root/run.sh" /etc/rc.local; then
             sed -i '/exit 0/d' /etc/rc.local
             echo "/root/run.sh &" >> /etc/rc.local
@@ -335,7 +379,6 @@ case "$task" in
         fi
 
         echo ""
-
         if grep -q "/root/run.sh" /etc/rc.local; then
             sed -i '/\/root\/run\.sh/d' /etc/rc.local
         fi
@@ -354,7 +397,6 @@ case "$task" in
         fi
 
         echo ""
-        
         "$(wget -O /tmp/installer.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer.sh)"
         chmod +x /tmp/installer.sh
         if command -v pppwn > /dev/null 2>&1; then
@@ -376,6 +418,7 @@ case "$task" in
              exit 1
         fi
 
+        echo ""
         rm -f /usr/bin/pppwn
         rm -rf /root/*
         rm -rf /www/pppwn
@@ -396,7 +439,6 @@ case "$task" in
         fi
 
         echo ""
-
         echo "{"
         if /etc/init.d/pppoe-server status | grep -q "running"; then
             /etc/init.d/pppoe-server stop
@@ -422,7 +464,6 @@ case "$task" in
         fi
 
         echo ""
-
         if ! grep -q "/root/run.sh" /etc/rc.button/switch; then
             sed -i "s/action=on/action=on\n\n\/root\/run\.sh/" /etc/rc.button/switch
         fi
