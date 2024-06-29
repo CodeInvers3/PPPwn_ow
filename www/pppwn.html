@@ -31,11 +31,14 @@
                             <fieldset>
                                 <div class="row">
                                     <div class="field-group col-4">
-                                        <div class="top-label"><label for="inputRoot">Root</label></div>
-                                        <input name="root" required type="text" id="inputRoot" class="sec-auto box" value="/root">
-                                        <br>
-                                        <div class="top-label"><label for="inputTimeout" title="Timeout">Timeout</label></div>
-                                        <input name="timeout" required type="number" id="inputTimeout" class="sec-auto box" value="<%= timeout %>">
+                                        <div class="row">
+                                            <div class="top-label"><label for="inputRoot">Root</label></div>
+                                            <input name="root" required type="text" id="inputRoot" class="sec-auto box" value="/root">
+                                        </div>
+                                        <div class="row">
+                                            <div class="top-label"><label for="inputTimeout" title="Timeout">Timeout</label></div>
+                                            <input name="timeout" required type="number" id="inputTimeout" class="sec-auto box" value="<%= timeout %>">
+                                        </div>
                                     </div>
                                     <div class="field-group col-4">
                                         <div class="top-label"><label for="select-ifc">Ethernet</label></div>
@@ -72,6 +75,7 @@
                                             <button type="button" id="pppoe_pw" value="running" class="btn-form input-attach sec-auto">PPPoe stop</button>
                                         <% } %>
                                         <button type="button" id="update_rep" class="btn-form input-attach sec-auto">Update</button>
+                                        <button type="button" id="remove_rep" class="btn-form input-attach sec-auto">Uninstall</button>
                                     </div>
                                 </div>
                                 <div id="task-log">
@@ -105,7 +109,7 @@
         </div>
         <div class="container">
             <div id="footer" class="content">
-                <sub><a target="_blank" href="https://paypal.me/MarianoJzm?country.x=US&locale.x=en_US">Support me</a></sub>
+                <sub><a target="_blank" href="https://ko-fi.com/invers3">Support me</a></sub>
                 <sub> | </sub>
                 <sub><a id="credits" href="#credits">Credits</a></sub>
                 <sub> | </sub>

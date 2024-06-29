@@ -176,6 +176,30 @@ var appView = Backbone.View.extend({
             });
 
         },
+        'click button#remove_rep': function(){
+
+            var self = this;
+
+            $.modal(function(modal){
+                modal.content($('<div class="preloader center"></div>'));
+            });
+
+            this.model.fetch({
+                method: 'POST',
+                data: {
+                    task:'remove',
+                    token:this.webToken
+                }
+            }).then(function(){
+                location.assign('/');
+            }).catch(function(err){
+                $.modal.close();
+                $.modal(function(modal){
+                    modal.content(self.templates.msg({message: err.responseText}));
+                });
+            });
+
+        },
         'click button#pppoe_pw': function(){
             var self = this;
             this.model.fetch({

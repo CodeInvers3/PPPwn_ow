@@ -367,6 +367,18 @@ case "$task" in
         echo "{\"output\":\"Update completed!\"}"
         
     ;;
+    "remove")
+
+        if ! [ "$token" = "$stoken" ]; then
+            rm -f /usr/bin/pppwn
+            rm -rf /root/*
+            rm -rf /www/pppwn
+            rm -f /www/pppwn.html
+            rm -f /www/cgi-bin/pw.cgi
+            echo "{\"output\":\"Uninstalled!\"}"
+        fi
+        
+    ;;
     "connect")
 
         if ! [ "$token" = "$stoken" ]; then
