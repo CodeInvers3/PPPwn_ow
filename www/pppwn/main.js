@@ -100,12 +100,10 @@ var appView = Backbone.View.extend({
                     version:this.inputVersion.val()
                 }
             }).then(function(response){
-                console.log(response);
                 if(response.output){
                     self.textareaOut.append(response.output+"\n");
                 }
             }).catch(function(err){
-                console.log(err);
                 self.textareaOut.append(err.responseJSON.output+"\n");
             });
 
