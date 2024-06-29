@@ -137,11 +137,8 @@ var appView = Backbone.View.extend({
             }).then(function(){
                 document.cookie = 'token=; path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
                 $.modal.close();
-            }).catch(function(error){
-                $.modal.close();
-                $.modal(function(modal){
-                    modal.content(self.templates.msg({message: err.responseText}));
-                });
+            }).catch(function(err){
+                $.modal.content(self.templates.msg({message: err.responseJSON.output}));
             });
 
         },
@@ -169,10 +166,7 @@ var appView = Backbone.View.extend({
                     $.modal.close();
                 });
             }).catch(function(err){
-                $.modal.close();
-                $.modal(function(modal){
-                    modal.content(self.templates.msg({message: err.responseText}));
-                });
+                $.modal.content(self.templates.msg({message: err.responseJSON.output}));
             });
 
         },
@@ -190,13 +184,10 @@ var appView = Backbone.View.extend({
                     task:'remove',
                     token:this.webToken
                 }
-            }).then(function(){
-                location.assign('/');
+            }).then(function(res){
+                location.assign("/");
             }).catch(function(err){
-                $.modal.close();
-                $.modal(function(modal){
-                    modal.content(self.templates.msg({message: err.responseText}));
-                });
+                $.modal.content(self.templates.msg({message: err.responseJSON.output}));
             });
 
         },
@@ -259,7 +250,6 @@ var appView = Backbone.View.extend({
         }
 
         res.catch(function(err) {
-            $.modal.close();
             $.modal(function(modal){
                 modal.content(self.templates.msg({message: err.responseJSON.output}));
             });

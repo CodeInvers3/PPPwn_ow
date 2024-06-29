@@ -203,7 +203,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\""
+            echo "{\"output\":\"Invalid token!\"}"
             exit 1
             
         fi
@@ -250,7 +250,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\""
+            echo "{\"output\":\"Invalid token!\"}"
             exit 1
             
         fi
@@ -273,7 +273,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\""
+            echo "{\"output\":\"Invalid token!\"}"
             exit 1
             
         fi
@@ -329,7 +329,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\""
+            echo "{\"output\":\"Invalid token!\"}"
             exit 1
             
         fi
@@ -348,7 +348,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\""
+            echo "{\"output\":\"Invalid token!\"}"
             exit 1
             
         fi
@@ -370,13 +370,18 @@ case "$task" in
     "remove")
 
         if ! [ "$token" = "$stoken" ]; then
-            rm -f /usr/bin/pppwn
-            rm -rf /root/*
-            rm -rf /www/pppwn
-            rm -f /www/pppwn.html
-            rm -f /www/cgi-bin/pw.cgi
-            echo "{\"output\":\"Uninstalled!\"}"
+             echo "Status: 400 Bad Request"
+             echo ""
+             echo "{\"output\":\"Invalid token!\"}"
+             exit 1
         fi
+
+        rm -f /usr/bin/pppwn
+        rm -rf /root/*
+        rm -rf /www/pppwn
+        rm -f /www/pppwn.html
+        rm -f /www/cgi-bin/pw.cgi
+        echo "{\"output\":\"Uninstalled!\"}"
         
     ;;
     "connect")
@@ -385,7 +390,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\""
+            echo "{\"output\":\"Invalid token!\"}"
             exit 1
             
         fi
@@ -411,7 +416,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\""
+            echo "{\"output\":\"Invalid token!\"}"
             exit 1
             
         fi
