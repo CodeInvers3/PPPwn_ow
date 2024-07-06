@@ -77,6 +77,6 @@ fi
 
 rm /tmp/installer.sh
 
-echo "PPPwn web is hosted at http://192.168.8.1"
+echo "PPPwn web is hosted at http://192.168.8.1/pppwn.html"
 echo "Installation completed!"
 exit 0
