@@ -309,7 +309,7 @@ case "$task" in
             echo -e "stage2=$stage2" >> /root/pw.conf
         fi
 
-        echo "{\"output\":\"Save settings\"}"
+        echo "{\"output\":\"Settings saved!\"}"
 
     ;;
     "enable")
