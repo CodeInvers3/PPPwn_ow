@@ -42,7 +42,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\"}"
+            echo "{\"output\":\"Invalid token\"}"
             exit 1
             
         fi
@@ -79,7 +79,7 @@ case "$task" in
             "$(rm pppwn.tar.gz)"
             "$(chmod +x pppwn)"
             "$(mv pppwn /usr/bin)"
-            echo "{\"output\":\"PPPwn installed!\",\"pppwn\":true}"
+            echo "{\"output\":\"PPPwn installed\",\"pppwn\":true}"
             exit 0
         else
             echo "{\"output\":\"Cannot to get source: $source\"}"
@@ -172,21 +172,14 @@ case "$task" in
         else
             echo "\"pppwn\":false,"
             echo "\"compiles\":["
-            type=$(uname -m)
-            if echo "$type" | grep -q "arch64"; then
-                echo "{\"label\":\"Arch64 Linux\",\"type\":\"aarch64-linux-musl\"}"
-            elif echo "$type" | grep -q "arm"; then
-                echo "{\"label\":\"Arm Cortex A7\",\"type\":\"arm-linux-musleabi(cortex_a7)\"},"
-                echo "{\"label\":\"Arm Pi Zero W\",\"type\":\"arm-linux-musleabi(pi_zero_w)\"},"
-                echo "{\"label\":\"Arm MP Core Nov Fp\",\"type\":\"arm-linux-musleabi(mpcorenovfp)\"}"
-            elif echo "$type" | grep -q "x86_64"; then
-                echo "{\"label\":\"X86-64 Linux\",\"type\":\"x86_64-linux-musl\"}"
-            elif echo "$type" | grep -q "mips"; then
-                echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"},"
-                echo "{\"label\":\"MIPS Linux\",\"type\":\"mips-linux-musl\"}"
-            elif "$type" | grep -q "mipsel"; then
-                echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"}"
-            fi
+            echo "{\"label\":\"Arch64 Linux\",\"type\":\"aarch64-linux-musl\"}"
+            echo "{\"label\":\"Arm Cortex A7\",\"type\":\"arm-linux-musleabi(cortex_a7)\"},"
+            echo "{\"label\":\"Arm Pi Zero W\",\"type\":\"arm-linux-musleabi(pi_zero_w)\"},"
+            echo "{\"label\":\"Arm MP Core Nov Fp\",\"type\":\"arm-linux-musleabi(mpcorenovfp)\"}"
+            echo "{\"label\":\"X86-64 Linux\",\"type\":\"x86_64-linux-musl\"}"
+            echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"},"
+            echo "{\"label\":\"MIPS Linux\",\"type\":\"mips-linux-musl\"}"
+            echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"}"
             echo "],"
         fi
         if grep -q "/root/run.sh" /etc/rc.local; then
@@ -203,7 +196,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\"}"
+            echo "{\"output\":\"Invalid token\"}"
             exit 1
             
         fi
@@ -225,19 +218,22 @@ case "$task" in
                 echo -e "timeout=$timeout\n" >> "/root/pw.conf"
             fi
 
-            ip link set $adapter down
-            sleep 5
-            ip link set $adapter up
-            
-            result=$(pppwn --interface "$adapter" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
-            
-            if [[ "$result" == *"\[\+\] Done\!"* ]]; then
-                /etc/init.d/pppoe-server start
-                echo "{\"output\":\"Exploit success!\",\"pppwned\":true}"
+            if pgrep pppwn > /dev/null; then
+                echo "{\"output\":\"PPPwn running\",\"running\":true}"
                 exit 0
             else
-                echo "{\"output\":\"Exploit interrupted!\",\"pppwned\":false}"
-                exit 1
+                ip link set $adapter down
+                sleep 5
+                ip link set $adapter up
+                result=$(pppwn --interface "$adapter" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
+                if [[ "$result" == *"\[\+\] Done\!"* ]]; then
+                    /etc/init.d/pppoe-server start
+                    echo "{\"output\":\"Exploit success\",\"pppwned\":true}"
+                    exit 0
+                else
+                    echo "{\"output\":\"Exploit interrupted\",\"pppwned\":false}"
+                    exit 1
+                fi
             fi
 
         fi
@@ -249,7 +245,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\"}"
+            echo "{\"output\":\"Invalid token\"}"
             exit 1
             
         fi
@@ -271,7 +267,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\"}"
+            echo "{\"output\":\"Invalid token\"}"
             exit 1
             
         fi
@@ -309,7 +305,7 @@ case "$task" in
             echo -e "stage2=$stage2" >> /root/pw.conf
         fi
 
-        echo "{\"output\":\"Settings saved!\"}"
+        echo "{\"output\":\"Settings saved\"}"
 
     ;;
     "enable")
@@ -318,7 +314,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\"}"
+            echo "{\"output\":\"Invalid token\"}"
             exit 1
             
         fi
@@ -364,7 +360,7 @@ case "$task" in
 
         chmod +x /etc/rc.local
         chmod +x /root/run.sh
-        echo "{\"output\":\"Autorun enable\"}"
+        echo "{\"output\":\"Autorun enabled\"}"
 
     ;;
     "disable")
@@ -373,7 +369,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\"}"
+            echo "{\"output\":\"Invalid token\"}"
             exit 1
             
         fi
@@ -391,7 +387,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\"}"
+            echo "{\"output\":\"Invalid token\"}"
             exit 1
             
         fi
@@ -406,7 +402,7 @@ case "$task" in
         if [ -f /tmp/installer.sh ]; then
             rm -r /tmp/installer.sh
         fi
-        echo "{\"output\":\"Update completed!\"}"
+        echo "{\"output\":\"Update completed\"}"
         
     ;;
     "remove")
@@ -414,7 +410,7 @@ case "$task" in
         if ! [ "$token" = "$stoken" ]; then
              echo "Status: 400 Bad Request"
              echo ""
-             echo "{\"output\":\"Invalid token!\"}"
+             echo "{\"output\":\"Invalid token\"}"
              exit 1
         fi
 
@@ -424,7 +420,7 @@ case "$task" in
         rm -rf /www/pppwn
         rm -f /www/pppwn.html
         rm -f /www/cgi-bin/pw.cgi
-        echo "{\"output\":\"Uninstalled!\"}"
+        echo "{\"output\":\"Uninstalled\"}"
         
     ;;
     "connect")
@@ -433,7 +429,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\"}"
+            echo "{\"output\":\"Invalid token\"}"
             exit 1
             
         fi
@@ -442,10 +438,10 @@ case "$task" in
         echo "{"
         if /etc/init.d/pppoe-server status | grep -q "running"; then
             /etc/init.d/pppoe-server stop
-            echo "\"output\":\"Stop pppoe service\","
+            echo "\"output\":\"PPPoE service stopped\","
         elif /etc/init.d/pppoe-server status | grep -q "inactive"; then
             /etc/init.d/pppoe-server start
-            echo "\"output\":\"Start pppoe service\","
+            echo "\"output\":\"PPPoE service started\","
         fi
         rspppoe=$(/etc/init.d/pppoe-server status)
         echo "\"pppoe\":\"$rspppoe\""
@@ -458,7 +454,7 @@ case "$task" in
 
             echo "Status: 400 Bad Request"
             echo ""
-            echo "{\"output\":\"Invalid token!\"}"
+            echo "{\"output\":\"Invalid token\"}"
             exit 1
             
         fi
@@ -473,7 +469,7 @@ case "$task" in
 
         echo "Status: 400 Bad Request"
         echo ""
-        echo "{\"output\":\"invalid task\"}"
+        echo "{\"output\":\"Invalid task\"}"
         exit 1
 
     ;;
