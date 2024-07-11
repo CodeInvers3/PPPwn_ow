@@ -5,7 +5,7 @@ var Pwg = Backbone.Model.extend({
         update: false,
         pppoe: '',
         pppwn: false,
-        compiles: [],
+        compiled: [],
         pppwned: false,
         running: false,
         autorun: false,

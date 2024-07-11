@@ -64,26 +64,46 @@ case "$task" in
             source="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/mipsel-linux-musl.zip"
         elif [ "$option" = "mips-linux-musl" ]; then
             source="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/mips-linux-musl.zip"
+        elif [ "$option" = "custom-aarch64-linux-musl" ]; then
+            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/aarch64-linux-musl/pppwn"
+        elif [ "$option" = "custom-arm-linux-musleabi_cortex_a7" ]; then
+            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/arm-linux-musleabi_cortex_a7/pppwn"
+        elif [ "$option" = "custom-arm-linux-musleabi_mpcorenovfp" ]; then
+            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/arm-linux-musleabi_mpcorenovfp/pppwn"
+        elif [ "$option" = "custom-arm-linux-musleabi_pi_zero_w" ]; then
+            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/arm-linux-musleabi_pi_zero_w/pppwn"
+        elif [ "$option" = "custom-mips-linux-musl" ]; then
+            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/mips-linux-musl/pppwn"
+        elif [ "$option" = "custom-mipsel-linux-musl" ]; then
+            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/mipsel-linux-musl/pppwn"
+        elif [ "$option" = "custom-x86_64-linux-musl" ]; then
+            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/x86_64-linux-musl/pppwn"
         fi
 
-        if ! command -v "unzip" > /dev/null 2>&1; then
-            "$(opkg update)"
-            "$(opkg install unzip)"
-        fi
-
-        cd /tmp/
-        if wget -O pppwn_file.zip $source; then
-            "$(unzip pppwn_file.zip)"
-            "$(rm pppwn_file.zip)"
-            "$(tar -xzvf pppwn.tar.gz)"
-            "$(rm pppwn.tar.gz)"
-            "$(chmod +x pppwn)"
-            "$(mv pppwn /usr/bin)"
+        if [[ "$source" =~ \.zip$ ]]; then
+            if ! command -v "unzip" > /dev/null 2>&1; then
+                "$(opkg update)"
+                "$(opkg install unzip)"
+            fi
+            cd /tmp/
+            if wget -O pppwn_file.zip $source; then
+                "$(unzip pppwn_file.zip)"
+                "$(rm pppwn_file.zip)"
+                "$(tar -xzvf pppwn.tar.gz)"
+                "$(rm pppwn.tar.gz)"
+                "$(chmod +x pppwn)"
+                "$(mv pppwn /usr/bin)"
+                echo "{\"output\":\"PPPwn installed\",\"pppwn\":true}"
+                exit 0
+            else
+                echo "{\"output\":\"Cannot to get source: $source\"}"
+                exit 1
+            fi
+        else
+            "$(wget -O /usr/bin/pppwn $source)"
+            "$(chmod +x /usr/bin/pppwn)"
             echo "{\"output\":\"PPPwn installed\",\"pppwn\":true}"
             exit 0
-        else
-            echo "{\"output\":\"Cannot to get source: $source\"}"
-            exit 1
         fi
 
     ;;
@@ -172,14 +192,30 @@ case "$task" in
             fi
         else
             echo "\"pppwn\":false,"
-            echo "\"compiles\":["
-            echo "{\"label\":\"Arch64 Linux\",\"type\":\"aarch64-linux-musl\"},"
-            echo "{\"label\":\"Arm Cortex A7\",\"type\":\"arm-linux-musleabi(cortex_a7)\"},"
-            echo "{\"label\":\"Arm Pi Zero W\",\"type\":\"arm-linux-musleabi(pi_zero_w)\"},"
-            echo "{\"label\":\"Arm MP Core Nov Fp\",\"type\":\"arm-linux-musleabi(mpcorenovfp)\"},"
-            echo "{\"label\":\"X86-64 Linux\",\"type\":\"x86_64-linux-musl\"},"
-            echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"},"
-            echo "{\"label\":\"MIPS Linux\",\"type\":\"mips-linux-musl\"}"
+            echo "\"compiled\":["
+            type=$(uname -m)
+            if echo "$type" | grep -q "aarch64"; then
+                echo "{\"label\":\"Arch64 Linux\",\"type\":\"aarch64-linux-musl\"},"
+                echo "{\"label\":\"Custom Arch64 Linux\",\"type\":\"custom-aarch64-linux-musl\"}"
+            elif echo "$type" | grep -q "arm"; then
+                echo "{\"label\":\"ARM Cortex A7\",\"type\":\"arm-linux-musleabi(cortex_a7)\"},"
+                echo "{\"label\":\"ARM Pi Zero W\",\"type\":\"arm-linux-musleabi(pi_zero_w)\"},"
+                echo "{\"label\":\"ARM MP Core Nov Fp\",\"type\":\"arm-linux-musleabi(mpcorenovfp)\"},"
+                echo "{\"label\":\"Custom ARM Cortex A7\",\"type\":\"custom-arm-linux-musleabi_cortex_a7\"},"
+                echo "{\"label\":\"Custom ARM MP Core Nov\",\"type\":\"custom-arm-linux-musleabi_mpcorenovfp\"},"
+                echo "{\"label\":\"Custom ARM Pi Zero W\",\"type\":\"custom-arm-linux-musleabi_pi_zero_w\"}"
+            elif echo "$type" | grep -q "x86_64"; then
+                echo "{\"label\":\"X86-64 Linux\",\"type\":\"x86_64-linux-musl\"},"
+                echo "{\"label\":\"Custom x86_64 Linux\",\"type\":\"custom-x86_64-linux-musl\"}"
+            elif echo "$type" | grep -q "mips"; then
+                echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"},"
+                echo "{\"label\":\"MIPS Linux\",\"type\":\"mips-linux-musl\"},"
+                echo "{\"label\":\"Custom MIPSEL Linux\",\"type\":\"custom-mipsel-linux-musl\"},"
+                echo "{\"label\":\"Custom MIPS\",\"type\":\"custom-mips-linux-musl\"}"
+            elif "$type" | grep -q "mipsel"; then
+                echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"},"
+                echo "{\"label\":\"Custom MIPSEL Linux\",\"type\":\"custom-mipsel-linux-musl\"}"
+            fi
             echo "],"
         fi
         if grep -q "/root/run.sh" /etc/rc.local; then
