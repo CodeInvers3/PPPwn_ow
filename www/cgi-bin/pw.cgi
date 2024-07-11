@@ -96,6 +96,7 @@ case "$task" in
         latest_version=$(wget -qO- "https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/version" 2>/dev/null)
 
         echo "\"stored_token\":\"$stoken\","
+        echo "\"chipname\":\"$(uname -m)\","
 
         if [ -z "$latest_version" ]; then
             echo "\"update\":false,"
@@ -178,8 +179,7 @@ case "$task" in
             echo "{\"label\":\"Arm MP Core Nov Fp\",\"type\":\"arm-linux-musleabi(mpcorenovfp)\"},"
             echo "{\"label\":\"X86-64 Linux\",\"type\":\"x86_64-linux-musl\"},"
             echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"},"
-            echo "{\"label\":\"MIPS Linux\",\"type\":\"mips-linux-musl\"},"
-            echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"}"
+            echo "{\"label\":\"MIPS Linux\",\"type\":\"mips-linux-musl\"}"
             echo "],"
         fi
         if grep -q "/root/run.sh" /etc/rc.local; then

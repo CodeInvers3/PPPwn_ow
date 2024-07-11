@@ -1,6 +1,7 @@
 var Pwg = Backbone.Model.extend({
     urlRoot: '/cgi-bin/pw.cgi',
     defaults: {
+        chipname: '',
         update: false,
         pppoe: '',
         pppwn: false,
