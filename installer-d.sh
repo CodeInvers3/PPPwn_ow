@@ -50,11 +50,11 @@ wget -O /etc/init.d/pppoe-server https://raw.githubusercontent.com/CodeInvers3/P
 wget -O /etc/config/pppoe https://github.com/CodeInvers3/PPPwn_ow/raw/main/pppoe/config/pppoe
 wget -O /www/pppwn/assets/css/custom.css https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn/assets/css/custom.css
 wget -O /www/pppwn/assets/css/base.css https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn/assets/css/base.css
-wget -O /www/pppwn/assets/js/backbone-min.js https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn/assets/js/backbone-min.js
-wget -O /www/pppwn/assets/js/jquery.min.js https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn/assets/js/jquery.min.js
-wget -O /www/pppwn/assets/js/plugin.modal.js https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn/assets/js/plugin.modal.js
-wget -O /www/pppwn/assets/js/underscore-min.js https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn/assets/js/underscore-min.js
-wget -O /www/pppwn/main.js https://github.com/CodeInvers3/PPPwn_ow/blob/main/www/pppwn/main.js
+wget -O /www/pppwn/assets/js/backbone-min.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/www/pppwn/assets/js/backbone-min.js
+wget -O /www/pppwn/assets/js/jquery.min.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/www/pppwn/assets/js/jquery.min.js
+wget -O /www/pppwn/assets/js/plugin.modal.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/www/pppwn/assets/js/plugin.modal.js
+wget -O /www/pppwn/assets/js/underscore-min.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/www/pppwn/assets/js/underscore-min.js
+wget -O /www/pppwn/main.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/www/pppwn/main.js
 wget -O /www/pppwn.html https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn.html
 wget -O /www/cgi-bin/pw.cgi https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/cgi-bin/pw.cgi
 wget -O /root/stage1/1000.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage1/1000.bin
