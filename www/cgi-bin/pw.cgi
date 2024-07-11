@@ -172,13 +172,13 @@ case "$task" in
         else
             echo "\"pppwn\":false,"
             echo "\"compiles\":["
-            echo "{\"label\":\"Arch64 Linux\",\"type\":\"aarch64-linux-musl\"}"
+            echo "{\"label\":\"Arch64 Linux\",\"type\":\"aarch64-linux-musl\"},"
             echo "{\"label\":\"Arm Cortex A7\",\"type\":\"arm-linux-musleabi(cortex_a7)\"},"
             echo "{\"label\":\"Arm Pi Zero W\",\"type\":\"arm-linux-musleabi(pi_zero_w)\"},"
-            echo "{\"label\":\"Arm MP Core Nov Fp\",\"type\":\"arm-linux-musleabi(mpcorenovfp)\"}"
-            echo "{\"label\":\"X86-64 Linux\",\"type\":\"x86_64-linux-musl\"}"
+            echo "{\"label\":\"Arm MP Core Nov Fp\",\"type\":\"arm-linux-musleabi(mpcorenovfp)\"},"
+            echo "{\"label\":\"X86-64 Linux\",\"type\":\"x86_64-linux-musl\"},"
             echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"},"
-            echo "{\"label\":\"MIPS Linux\",\"type\":\"mips-linux-musl\"}"
+            echo "{\"label\":\"MIPS Linux\",\"type\":\"mips-linux-musl\"},"
             echo "{\"label\":\"MIPSEL Linux\",\"type\":\"mipsel-linux-musl\"}"
             echo "],"
         fi
