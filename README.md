@@ -10,32 +10,47 @@ This activation method works for devices with the OpenWrt Linux system as long a
 - USB drive with 1GB or more of storage.
 - Tested model [GL-MT300N-V2 Mango](https://www.gl-inet.com/products/gl-mt300n-v2/)
 
-## Steps installation:
+## Direct Installation (Use this alternative if your router does not have enough memory space)
 
-1. It is recommended to update the router firmware before proceeding.
-2. The mini smart router needs to be connected to the internet to download the package pppwn_ow.zip from the terminal.
-3. Check if `unzip` is installed:
+1. Update the mini-router system before proceeding.
+2. The router device must be connected to the Internet before proceeding, as it needs to download the repository files from the terminal.
+3. Run PuTTY or Git Bash and open the terminal using the router credentials.
+4. From the terminal, run these commands:
+    ```sh
+    wget -O /tmp/installer-d.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer-d.sh
+    chmod +x /tmp/installer-d.sh
+    /tmp/installer-l.sh
+    ```
+    In the end, press Enter to complete the installation.
+5. Follow step 5 of the quick installation.
+
+## Quick Installation
+
+1. Update the mini-router system before proceeding.
+2. The router device must be connected to the Internet before proceeding, as it needs to download the pppwn_ow.zip package from the terminal.
+3. Run PuTTY or Git Bash and open the terminal using the router credentials.
+4. Check if you have `unzip` installed with the command:
     ```sh
     opkg list-installed | grep unzip
     ```
-    If it is not installed, install `unzip` with the following command:
+    If `command not found` appears, you must install it with the following command:
     ```sh
     opkg update
     opkg install unzip
     ```
-4. From the terminal on your router, run these commands:
+5. From the terminal, run these commands:
     ```sh
     wget -O /tmp/installer.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer.sh
     chmod +x /tmp/installer.sh
     /tmp/installer.sh
     ```
-    At the end, press Enter to complete the installation.
-5. Copy `goldhen.bin` to your USB drive. Make sure it is formatted in exFAT or FAT32 and connect it to your console.
-6. From your PS4 console, set up a PPPoE network connection using `ppp` as the username and password.
-7. Wait a few seconds until the internet connection is established and, from the console's web browser, go to `http://<router_ip>/pppwn.html`.
-8. Select the build compatible with your router device and click "Install". Wait until the installation is complete.
-9. In case there is an error or you do not get the expected result on Ethernet, you can restart the installation by clicking "Update".
-10. Router models with a customizable switch button can use it to boot PPPwn.
+    In the end, press Enter to complete the installation.
+6. Copy `goldhen.bin` to your USB drive. Make sure it is formatted in exFAT or FAT32 and connect it to your console.
+7. From your PS4 console, set up a PPPoE network connection using `ppp` as the username and password.
+8. Wait a few seconds until the Internet connection is established, and from the console's web browser, go to `http://<router_ip>/pppwn.html`.
+9. Select the build compatible with your router device and click on "Install". Wait until the installation is complete.
+10. If there is an error or you do not get the expected result on Ethernet, you can restart the installation by clicking on "Update".
+11. Router models with a change button can use it to boot PPPwn.
 
 PPPwn from https://github.com/xfangfang/PPPwn_cpp
 
@@ -55,32 +70,46 @@ Interfaz web para arrancar PPPwn_cpp desde el navegador web de PS4.
 - Descargar goldhen.bin para el Firmware de tu consola [Sistro](https://github.com/GoldHEN/GoldHEN/releases).
 - Memoria USB 1GB o más
 
-## Instalación
+## Instalación directa (Usa esta alternativa si tu router no tiene mucho espacio en la memoria)
 
 1. Actualiza el sistema del mini-router antes de continuar.
-2. El dispositivo router debe tener acceso a internet antes de continuar, ya que requiere descargar el paquete pppwn_ow.zip desde el terminal.
-3. Verifica si tienes instalado `unzip`:
+2. El dispositivo router debe estar conectado a Internet antes de continuar, ya que requiere descargar los archivos del repositorio desde el terminal.
+3. Ejecuta PuTTY o Git Bash y abre el terminal usando las credenciales del router.
+4. Desde el terminal, ejecuta estos comandos:
+    ```sh
+    wget -O /tmp/installer-l.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer-l.sh
+    chmod +x /tmp/installer-l.sh
+    /tmp/installer-l.sh
+    ```
+    Al final, presiona Enter para completar la instalación.
+5. Sigue el paso 5 de la instalación rápida.
+
+## Instalación rápida
+
+1. Actualiza el sistema del mini-router antes de continuar.
+2. El dispositivo router debe estar conectado a Internet antes de continuar, ya que requiere descargar el paquete pppwn_ow.zip desde el terminal.
+3. Ejecuta PuTTY o Git Bash y abre el terminal usando las credenciales del router.
+4. Verifica si tienes instalado `unzip` con el comando:
     ```sh
     opkg list-installed | grep unzip
     ```
-    Si no está instalado, instala `unzip` con el siguiente comando:
+    Si aparece `command not found`, debes instalarlo con el siguiente comando:
     ```sh
     opkg update
     opkg install unzip
     ```
-4. Desde el terminal en tu router, ejecuta estos comandos:
+5. Desde el terminal, ejecuta estos comandos:
     ```sh
     wget -O /tmp/installer.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer.sh
     chmod +x /tmp/installer.sh
     /tmp/installer.sh
     ```
     Al final, presiona Enter para completar la instalación.
-5. Copia `goldhen.bin` a tu memoria USB. Asegúrate de que esté formateada en exFAT o FAT32 y conéctala a tu consola.
-6. Desde tu consola PS4, configura una conexión de red en PPPoE usando `ppp` como usuario y contraseña.
-7. Espera unos segundos hasta que se establezca la conexión a internet y, desde el navegador web de la consola, accede a la dirección `http://<router_ip>/pppwn.html`.
-8. Selecciona la compilación compatible con tu dispositivo router y haz clic en "Instalar". Espera hasta que se complete la instalación.
-9. En caso de que haya un error o no obtengas el resultado esperado en Ethernet, puedes reiniciar la instalación haciendo clic en "Update".
-10. Modelos de routers que dispongan de un botón cambio puede usarlo para arrancar PPPwn
-
+6. Copia `goldhen.bin` a tu memoria USB. Asegúrate de que esté formateada en exFAT o FAT32 y conéctala a tu consola.
+7. Desde tu consola PS4, configura una conexión de red en PPPoE usando `ppp` como usuario y contraseña.
+8. Espera unos segundos hasta que se establezca la conexión a Internet y, desde el navegador web de la consola, accede a la dirección `http://<router_ip>/pppwn.html`.
+9. Selecciona la compilación compatible con tu dispositivo router y haz clic en "Instalar". Espera hasta que se complete la instalación.
+10. En caso de que haya un error o no obtengas el resultado esperado en Ethernet, puedes reiniciar la instalación haciendo clic en "Update".
+11. Los modelos de routers que dispongan de un botón de cambio pueden usarlo para arrancar PPPwn.
 
 Probado en mini router [GL-MT300N-V2 Mango](https://www.gl-inet.com/products/gl-mt300n-v2/)

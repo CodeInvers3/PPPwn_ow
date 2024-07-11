@@ -36,44 +36,30 @@ if [ -f /www/cgi-bin/pw.cgi ]; then
     rm /www/cgi-bin/pw.cgi
 fi
 
-mkdir /www/pppwn
-mkdir /root/stage1
-mkdir /root/stage2
-mkdir /www/pppwn/assets
-mkdir /www/pppwn/assets/js
-mkdir /www/pppwn/assets/css
+wget -O /tmp/main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
+unzip /tmp/main.zip -d /tmp
 
-wget -O /etc/ppp/pap-secrets https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/pppoe/ppp/pap-secrets
-wget -O /etc/ppp/chap-secrets https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/pppoe/ppp/chap-secrets
-wget -O /etc/ppp/pppoe-server-options https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/pppoe/ppp/pppoe-server-options
-wget -O /etc/init.d/pppoe-server https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/pppoe/init.d/pppoe-server
-wget -O /etc/config/pppoe https://github.com/CodeInvers3/PPPwn_ow/raw/main/pppoe/config/pppoe
-wget -O /www/pppwn/assets/css/custom.css https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn/assets/css/custom.css
-wget -O /www/pppwn/assets/css/base.css https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn/assets/css/base.css
-wget -O /www/pppwn/assets/js/backbone-min.js https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn/assets/js/backbone-min.js
-wget -O /www/pppwn/assets/js/jquery.min.js https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn/assets/js/jquery.min.js
-wget -O /www/pppwn/assets/js/plugin.modal.js https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn/assets/js/plugin.modal.js
-wget -O /www/pppwn/assets/js/underscore-min.js https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn/assets/js/underscore-min.js
-wget -O /www/pppwn/main.js https://github.com/CodeInvers3/PPPwn_ow/blob/main/www/pppwn/main.js
-wget -O /www/pppwn.html https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/pppwn.html
-wget -O /www/cgi-bin/pw.cgi https://github.com/CodeInvers3/PPPwn_ow/raw/main/www/cgi-bin/pw.cgi
-wget -O /root/stage1/1000.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage1/1000.bin
-wget -O /root/stage1/1001.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage1/1001.bin
-wget -O /root/stage1/1100.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage1/1100.bin
-wget -O /root/stage1/900.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage1/900.bin
-wget -O /root/stage1/950.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage1/950.bin
-wget -O /root/stage1/951.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage1/951.bin
-wget -O /root/stage1/960.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage1/960.bin
-wget -O /root/stage2/1000.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage2/1000.bin
-wget -O /root/stage2/1001.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage2/1001.bin
-wget -O /root/stage2/1100.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage2/1100.bin
-wget -O /root/stage2/900.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage2/900.bin
-wget -O /root/stage2/950.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage2/950.bin
-wget -O /root/stage2/951.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage2/951.bin
-wget -O /root/stage2/960.bin https://github.com/CodeInvers3/PPPwn_ow/raw/main/stage2/960.bin
-wget -O /root/pw.conf https://github.com/CodeInvers3/PPPwn_ow/raw/main/pw.conf
-wget -O /root/run.sh https://github.com/CodeInvers3/PPPwn_ow/raw/main/run.sh
-wget -O /root/version https://github.com/CodeInvers3/PPPwn_ow/raw/main/version
+if [ -f /tmp/main.zip ]; then
+    rm /tmp/main.zip
+fi
+
+mv -f /tmp/PPPwn_ow-main/pppoe/ppp/pap-secrets /etc/ppp
+mv -f /tmp/PPPwn_ow-main/pppoe/ppp/chap-secrets /etc/ppp
+mv -f /tmp/PPPwn_ow-main/pppoe/ppp/pppoe-server-options /etc/ppp
+mv -f /tmp/PPPwn_ow-main/pppoe/init.d/pppoe-server /etc/init.d
+mv -f /tmp/PPPwn_ow-main/pppoe/config/pppoe /etc/config
+mv -f /tmp/PPPwn_ow-main/www/pppwn /www
+mv -f /tmp/PPPwn_ow-main/www/pppwn.html /www
+mv -f /tmp/PPPwn_ow-main/www/cgi-bin/pw.cgi /www/cgi-bin
+mv -f /tmp/PPPwn_ow-main/version /root/
+mv -f /tmp/PPPwn_ow-main/pw.conf /root/
+mv -f /tmp/PPPwn_ow-main/stage1 /root/
+mv -f /tmp/PPPwn_ow-main/stage2 /root/
+mv -f /tmp/PPPwn_ow-main/run.sh /root/
+
+if [ -d /tmp/PPPwn_ow-main ]; then
+    rm -r /tmp/PPPwn_ow-main
+fi
 
 chmod +x /root/run.sh
 chmod +x /www/cgi-bin/pw.cgi
