@@ -19,7 +19,7 @@ This activation method works for devices with the OpenWrt Linux system as long a
     ```sh
     wget -O /tmp/installer-d.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer-d.sh
     chmod +x /tmp/installer-d.sh
-    /tmp/installer-l.sh
+    /tmp/installer-d.sh
     ```
     In the end, press Enter to complete the installation.
 5. Follow step 5 of the common installation.
