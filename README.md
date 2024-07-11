@@ -22,9 +22,9 @@ This activation method works for devices with the OpenWrt Linux system as long a
     /tmp/installer-l.sh
     ```
     In the end, press Enter to complete the installation.
-5. Follow step 5 of the quick installation.
+5. Follow step 5 of the common installation.
 
-## Quick Installation
+## Common Installation 
 
 1. Update the mini-router system before proceeding.
 2. The router device must be connected to the Internet before proceeding, as it needs to download the pppwn_ow.zip package from the terminal.
@@ -82,9 +82,9 @@ Interfaz web para arrancar PPPwn_cpp desde el navegador web de PS4.
     /tmp/installer-l.sh
     ```
     Al final, presiona Enter para completar la instalación.
-5. Sigue el paso 5 de la instalación rápida.
+5. Sigue el paso 5 de la instalación normal.
 
-## Instalación rápida
+## Instalación normal
 
 1. Actualiza el sistema del mini-router antes de continuar.
 2. El dispositivo router debe estar conectado a Internet antes de continuar, ya que requiere descargar el paquete pppwn_ow.zip desde el terminal.
