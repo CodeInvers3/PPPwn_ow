@@ -22,7 +22,7 @@ This activation method works for devices with the OpenWrt Linux system as long a
     /tmp/installer-d.sh
     ```
     In the end, press Enter to complete the installation.
-5. Follow step 5 of the common installation.
+5. Follow step 6 of the common installation.
 
 ## Common Installation 
 
@@ -82,7 +82,7 @@ Interfaz web para arrancar PPPwn_cpp desde el navegador web de PS4.
     /tmp/installer-l.sh
     ```
     Al final, presiona Enter para completar la instalación.
-5. Sigue el paso 5 de la instalación normal.
+5. Sigue el paso 6 de la instalación normal.
 
 ## Instalación normal
 
