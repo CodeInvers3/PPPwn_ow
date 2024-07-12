@@ -77,9 +77,9 @@ Interfaz web para arrancar PPPwn_cpp desde el navegador web de PS4.
 3. Ejecuta PuTTY o Git Bash y abre el terminal usando las credenciales del router.
 4. Desde el terminal, ejecuta estos comandos:
     ```sh
-    wget -O /tmp/installer-l.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer-l.sh
-    chmod +x /tmp/installer-l.sh
-    /tmp/installer-l.sh
+    wget -O /tmp/installer-d.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer-d.sh
+    chmod +x /tmp/installer-d.sh
+    /tmp/installer-d.sh
     ```
     Al final, presiona Enter para completar la instalación.
 5. Sigue el paso 6 de la instalación normal.
