@@ -20,12 +20,15 @@ Minimal version
 1. Install OpenWrt on the device.
 2. The router device must be connected to the Internet before proceeding, as it needs to download the repository files from the terminal.
 3. Run PuTTY or Git Bash and open the terminal using the router credentials.
-4. Using WinSCP, transfer the directories stage1 and stage2 to /root/, transfer run.sh to /root/, and transfer the pppwn executable to /usr/bin/
+4. Using WinSCP, transfer the directories stage1 and stage2 to /root/, transfer run.sh to /root/, transfer wps to /etc/rc.button/ and transfer the pppwn executable to /usr/bin/
 5. From the terminal, run these commands:
     ```sh
     sed -i '/exit 0/d' /etc/rc.local
     echo '/root/run.sh &' >> /etc/rc.local
     echo 'exit 0' >> /etc/rc.local
+    chmod +x /root/run.sh
+    chmod +x /etc/rc.button/wps
     ```
-    This enabled autorun when turn on device.
+    This enabled autorun when turn on device and enable the reset/WPS button on TP-Link routers.
 6. Modify pw.conf to change the firmware version to version=XXXX
+7. Use Button reset o WPS to execute pppwn.
