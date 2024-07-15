@@ -1,4 +1,4 @@
-Lite version
+Minimal version
 
 ## Features:
 
