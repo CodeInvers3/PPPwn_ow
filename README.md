@@ -20,7 +20,7 @@ Minimal version
 1. Install OpenWrt on the device.
 2. Create Credentials user and password.
 4. Using WinSCP, transfer the directories `stage1` and `stage2` to `/root/`
-5. Transfer the files `run.sh` and pw.conf to `/root/`
+5. Transfer the files `run.sh` and `pw.conf` to `/root/`
 6. Transfer `wps` to `/etc/rc.button/` and transfer the `pppwn` executable to `/usr/bin/`
 7. Run PuTTY or Git Bash and open the terminal using the router credentials.
 8. From the terminal, run these commands:
