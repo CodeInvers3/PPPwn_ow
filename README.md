@@ -24,4 +24,4 @@ Lite version
     echo 'exit 0' >> /etc/rc.local
     ```
     This enabled autorun when turn on device.
-6. Modify pw.conf to change the firmware version to fw=XXX
+6. Modify pw.conf to change the firmware version to version=XXX
