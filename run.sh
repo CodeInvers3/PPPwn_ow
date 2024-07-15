@@ -11,24 +11,27 @@ if ! pgrep pppwn > /dev/null; then
             sleep 3
         fi
         
-        if ! pgrep pppwn > /dev/null; then
-            ip link set $interface down
-            sleep 5
-            ip link set $interface up
-            res=$(pppwn --interface "$interface" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
-            if [ $res -eq 0 ]; then
-                if /etc/init.d/pppoe-server status | grep -q "inactive"; then
-                    /etc/init.d/pppoe-server start
-                fi
-                exit 0
-            else
-                if /etc/init.d/pppoe-server status | grep -q "inactive"; then
-                    /etc/init.d/pppoe-server start
-                fi
-                exit 1
+        ip link set $interface down
+        sleep 5
+        ip link set $interface up
+        result=$(pppwn --interface "$interface" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
+        if [[ "$result" == *"\[\+\] Done\!"* ]]; then
+            if /etc/init.d/pppoe-server status | grep -q "inactive"; then
+                /etc/init.d/pppoe-server start
             fi
+            echo "{\"output\":\"Exploit success\",\"pppwned\":true}"
+            exit 0
+        else
+            if /etc/init.d/pppoe-server status | grep -q "inactive"; then
+                /etc/init.d/pppoe-server start
+            fi
+            echo "{\"output\":\"Exploit interrupted\",\"pppwned\":false}"
+            exit 1
         fi
 
     fi
 
+else
+    echo "{\"output\":\"PPPwn is running\",\"running\":true}"
+    exit 0
 fi
