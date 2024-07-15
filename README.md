@@ -1,6 +1,6 @@
 Minimal version
 
-## Features:
+## Features
 
 - Supports PS4 FW 9.00, 9.50, 9.51, 9.60, 10.00, 10.01 and 11.00
 - Required minimal memory flash space
