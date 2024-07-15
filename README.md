@@ -28,6 +28,7 @@ Minimal version
     echo 'exit 0' >> /etc/rc.local
     chmod +x /root/run.sh
     chmod +x /etc/rc.button/wps
+    chmod +x /usr/bin/pppwn
     ```
     This enabled autorun when turn on device and enable the reset/WPS button on TP-Link routers.
 6. Modify pw.conf to change the firmware version to version=XXXX
