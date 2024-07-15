@@ -1,0 +1,11 @@
+#!/bin/sh
+
+case "$ACTION" in
+"pressed")
+    /root/run.sh
+    logger "pppwn executed!"
+    ;;
+"released")
+    logger "pppwn running"
+    ;;
+esac
