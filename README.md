@@ -10,19 +10,18 @@ This activation method works for devices with the OpenWrt Linux system as long a
 - USB drive with 1GB or more of storage.
 - Tested model [GL-MT300N-V2 Mango](https://www.gl-inet.com/products/gl-mt300n-v2/)
 
-## Direct Installation (Use this alternative if your router does not have enough memory space)
+## Off-line Installation Download PPPwn_ow.zip
 
-1. Update the mini-router system before proceeding.
-2. The router device must be connected to the Internet before proceeding, as it needs to download the repository files from the terminal.
-3. Run PuTTY or Git Bash and open the terminal using the router credentials.
-4. From the terminal, run these commands:
-    ```sh
-    wget -O /tmp/installer-d.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer-d.sh
-    chmod +x /tmp/installer-d.sh
-    /tmp/installer-d.sh
-    ```
-    In the end, press Enter to complete the installation.
-5. Follow step 6 of the common installation.
+1. Download the `PPPwn_ow.zip` file.
+2. Extract the `PPPwn_ow.zip` file.
+3. Transfer the `PPPwn_ow` folder using WinSCP, use the SCP protocol with hostname `192.168.8.1` and port `22`.
+4. Open Git Bash or PuTTY and access the terminal. Navigate to the directory where `installer-offline.sh` is located using the command `cd /path`.
+5. Run the following command to perform the installation:
+   ```bash
+   chmod +x installer-offline.sh && ./installer-offline.sh
+   ```
+   You will receive the message "installation complete".
+6. Access the address http://192.168.8.1/pppwn.html to install PPPwn_cpp.
 
 ## Common Installation 
 
@@ -70,21 +69,20 @@ Interfaz web para arrancar PPPwn_cpp desde el navegador web de PS4.
 - Descargar goldhen.bin para el Firmware de tu consola [Sistro](https://github.com/GoldHEN/GoldHEN/releases).
 - Memoria USB 1GB o más
 
-## Instalación directa (Usa esta alternativa si tu router no tiene mucho espacio en la memoria)
+## Instalación fuera de línea
 
-1. Actualiza el sistema del mini-router antes de continuar.
-2. El dispositivo router debe estar conectado a Internet antes de continuar, ya que requiere descargar los archivos del repositorio desde el terminal.
-3. Ejecuta PuTTY o Git Bash y abre el terminal usando las credenciales del router.
-4. Desde el terminal, ejecuta estos comandos:
-    ```sh
-    wget -O /tmp/installer-d.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer-d.sh
-    chmod +x /tmp/installer-d.sh
-    /tmp/installer-d.sh
-    ```
-    Al final, presiona Enter para completar la instalación.
-5. Sigue el paso 6 de la instalación normal.
+1. Descarga el archivo `PPPwn_ow.zip`.
+2. Descomprime el archivo `PPPwn_ow.zip`.
+3. Transfiere la carpeta `PPPwn_ow` utilizando WinSCP, usa el protocolo SCP con el nombre de host `192.168.8.1` y puerto `22`.
+4. Abre Git Bash o PuTTY y accede al terminal. Ubícate con el comando `cd /path` donde se encuentra `installer-offline.sh`.
+5. Ejecuta el siguiente comando para realizar la instalación:
+   ```bash
+   chmod +x installer-offline.sh && ./installer-offline.sh
+   ```
+   Recibirás el mensaje de "instalación completa".
+6. Accede a la dirección http://192.168.8.1/pppwn.html para instalar PPPwn_cpp.
 
-## Instalación normal
+## Instalación desde el repositorio
 
 1. Actualiza el sistema del mini-router antes de continuar.
 2. El dispositivo router debe estar conectado a Internet antes de continuar, ya que requiere descargar el paquete pppwn_ow.zip desde el terminal.

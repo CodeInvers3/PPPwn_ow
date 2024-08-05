@@ -32,6 +32,12 @@ if ! pgrep pppwn > /dev/null; then
     fi
 
 else
-    echo "{\"output\":\"PPPwn is running\",\"running\":true}"
+    
+    pids=$(pgrep pppwn)
+    for pid in $pids; do
+        kill $pid
+    done
+
+    echo "{\"output\":\"PPPwn stopped\",\"running\":false}"
     exit 0
 fi

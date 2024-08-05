@@ -4,7 +4,7 @@ var Pwg = Backbone.Model.extend({
         chipname: '',
         update: false,
         pppoe: '',
-        pppwn: false,
+        pppwn: true,
         compiled: [],
         pppwned: false,
         running: false,
@@ -17,6 +17,28 @@ var Pwg = Backbone.Model.extend({
         stage2: {},
         theme: 'default',
         adapter: ''
+    }
+});
+
+var SectionRouter = Backbone.Router.extend({
+    templates: {
+        payload: _.template($('#payloadTpl').html())
+    },
+    routes: {
+        'payloads': 'payloads'
+    },
+    payloads: function(){
+        
+        var self = this,uname = document.location.hash.replace("#/","");
+        
+        $.modal(function(modal){
+            modal.content($('<div class="preloader center"></div>'));
+        });
+        $.get(`pppwn/payloads.json`, function(data){
+            $.modal.close();
+            console.log(data.linux)
+            $('#appWeb').html(self.templates.payload(data));
+        });
     }
 });
 
@@ -35,7 +57,7 @@ var appView = Backbone.View.extend({
 
             if(task == 'stop'){
 
-                button.prop('task', 'start').addClass('active').text('Execute');
+                button.prop('task', 'start').addClass('active').text('Start');
 
             }else
             if(task == 'start'){
@@ -51,7 +73,9 @@ var appView = Backbone.View.extend({
 
             }
 
-            self.textareaOut.append("Awaiting response\n");
+            $.modal(function(modal){
+                modal.content($('<div class="preloader center"></div>'));
+            });
 
             this.model.fetch({
                 method: 'POST',
@@ -67,13 +91,17 @@ var appView = Backbone.View.extend({
                 }
             }).then(function(response){
                 if(response.output){
-                    self.textareaOut.append(response.output+"\n");
+                    $.modal.content(self.templates.msg({message: response.output}));
                 }
-                button.prop('task', 'start').addClass('active').text('Execute');
+                $.modal.close();
+                button.prop('task', 'start').addClass('active').text('Start');
             }).catch(function(err, textStatus, errorThrown){
-                if(err.responseJSON) self.textareaOut.append(err.responseJSON.output+"\n");
-                if(err.textStatus) self.textareaOut.append(err.textStatus+"\n");
-                button.prop('task', 'start').addClass('active').text('Execute');
+                if(err.responseJSON){
+                    $.modal.content(self.templates.msg({message: err.responseJSON.output}));
+                }else{
+                    $.modal.content(self.templates.msg({message: err.responseText}));
+                }
+                button.prop('task', 'start').addClass('active').text('Start');
             });
 
         },
@@ -87,6 +115,10 @@ var appView = Backbone.View.extend({
                 });
                 return;
             }
+
+            $.modal(function (modal) {
+                modal.content($('<div class="preloader center"></div>'));
+            });
             
             this.model.fetch({
                 method: 'POST',
@@ -98,57 +130,21 @@ var appView = Backbone.View.extend({
                     stage2:this.stage2[this.inputVersion.val()],
                     timeout:this.inputTimeout.val(),
                     adapter:this.inputAdapter.val(),
-                    version:this.inputVersion.val()
+                    version:this.inputVersion.val(),
+                    auto:this.selectAuto.val()
                 }
             }).then(function(response){
                 if(response.output){
-                    self.textareaOut.append(response.output+"\n");
+                    $.modal.content(self.templates.msg({message: response.output}));
                 }
+                $.modal.close();
             }).catch(function(err){
-                self.textareaOut.append(err.responseJSON.output+"\n");
-            });
-
-        },
-        'click button#switch_pw': function(event){
-
-            var self = this;
-            var button = $(event.target);
-            var task = button.prop('task');
-
-            if(task == 'disable'){
-                button.prop('task', 'enable').text('Enable autorun');
-            }else
-            if(task == 'enable'){
-
-                if(!this.inputRoot.val() || !this.inputAdapter.val() || !this.inputVersion.val()){
-                    $.modal(function (modal) {
-                        modal.content(self.templates.msg({message: 'Interface and firmware are required to enable autorun'}));
-                    });
-                    return;
+                if(err.responseJSON){
+                    $.modal.content(self.templates.msg({message: err.responseJSON.output}));
+                }else{
+                    $.modal.content(self.templates.msg({message: err.responseText}));
                 }
-
-                button.prop('task', 'disable').text('Disable autorun');
-
-            }
-            
-            this.model.fetch({
-                method: 'POST',
-                data: {
-                    task:task,
-                    token:this.webToken,
-                    root:this.inputRoot.val(),
-                    stage1:this.stage1[this.inputVersion.val()],
-                    stage2:this.stage2[this.inputVersion.val()],
-                    timeout:this.inputTimeout.val(),
-                    adapter:this.inputAdapter.val(),
-                    version:this.inputVersion.val()
-                }
-            }).then(function(response){
-                if(response.output){
-                    self.textareaOut.append(response.output+"\n");
-                }
-            }).catch(function(err){
-                self.textareaOut.append(err.responseJSON.output+"\n");
+                
             });
 
         },
@@ -199,7 +195,12 @@ var appView = Backbone.View.extend({
                     $.modal.close();
                 });
             }).catch(function(err){
-                $.modal.content(self.templates.msg({message: err.responseJSON.output}));
+                if(err.responseJSON){
+                    $.modal.content(self.templates.msg({message: err.responseJSON.output}));
+                }else{
+                    $.modal.content(self.templates.msg({message: err.responseText}));
+                }
+                
             });
 
         },
@@ -220,7 +221,12 @@ var appView = Backbone.View.extend({
             }).then(function(res){
                 location.assign("/");
             }).catch(function(err){
-                $.modal.content(self.templates.msg({message: err.responseJSON.output}));
+                if(err.responseJSON){
+                    $.modal.content(self.templates.msg({message: err.responseJSON.output}));
+                }else{
+                    $.modal.content(self.templates.msg({message: err.responseText}));
+                }
+                
             });
 
         },
@@ -243,11 +249,119 @@ var appView = Backbone.View.extend({
                 if(status == 'inactive'){
                     self.inputConnect.text('PPPoe start').val(status)
                 }
-                self.textareaOut.append(res.output+"\n");
-            }).catch(function(){
-                self.textareaOut.append("error\n");
+                $.modal(function(modal){
+                    modal.content(self.templates.msg({message: res.output}));
+                });
+            }).catch(function(err){
+                $.modal(function(modal){
+                    if(err.responseJSON){
+                        modal.content(self.templates.msg({message: err.responseJSON.output}));
+                    }else{
+                        modal.content(self.templates.msg({message: err.responseText}));
+                    }
+                });
             });
+        },
+        'click button.sent-payload': function(event){
+
+            var selector = $(event.target);
+
+            $.modal(function(modal){
+                modal.content($('<div class="preloader center"></div>'));
+            });
+            
+            var self = this;
+            this.ajax({
+                method: 'POST',
+                url: 'http://127.0.0.1:9090/status',
+            }).done(function(req){
+
+                var res = JSON.parse(req.responseText);
+                if(res.status == 'ready'){
+                    
+                    self.ajax({
+                        method: 'GET',
+                        url: selector.val(),
+                        responseType: 'arraybuffer'
+                    }).done(function(req){
+
+                        if((req.status === 200 || req.status === 304) && req.response){
+                            
+                            self.ajax({
+                                method: 'POST',
+                                url: 'http://127.0.0.1:9090',
+                                async: true,
+                                data: req.response
+                            }).done(function(event){
+
+                                if(req.status === 200){
+                                    $.modal.content(self.templates.msg({message: 'Payload loaded'}));
+                                    $.modal.close();
+                                }else{
+                                    $.modal.content(self.templates.msg({message: 'Cannot send payload'}));
+                                    $.modal.close();
+                                    return;
+                                }
+
+                            }).fail(function(){
+                                $.modal.content(self.templates.msg({message: 'Cannot Load Payload Because The BinLoader Server Is Busy'}));
+                            });
+
+                        }
+
+                    });
+                }
+
+            }).fail(function(err){
+                $.modal.content(self.templates.msg({message: 'Cannot Load Payload Because The BinLoader Server Is Not Running'}));
+            });
+
         }
+    },
+    ajax: function(options){
+                    
+        var req = new XMLHttpRequest();
+        
+        if(typeof options.async == 'boolean'){
+            req.open(options.method, options.url, options.async);
+        }else{
+            req.open(options.method, options.url);
+        }
+
+        if(options.responseType){
+            req.responseType = options.responseType;
+        }
+
+        req.onload = function() {
+            if (req.status >= 200 && req.status < 300) {
+                if (typeof options.success === 'function') {
+                    options.success(req);
+                }
+            } else {
+                if (typeof options.error === 'function') {
+                    options.error(req.statusText);
+                }
+            }
+        };
+        
+        req.onerror = function() {
+            if (typeof options.error === 'function') {
+                options.error(req.statusText);
+            }
+        };
+
+        req.send(options.data ? options.data : null);
+        
+        return {
+            done: function(callback){
+                options.success = callback;
+                return this;
+            },
+            fail: function(callback){
+                options.error = callback;
+                return this;
+            }
+        };
     },
     cookie: function(name, value = null){
 
@@ -266,7 +380,11 @@ var appView = Backbone.View.extend({
     },
     state: function(callback){
 
-        var res = pwg.fetch({
+        $.modal(function(modal){
+            modal.content($('<div class="preloader center"></div>'));
+        });
+
+        var self = this, res = pwg.fetch({
             method: 'POST',
             data: {
                 task:'state',
@@ -283,13 +401,19 @@ var appView = Backbone.View.extend({
         }
 
         res.catch(function(err) {
-            $.modal(function(modal){
-                modal.content(self.templates.msg({message: err.responseJSON.output}));
-            });
+            if(err.responseJSON){
+                $.modal.content(self.templates.msg({message: err.responseJSON.output}));
+            }else{
+                $.modal.content(self.templates.msg({message: err.responseText}));
+            }
+                
         });
+        
 
     },
     render: function(response){
+
+        $.modal.close();
 
         var self = this, interfaces = [];
 
@@ -315,7 +439,7 @@ var appView = Backbone.View.extend({
         this.stage2 = data.stage2;
         this.textareaOut = this.$('#task-log .output');
         this.buttonAction = this.$('button#action_pw');
-        this.buttonSwitch = this.$('button#switch_pw');
+        this.selectAuto = this.$('select#switch_pw');
         this.buttonUpdate = this.$('button#update_rep');
         this.buttonInstall = this.$('button#install_pw');
         this.inputRoot = this.$('[name=root]');
@@ -328,13 +452,15 @@ var appView = Backbone.View.extend({
         if(this.model.get('running')){
             this.buttonAction.prop('task', 'stop').text('Stop');
         }else{
-            this.buttonAction.prop('task', 'start').text('Execute');
+            this.buttonAction.prop('task', 'start').text('Start');
         }
 
+        console.log(this.model.get('autorun'));
+
         if(this.model.get('autorun')){
-            this.buttonSwitch.prop('task', 'disable').text('Disable autorun');
+            this.selectAuto.val(1);
         }else{
-            this.buttonSwitch.prop('task', 'enable').text('Enable autorun');
+            this.selectAuto.val(0);
         }
 
         if(this.model.get('update')){
@@ -365,3 +491,6 @@ new appView({
     model: pwg,
     el: '#appWeb'
 });
+
+var sectionRouter = new SectionRouter();
+Backbone.history.start();

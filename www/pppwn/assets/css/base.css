@@ -316,7 +316,7 @@ img, video, object, embed{
 .form input, 
 .form textarea,
 .form select,
-.input-attach{
+.form .input-attach{
 	padding: 10px;
 	border-radius: 3px;
 	background-color: #F7F7F7;
@@ -466,14 +466,17 @@ img, video, object, embed{
 .field-group button.input-attach{
 	border: 1px solid #A9A9A9;
 	cursor: pointer;
+	color: #F00;
+	border-radius: 0px;
+	border-left: 1px;
 }
 
 .field-group button.input-attach:first-child{
-	margin-right: -1px;
+	border-radius: 3px 0px 0px 3px;
 }
 
 .field-group button.input-attach:last-child{
-	margin-left: -1px;
+	border-radius: 0px 3px 3px 0px;
 }
 
 .field-group .input-group:first-child{

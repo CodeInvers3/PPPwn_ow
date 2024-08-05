@@ -1,0 +1,157 @@
+{
+    "credits": "Payloads by Master-s / Nazky / Ps3itaTeam",
+    "sec_title": "Payload 9.00",
+    "payloads": [
+        {
+            "name": "App-Dumper",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/app-dumper.bin"
+        },
+        {
+            "name": "App-2-USB",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/app2usb.bin"
+        },
+        {
+            "name": "Backup",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/backup.bin"
+        },
+        {
+            "name": "Disable-Aslr",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/disable-aslr.bin"
+        },
+        {
+            "name": "Disable-Updates",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/disable-updates.bin"
+        },
+        {
+            "name": "Enable-Browser",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/enable-browser.bin"
+        },
+        {
+            "name": "Enable-Updates",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/enable-updates.bin"
+        },
+        {
+            "name": "Fan-Threshold",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/fan-threshold.bin"
+        },
+        {
+            "name": "Ftp",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/ftp.bin"
+        },
+        {
+            "name": "GTAV.AG-1.0-1.27",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/GTAV.AG-1.0-1.27.bin"
+        },
+        {
+            "name": "GTAV.AG-1.0-1.32",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/GTAV.AG-1.0-1.32.bin"
+        },
+        {
+            "name": "GTAV.AG-1.0-1.33",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/GTAV.AG-1.0-1.33.bin"
+        },
+        {
+            "name": "Kernel-Clock",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/kernel-clock.bin"
+        },
+        {
+            "name": "Kernel-Dumper.bin",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/kernel-dumper.bin"
+        },
+        {
+            "name": "MiraLoader",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/MiraLoader.bin"
+        },
+        {
+            "name": "Module-Dumper",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/module-dumper.bin"
+        },
+        {
+            "name": "OystersMenu-v1.3.3-1.00-FREE",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/OystersMenu-v1.3.3-1.00-FREE.bin"
+        },
+        {
+            "name": "OystersMenu-v1.3.3-1.13-FREE",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/OystersMenu-v1.3.3-1.13-FREE.bin"
+        },
+        {
+            "name": "OystersMenu-v1.3.3-1.19-FREE",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/OystersMenu-v1.3.3-1.19-FREE.bin"
+        },
+        {
+            "name": "OystersMenu-v1.3.3-1.24-FREE",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/OystersMenu-v1.3.3-1.24-FREE.bin"
+        },
+        {
+            "name": "PS4Debug",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/ps4debug.bin"
+        },
+        {
+            "name": "Restore",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/restore.bin"
+        },
+        {
+            "name": "Rif-Renamer",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/rif-renamer.bin"
+        },
+        {
+            "name": "Todex",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/todex.bin"
+        },
+        {
+            "name": "Webrte900",
+            "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/webrte900.bin"
+        }
+    ],
+    "linux": [
+        {
+            "firmware": "9.00",
+            "refs": [
+                {
+                    "name": "South-Bridge",
+                    "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/pl_wtsb.bin"
+                },
+                {
+                    "name": "Nazky linux 1GB",
+                    "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/nazky/LinuxLoader-900.bin"
+                },
+                {
+                    "name": "Nazky linux 2GB",
+                    "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/nazky/LinuxLoader-900-2gb.bin"
+                },
+                {
+                    "name": "Nazky linux 3GB",
+                    "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/nazky/LinuxLoader-900-3gb.bin"
+                },
+                {
+                    "name": "Nazky linux 4GB",
+                    "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/nazky/LinuxLoader-900-4gb.bin"
+                },
+                {
+                    "name": "Nazky linux 5GB",
+                    "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/nazky/LinuxLoader-900-5gb.bin"
+                },
+                {
+                    "name": "Psxita eeply's patch linux 1GB",
+                    "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/eeplys/payload-900-1gb.bin"
+                },
+                {
+                    "name": "PSxita eeply's patch linux 2GB",
+                    "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/psxita/payload-900-2gb.bin"
+                },
+                {
+                    "name": "PSxita eeply's patch linux 3GB",
+                    "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/psxita/payload-900-3gb.bin"
+                },
+                {
+                    "name": "PSxita eeply's patch linux 4GB",
+                    "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/psxita/payload-900-4gb.bin"
+                },
+                {
+                    "name": "PSxita eeply's patch linux 5GB",
+                    "href": "https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/payloads/900/psxita/payload-900-5gb.bin"
+                }
+            ]
+        }
+    ]
+}

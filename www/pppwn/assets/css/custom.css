@@ -4,10 +4,10 @@
 
 body{
 	font-family: Arial;
-	color: #1b1b1b;
-	background-color: #1053a4c5;
-	background-image: url(https://roboticoverlords.org/wallpapers/arch_nz.png);
-	background-position: center;
+	color: #000000;
+	background-color: #090a76c5;
+	background-image: url(https://image.api.playstation.com/pr/bam-art/180/850/1c6f9e1f-c0db-4229-9cb1-12f2dee4c3f0.png);
+	background-position: left top;
 	background-repeat: no-repeat;
 	font-size: 18px;
 }
@@ -19,15 +19,16 @@ body{
 }
 
 #appWeb fieldset{
-	border-radius: 10px;
-	color: #1b1b1b;
+	color: #0c2378;
 	background-color: #f1fbff88;
 	border:none;
 }
 
 #header{
-	background: transparent;
+	background: #ffffff63;
 	text-transform: uppercase;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 #header h1{
@@ -41,14 +42,23 @@ body{
 	margin-bottom: 10px;
 }
 
+#header .menu{
+	padding: 10px;
+}
+
+#header .menu li{
+	padding: 20px;
+	font-weight: bolder;
+}
+
 .btn-form{
-	background-color: #1eb4c2 !important;
+	background-color: #0c2378 !important;
 	color: aliceblue !important;
-	border-color: #a6e5ed !important;
+	border-color: #e3e9ff !important;
 }
 
 .btn-form:focus{
-	background-color: rgb(5, 122, 126) !important;
+	background-color: rgb(21, 109, 234) !important;
 }
 
 .group-center{
@@ -72,7 +82,53 @@ body{
 	font-size: 10pt;
 }
 
+.form{
+	color: #1b1b1b;
+}
+
+.form .top-label{
+	width: 100px;
+}
+
+.form input, .form select{
+	background-color: #0c2378;
+	color: #FFF;
+}
+
+.form .field-group .input-attach{
+	padding: 15px;
+	font-size: 9pt;
+	font-weight: 200;
+	text-transform: uppercase;
+}
+
+/* Custom buttons */
+.box-button{
+	display: block;
+	background-color: #1eb4c2;
+	width: 40px;
+	height: 30px;
+	position: relative;
+}
+
+.box-button .btn-switch{
+	padding: 10px !important;
+	width: 15px;
+	margin: 0px;
+	height: 15px;
+}
+
 /* Message */
+.dialog-box{
+	background-color: #FFF;
+	position: relative;
+	padding: 20px;
+	font-size: 9pt;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .message-success{
 	background-color: #32a72e;
 	color:#1b1b1b;
@@ -94,26 +150,23 @@ body{
 
 /* Modal */
 .modal-container{
-	background-color: #FFF;
+	background-color: #d23838;
 	max-width: 500px;
 	margin-top: 10%;
 	margin-left: auto;
 	margin-right: auto;
 }
 .modal-container .modal-content{
-	display: block;
-	background-color: #FFF;
-	padding: 20px;
+	width: 100%;
 	position: relative;
-	font-size: 9pt;
 }
 
 .preloader {
 	width: 70px;
 	height: 70px;
-	border: 10px solid lightgray;
+	border: 10px solid rgb(236, 247, 255);
 	border-radius: 50%;
-	border-top-color: darkgray; /* Color del cuarto de círculo */
+	border-top-color: rgb(13, 141, 205); /* Color del cuarto de círculo */
 	animation: girar 2s infinite linear;
 }
 
@@ -134,6 +187,7 @@ body{
 	padding: 10px;
 	font-weight: bold;
 	cursor: pointer;
+	background: none;
 }
 
 @media screen and (max-width: 430px){
