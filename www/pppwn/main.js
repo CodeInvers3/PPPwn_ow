@@ -64,7 +64,7 @@ var appView = Backbone.View.extend({
 
                 if(!this.inputRoot.val() || !this.inputAdapter.val() || !this.inputVersion.val()){
                     $.modal(function (modal) {
-                        modal.content(self.templates.msg({message: 'Interface and firmware are required to execute.'}));
+                        modal.content(self.templates.msg({message: 'Interface and firmware are required to execute.', buttons:[]}));
                     });
                     return;
                 }
@@ -95,9 +95,9 @@ var appView = Backbone.View.extend({
                 button.prop('task', 'start').addClass('active').text('Start');
             }).catch(function(err, textStatus, errorThrown){
                 if(err.responseJSON){
-                    $.modal.content(self.templates.msg({message: err.responseJSON.output}));
+                    $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
                 }else{
-                    $.modal.content(self.templates.msg({message: err.responseText}));
+                    $.modal.content(self.templates.msg({message: err.responseText, buttons:[]}));
                 }
                 button.prop('task', 'start').addClass('active').text('Start');
             });
@@ -109,7 +109,7 @@ var appView = Backbone.View.extend({
 
             if(!this.inputRoot.val() || !this.inputTimeout.val() || !this.inputAdapter.val() || !this.inputVersion.val()){
                 $.modal(function (modal) {
-                    modal.content(self.templates.msg({message: 'Required options fields.'}));
+                    modal.content(self.templates.msg({message: 'Required options fields.', buttons:[]}));
                 });
                 return;
             }
@@ -132,15 +132,18 @@ var appView = Backbone.View.extend({
                     auto:this.selectAuto.val()
                 }
             }).then(function(response){
+
                 if(response.output){
-                    $.modal.content(self.templates.msg({message: response.output}));
+                    $.modal.content(self.templates.msg({message: response.output, buttons:[]}));
                 }
                 $.modal.close();
+
             }).catch(function(err){
+
                 if(err.responseJSON){
-                    $.modal.content(self.templates.msg({message: err.responseJSON.output}));
+                    $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
                 }else{
-                    $.modal.content(self.templates.msg({message: err.responseText}));
+                    $.modal.content(self.templates.msg({message: err.responseText, buttons:[]}));
                 }
                 
             });
@@ -151,21 +154,9 @@ var appView = Backbone.View.extend({
             var self = this;
 
             $.modal(function(modal){
-                modal.content($('<div class="preloader center"></div>'));
-            });
-            
-            this.model.fetch({
-                method: 'POST',
-                data: {
-                    task:'update',
-                    token:this.webToken
-                },
-                success: this.state.bind(this)
-            }).then(function(){
-                document.cookie = 'token=; path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                $.modal.close();
-            }).catch(function(err){
-                $.modal.content(self.templates.msg({message: err.responseJSON.output}));
+                modal.content(self.templates.msg({message: 'Install Update?', buttons: [
+                    {label:"Yes, continue", id: "update_rep", onclick:"appweb.update()"}
+                ]}));
             });
 
         },
@@ -194,9 +185,9 @@ var appView = Backbone.View.extend({
                 });
             }).catch(function(err){
                 if(err.responseJSON){
-                    $.modal.content(self.templates.msg({message: err.responseJSON.output}));
+                    $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
                 }else{
-                    $.modal.content(self.templates.msg({message: err.responseText}));
+                    $.modal.content(self.templates.msg({message: err.responseText, buttons:[]}));
                 }
                 
             });
@@ -207,25 +198,12 @@ var appView = Backbone.View.extend({
             var self = this;
 
             $.modal(function(modal){
-                modal.content($('<div class="preloader center"></div>'));
+                modal.content(self.templates.msg({message: 'Uninstall PPPwn OW?', buttons: [
+                    {label:"Yes, uninstall", id: "remove_rep", onclick:"appweb.uninstall()"}
+                ]}));
             });
 
-            this.model.fetch({
-                method: 'POST',
-                data: {
-                    task:'remove',
-                    token:this.webToken
-                }
-            }).then(function(res){
-                location.assign("/");
-            }).catch(function(err){
-                if(err.responseJSON){
-                    $.modal.content(self.templates.msg({message: err.responseJSON.output}));
-                }else{
-                    $.modal.content(self.templates.msg({message: err.responseText}));
-                }
-                
-            });
+            
 
         },
         'click button#pppoe_pw': function(){
@@ -248,14 +226,14 @@ var appView = Backbone.View.extend({
                     self.inputConnect.text('PPPoe start').val(status)
                 }
                 $.modal(function(modal){
-                    modal.content(self.templates.msg({message: res.output}));
+                    modal.content(self.templates.msg({message: res.output, buttons:[]}));
                 });
             }).catch(function(err){
                 $.modal(function(modal){
                     if(err.responseJSON){
-                        modal.content(self.templates.msg({message: err.responseJSON.output}));
+                        modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
                     }else{
-                        modal.content(self.templates.msg({message: err.responseText}));
+                        modal.content(self.templates.msg({message: err.responseText, buttons:[]}));
                     }
                 });
             });
@@ -293,16 +271,16 @@ var appView = Backbone.View.extend({
                             }).done(function(event){
 
                                 if(req.status === 200){
-                                    $.modal.content(self.templates.msg({message: 'Payload loaded'}));
+                                    $.modal.content(self.templates.msg({message: 'Payload loaded', buttons:[]}));
                                     $.modal.close();
                                 }else{
-                                    $.modal.content(self.templates.msg({message: 'Cannot send payload'}));
+                                    $.modal.content(self.templates.msg({message: 'Cannot send payload', buttons:[]}));
                                     $.modal.close();
                                     return;
                                 }
 
                             }).fail(function(){
-                                $.modal.content(self.templates.msg({message: 'Cannot Load Payload Because The BinLoader Server Is Busy'}));
+                                $.modal.content(self.templates.msg({message: 'Cannot Load Payload Because The BinLoader Server Is Busy', buttons:[]}));
                             });
 
                         }
@@ -311,7 +289,7 @@ var appView = Backbone.View.extend({
                 }
 
             }).fail(function(err){
-                $.modal.content(self.templates.msg({message: 'Cannot Load Payload Because The BinLoader Server Is Not Running'}));
+                $.modal.content(self.templates.msg({message: 'Cannot Load Payload Because The BinLoader Server Is Not Running', buttons:[]}));
             });
 
         }
@@ -376,6 +354,49 @@ var appView = Backbone.View.extend({
         }
 
     },
+    update: function(){
+
+        var self = this;
+        $.modal.content($('<div class="preloader center"></div>'));
+
+        this.model.fetch({
+            method: 'POST',
+            data: {
+                task:'update',
+                token:this.webToken
+            },
+            success: this.state.bind(this)
+        }).then(function(){
+            document.cookie = 'token=; path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            $.modal.close();
+        }).catch(function(err){
+            $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
+        });
+
+    },
+    uninstall: function(){
+
+        var self = this;
+        $.modal.content($('<div class="preloader center"></div>'));
+
+        this.model.fetch({
+            method: 'POST',
+            data: {
+                task:'remove',
+                token:this.webToken
+            }
+        }).then(function(res){
+            location.assign("/");
+        }).catch(function(err){
+            if(err.responseJSON){
+                $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
+            }else{
+                $.modal.content(self.templates.msg({message: err.responseText, buttons:[]}));
+            }
+            
+        });
+
+    },
     state: function(callback){
 
         $.modal(function(modal){
@@ -399,9 +420,9 @@ var appView = Backbone.View.extend({
 
         res.catch(function(err) {
             if(err.responseJSON){
-                $.modal.content(self.templates.msg({message: err.responseJSON.output}));
+                $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
             }else{
-                $.modal.content(self.templates.msg({message: err.responseText}));
+                $.modal.content(self.templates.msg({message: err.responseText, buttons:[]}));
             }
                 
         });
@@ -410,9 +431,13 @@ var appView = Backbone.View.extend({
     },
     render: function(response){
 
-        $.modal.close();
+        var self = this, interfaces = [], data = response.toJSON();
 
-        var self = this, interfaces = [];
+        if(data.update){
+            $.modal.content(self.templates.msg({message: 'Update available.<br>Click in UPDATE button to continue.', buttons:[]}));
+        }else{
+            $.modal.close();
+        }
 
         if (this.model.get('stored_token')) {
             document.cookie = 'token=; path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -425,7 +450,6 @@ var appView = Backbone.View.extend({
             }
         });
 
-        var data = response.toJSON();
         data.interfaces = interfaces;
 
         this.$el.html(this.templates.web(data));
@@ -473,15 +497,9 @@ var appView = Backbone.View.extend({
             this.selectAuto.val(0);
         }
 
-        if(this.model.get('update')){
-            $.modal(function(modal){
-                modal.content(self.templates.msg({message: 'Update available'}));
-            });
-        }
-
         $('a#credits').click(function(){
             $.modal(function(modal){
-                modal.content(self.templates.msg({message: 'TheOfficialFloW / SiSTR0 / xfangfang'}));
+                modal.content(self.templates.msg({message: 'TheOfficialFloW / SiSTR0 / xfangfang', buttons:[]}));
             });
         });
         
@@ -497,7 +515,7 @@ var appView = Backbone.View.extend({
     }
 });
 
-new appView({
+var appweb = new appView({
     model: pwg,
     el: '#appWeb'
 });

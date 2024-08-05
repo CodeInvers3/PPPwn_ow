@@ -175,6 +175,11 @@ body{
 	animation: girar 2s infinite linear;
 }
 
+.btn-message{
+	padding: 17px;
+	margin: 2px;
+}
+
 @keyframes girar {
 	0% {
 		transform: rotate(0deg);

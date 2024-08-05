@@ -113,6 +113,13 @@
                     <div class="dialog-box">
                         <button class="md-close" type="button" onclick="$.modal.close();">X</button>
                         <p class="message"><%= message %></p>
+                        <% if(buttons){ %>
+                        <div>
+                            <% buttons.forEach(function(button, index){ %>
+                            <button class="btn-form btn-message" id="<%= button.id %>" onclick="<%= button.onclick %>"><%= button.label %></button>
+                            <% }); %>
+                        </div>
+                        <% } %>
                     </div>
                 </script>
                 <script type="text/template" id="payloadTpl">
