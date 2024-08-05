@@ -25,7 +25,14 @@ if ! pgrep pppwn > /dev/null; then
             if /etc/init.d/pppoe-server status | grep -q "inactive"; then
                 /etc/init.d/pppoe-server start
             fi
-            echo "{\"output\":\"Exploit interrupted\",\"pppwned\":false}"
+
+            echo "{"
+            echo "\"root\":\"$root\","
+            echo "\"adapter\":\"$interface\","
+            echo "\"version\":\"$version\","
+            echo "\"timeout\":\"$timeout\""
+            echo "}"
+
             exit 1
         fi
 
@@ -38,6 +45,12 @@ else
         kill $pid
     done
 
-    echo "{\"output\":\"PPPwn stopped\",\"running\":false}"
+    echo "{"
+    echo "\"root\":\"$root\","
+    echo "\"adapter\":\"$interface\","
+    echo "\"version\":\"$version\","
+    echo "\"timeout\":\"$timeout\""
+    echo "}"
+
     exit 0
 fi

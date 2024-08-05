@@ -241,11 +241,13 @@ case "$task" in
 
         echo ""
         if [ -f /root/pw.conf ]; then
+            sed -i "s/root=.*/root=$root/" "/root/pw.conf"
             sed -i "s/interface=.*/interface=$adapter/" "/root/pw.conf"
             sed -i "s/version=.*/version=$version/" "/root/pw.conf"
             sed -i "s/timeout=.*/timeout=$timeout/" "/root/pw.conf"
         else
-            echo -e "interface=$adapter\n" > "/root/pw.conf"
+            echo -e "root=$root\n" > "/root/pw.conf"
+            echo -e "interface=$adapter\n" >> "/root/pw.conf"
             echo -e "version=$version\n" >> "/root/pw.conf"
             echo -e "timeout=$timeout\n" >> "/root/pw.conf"
         fi
@@ -269,7 +271,13 @@ case "$task" in
             kill $pid
         done
 
-        echo "{\"output\":\"Execution terminated.\",\"pppwned\":false}"
+        echo "{"
+        echo "\"root\":\"$root\","
+        echo "\"autorun\":$auto,"
+        echo "\"adapter\":\"$adapter\","
+        echo "\"version\":\"$version\","
+        echo "\"timeout\":\"$timeout\""
+        echo "}"
 
         exit 1
 
@@ -287,6 +295,12 @@ case "$task" in
 
         echo ""
         if [ -f /root/pw.conf ]; then
+            
+            if grep -q "root=" "/root/pw.conf"; then
+                sed -i "s/root=.*/root=$root/" "/root/pw.conf"
+            else
+                echo -e "root=$root" >> "/root/pw.conf"
+            fi
             if grep -q "interface=" "/root/pw.conf"; then
                 sed -i "s/interface=.*/interface=$adapter/" "/root/pw.conf"
             else
@@ -311,6 +325,7 @@ case "$task" in
                 echo -e "stage2=$stage2" >> "/root/pw.conf"
             fi
         else
+            echo -e "root=$root" > /root/pw.conf
             echo -e "interface=$adapter" > /root/pw.conf
             echo -e "version=$version" >> /root/pw.conf
             echo -e "timeout=$timeout" >> /root/pw.conf
