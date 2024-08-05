@@ -6,7 +6,7 @@ body{
 	font-family: Arial;
 	color: #000000;
 	background-color: #090a76c5;
-	background-image: url(https://image.api.playstation.com/pr/bam-art/180/850/1c6f9e1f-c0db-4229-9cb1-12f2dee4c3f0.png);
+	background-image: url('https://image.api.playstation.com/pr/bam-art/180/850/1c6f9e1f-c0db-4229-9cb1-12f2dee4c3f0.png');
 	background-position: left top;
 	background-repeat: no-repeat;
 	font-size: 18px;
@@ -100,6 +100,12 @@ body{
 	font-size: 9pt;
 	font-weight: 200;
 	text-transform: uppercase;
+}
+
+.form .expand-slc .op-selected{
+	background-color: #000000;
+	color: #FFF;
+	display:none;
 }
 
 /* Custom buttons */

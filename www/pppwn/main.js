@@ -9,6 +9,7 @@ var Pwg = Backbone.Model.extend({
         pppwned: false,
         running: false,
         autorun: false,
+        root: '',
         interfaces: [],
         timeout: 0,
         version: '',
@@ -36,7 +37,6 @@ var SectionRouter = Backbone.Router.extend({
         });
         $.get(`pppwn/payloads.json`, function(data){
             $.modal.close();
-            console.log(data.linux)
             $('#appWeb').html(self.templates.payload(data));
         });
     }
@@ -387,7 +387,6 @@ var appView = Backbone.View.extend({
                 task:'state',
                 token:this.webToken
             },
-            success: this.render.bind(this),
             error: function(err){
                 return  err.responseJSON ? err.responseJSON.message : 'Unknow issue';
             }
@@ -446,6 +445,20 @@ var appView = Backbone.View.extend({
         this.inputOption = this.$('[name=option]');
         this.inputConnect = this.$('[id=pppoe_pw]');
 
+        $('select#select-ifc').find('option').each(function(index, item){
+            $(item).removeClass('op-selected');
+            if(data.adapter == $(item).val()){
+                $(item).addClass('op-selected')
+            }
+        });
+
+        $('select#select-fw').find('option').each(function(index, item){
+            $(item).removeClass('op-selected');
+            if(data.version == $(item).val()){
+                $(item).addClass('op-selected')
+            }
+        });
+
         if(this.model.get('running')){
             this.buttonAction.prop('task', 'stop').text('Stop');
         }else{
@@ -472,6 +485,7 @@ var appView = Backbone.View.extend({
         var self = this;
         this.loading = this.$('#loading_ide');
         this.state();
+        this.listenTo(this.model, 'change', this.render);
 
         $('a#credits').click(function(){
             $.modal(function(modal){

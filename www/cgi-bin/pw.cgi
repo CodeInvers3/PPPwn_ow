@@ -118,6 +118,7 @@ case "$task" in
 
         echo "\"stored_token\":\"$stoken\","
         echo "\"chipname\":\"$(uname -m)\","
+        echo "\"root\":\"$root\","
 
         if [ -z "$latest_version" ]; then
             echo "\"update\":false,"
@@ -337,7 +338,13 @@ case "$task" in
 
         fi
 
-        echo "{\"output\":\"Settings saved\"}"
+        echo "{"
+        echo "\"root\":\"$root\","
+        echo "\"autorun\":$auto,"
+        echo "\"adapter\":\"$adapter\","
+        echo "\"version\":\"$version\","
+        echo "\"timeout\":\"$timeout\""
+        echo "}"
 
     ;;
     "update")
