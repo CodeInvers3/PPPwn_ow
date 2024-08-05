@@ -166,7 +166,7 @@ body{
 	position: relative;
 }
 
-.preloader {
+.preloader{
 	width: 70px;
 	height: 70px;
 	border: 10px solid rgb(236, 247, 255);
@@ -176,8 +176,9 @@ body{
 }
 
 .btn-message{
-	padding: 17px;
-	margin: 2px;
+	padding: 12px;
+	margin: 5px;
+	cursor: pointer;
 }
 
 @keyframes girar {
