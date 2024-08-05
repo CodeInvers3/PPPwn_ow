@@ -42,13 +42,13 @@ if [ -f /www/cgi-bin/pw.cgi ]; then
     rm /www/cgi-bin/pw.cgi
 fi
 
-if ! [ -d /etc/ppp ]; then
+if [ ! -d /etc/ppp ]; then
     mkdir /etc/ppp
 fi
-if ! [ -d /etc/init.d ]; then
+if [ ! -d /etc/init.d ]; then
     mkdir /etc/init.d
 fi
-if ! [ -d /etc/config ]; then
+if [ ! -d /etc/config ]; then
     mkdir /etc/config
 fi
 
