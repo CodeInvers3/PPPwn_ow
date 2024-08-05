@@ -6,7 +6,7 @@ body{
 	font-family: Arial;
 	color: #000000;
 	background-color: #090a76c5;
-	background-image: url('https://image.api.playstation.com/pr/bam-art/180/850/1c6f9e1f-c0db-4229-9cb1-12f2dee4c3f0.png');
+	background-image: url(https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/images/playstation/pstore-top-1.png);
 	background-position: left top;
 	background-repeat: no-repeat;
 	font-size: 18px;
@@ -105,7 +105,6 @@ body{
 .form .expand-slc .op-selected{
 	background-color: #000000;
 	color: #FFF;
-	display:none;
 }
 
 /* Custom buttons */

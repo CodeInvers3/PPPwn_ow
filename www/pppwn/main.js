@@ -87,7 +87,8 @@ var appView = Backbone.View.extend({
                     version:this.inputVersion.val(),
                     stage1:this.stage1[this.inputVersion.val()],
                     stage2:this.stage2[this.inputVersion.val()],
-                    timeout:this.inputTimeout.val()
+                    timeout:this.inputTimeout.val(),
+                    auto:this.selectAuto.val()
                 }
             }).then(function(response){
                 $.modal.close();
@@ -423,10 +424,9 @@ var appView = Backbone.View.extend({
                 interfaces.push(item);
             }
         });
-        
-        response.set('interfaces', interfaces);
 
         var data = response.toJSON();
+        data.interfaces = interfaces;
 
         this.$el.html(this.templates.web(data));
 
@@ -446,16 +446,18 @@ var appView = Backbone.View.extend({
         this.inputConnect = this.$('[id=pppoe_pw]');
 
         $('select#select-ifc').find('option').each(function(index, item){
-            $(item).removeClass('op-selected');
             if(data.adapter == $(item).val()){
-                $(item).addClass('op-selected')
+                $(item).addClass('op-selected');
+            }else{
+                $(item).removeClass('op-selected');
             }
         });
 
         $('select#select-fw').find('option').each(function(index, item){
-            $(item).removeClass('op-selected');
             if(data.version == $(item).val()){
                 $(item).addClass('op-selected')
+            }else{
+                $(item).removeClass('op-selected');
             }
         });
 
@@ -476,22 +478,21 @@ var appView = Backbone.View.extend({
                 modal.content(self.templates.msg({message: 'Update available'}));
             });
         }
-        
-        return this;
-
-    },
-    initialize: function(){
-
-        var self = this;
-        this.loading = this.$('#loading_ide');
-        this.state();
-        this.listenTo(this.model, 'change', this.render);
 
         $('a#credits').click(function(){
             $.modal(function(modal){
                 modal.content(self.templates.msg({message: 'TheOfficialFloW / SiSTR0 / xfangfang'}));
             });
         });
+        
+        return this;
+
+    },
+    initialize: function(){
+
+        this.loading = this.$('#loading_ide');
+        this.state();
+        this.listenTo(this.model, 'change', this.render);
 
     }
 });

@@ -17,6 +17,7 @@ read postData
 
 token=$(echo $postData | sed -n 's/^.*token=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 adapter=$(echo $postData | sed -n 's/^.*adapter=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
+adapter=$(echo "$adapter" | sed 's/+/ /g')
 version=$(echo $postData | sed -n 's/^.*version=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 stage1=$(echo $postData | sed -n 's/^.*stage1=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 stage1=$(echo "$stage1" | sed 's/%2F/\//g')
@@ -36,6 +37,49 @@ if [ -z "$root" ]; then
     root="/root"
 fi
 
+set_params(){
+
+    if [ -f /root/pw.conf ]; then
+            
+        if grep -q "root=" "/root/pw.conf"; then
+            sed -i "s/root=.*/root=\"$root\"/" "/root/pw.conf"
+        else
+            echo -e "root=\"$root\"" >> "/root/pw.conf"
+        fi
+        if grep -q "interface=" "/root/pw.conf"; then
+            sed -i "s/interface=.*/interface=\"$adapter\"/" "/root/pw.conf"
+        else
+            echo -e "interface=\"$adapter\"" >> "/root/pw.conf"
+        fi
+        if grep -q "version=" "/root/pw.conf"; then
+            sed -i "s/version=.*/version=\"$version\"/" "/root/pw.conf"
+        else
+            echo -e "version=\"$version\"" >> "/root/pw.conf"
+        fi
+        if grep -q "timeout=" "/root/pw.conf"; then
+            sed -i "s/timeout=.*/timeout=\"$timeout\"/" "/root/pw.conf"
+        else
+            echo -e "timeout=\"$timeout\"" >> "/root/pw.conf"
+        fi
+        if grep -q "stage1=" "/root/pw.conf"; then
+            sed -i "/stage1=.*/d" "/root/pw.conf"
+            echo -e "stage1=\"$stage1\"" >> "/root/pw.conf"
+        fi
+        if grep -q "stage2=" "/root/pw.conf"; then
+            sed -i "/stage2=.*/d" "/root/pw.conf"
+            echo -e "stage2=\"$stage2\"" >> "/root/pw.conf"
+        fi
+    else
+        echo -e "root=\"$root\"" > /root/pw.conf
+        echo -e "interface=\"$adapter\"" > /root/pw.conf
+        echo -e "version=\"$version\"" >> /root/pw.conf
+        echo -e "timeout=\"$timeout\"" >> /root/pw.conf
+        echo -e "stage1=\"$stage1\"" >> /root/pw.conf
+        echo -e "stage2=\"$stage2\"" >> /root/pw.conf
+    fi
+
+}
+
 case "$task" in
     "setup")
 
@@ -50,44 +94,44 @@ case "$task" in
 
         echo ""
 
-        source=""
+        repo_refs=""
         if [ "$option" = "aarch64-linux-musl" ]; then
-            source="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/aarch64-linux-musl.zip"
+            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/aarch64-linux-musl.zip"
         elif [ "$option" = "arm-linux-musleabi(cortex_a7)" ]; then
-            source="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/arm-linux-musleabi%28cortex_a7%29.zip"
+            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/arm-linux-musleabi%28cortex_a7%29.zip"
         elif [ "$option" = "arm-linux-musleabi(pi_zero_w)" ]; then
-            source="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/arm-linux-musleabi%28pi_zero_w%29.zip"
+            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/arm-linux-musleabi%28pi_zero_w%29.zip"
         elif [ "$option" = "arm-linux-musleabi(mpcorenovfp)" ]; then
-            source="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/arm-linux-musleabi%28mpcorenovfp%29.zip"
+            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/arm-linux-musleabi%28mpcorenovfp%29.zip"
         elif [ "$option" = "x86_64-linux-musl" ]; then
-            source="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/x86_64-linux-musl.zip"
+            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/x86_64-linux-musl.zip"
         elif [ "$option" = "mipsel-linux-musl" ]; then
-            source="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/mipsel-linux-musl.zip"
+            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/mipsel-linux-musl.zip"
         elif [ "$option" = "mips-linux-musl" ]; then
-            source="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/mips-linux-musl.zip"
+            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/mips-linux-musl.zip"
         elif [ "$option" = "custom-aarch64-linux-musl" ]; then
-            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/aarch64-linux-musl/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/aarch64-linux-musl/pppwn"
         elif [ "$option" = "custom-arm-linux-musleabi_cortex_a7" ]; then
-            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/arm-linux-musleabi_cortex_a7/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/arm-linux-musleabi_cortex_a7/pppwn"
         elif [ "$option" = "custom-arm-linux-musleabi_mpcorenovfp" ]; then
-            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/arm-linux-musleabi_mpcorenovfp/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/arm-linux-musleabi_mpcorenovfp/pppwn"
         elif [ "$option" = "custom-arm-linux-musleabi_pi_zero_w" ]; then
-            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/arm-linux-musleabi_pi_zero_w/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/arm-linux-musleabi_pi_zero_w/pppwn"
         elif [ "$option" = "custom-mips-linux-musl" ]; then
-            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/mips-linux-musl/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/mips-linux-musl/pppwn"
         elif [ "$option" = "custom-mipsel-linux-musl" ]; then
-            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/mipsel-linux-musl/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/mipsel-linux-musl/pppwn"
         elif [ "$option" = "custom-x86_64-linux-musl" ]; then
-            source="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/x86_64-linux-musl/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/x86_64-linux-musl/pppwn"
         fi
 
-        if [[ "$source" =~ \.zip$ ]]; then
+        if [[ "$repo_refs" =~ \.zip$ ]]; then
             if ! command -v "unzip" > /dev/null 2>&1; then
                 "$(opkg update)"
                 "$(opkg install unzip)"
             fi
             cd /tmp/
-            if wget -O pppwn_file.zip $source; then
+            if wget -O pppwn_file.zip $repo_refs; then
                 "$(unzip pppwn_file.zip)"
                 "$(rm pppwn_file.zip)"
                 "$(tar -xzvf pppwn.tar.gz)"
@@ -97,11 +141,11 @@ case "$task" in
                 echo "{\"output\":\"PPPwn installed\",\"pppwn\":true}"
                 exit 0
             else
-                echo "{\"output\":\"Cannot to get source: $source\"}"
+                echo "{\"output\":\"Cannot to get repos: $repo_refs\"}"
                 exit 1
             fi
         else
-            "$(wget -O /usr/bin/pppwn $source)"
+            "$(wget -O /usr/bin/pppwn $repo_refs)"
             "$(chmod +x /usr/bin/pppwn)"
             echo "{\"output\":\"PPPwn installed\",\"pppwn\":true}"
             exit 0
@@ -186,12 +230,15 @@ case "$task" in
 
             done
             echo "},"
-            if [ -f /root/pw.conf ];then
+
+            if [ -f /root/pw.conf ]; then
                 source /root/pw.conf
-                echo "\"adapter\":\"$interface\","
-                echo "\"version\":\"$version\","
-                echo "\"timeout\":\"$timeout\","
             fi
+
+            echo "\"adapter\":\"$interface\","
+            echo "\"version\":\"$version\","
+            echo "\"timeout\":\"$timeout\","
+
         else
             echo "\"pppwn\":false,"
             echo "\"compiled\":["
@@ -240,17 +287,8 @@ case "$task" in
         fi
 
         echo ""
-        if [ -f /root/pw.conf ]; then
-            sed -i "s/root=.*/root=$root/" "/root/pw.conf"
-            sed -i "s/interface=.*/interface=$adapter/" "/root/pw.conf"
-            sed -i "s/version=.*/version=$version/" "/root/pw.conf"
-            sed -i "s/timeout=.*/timeout=$timeout/" "/root/pw.conf"
-        else
-            echo -e "root=$root\n" > "/root/pw.conf"
-            echo -e "interface=$adapter\n" >> "/root/pw.conf"
-            echo -e "version=$version\n" >> "/root/pw.conf"
-            echo -e "timeout=$timeout\n" >> "/root/pw.conf"
-        fi
+
+        set_params
         /root/run.sh
 
     ;;
@@ -294,44 +332,8 @@ case "$task" in
         fi
 
         echo ""
-        if [ -f /root/pw.conf ]; then
-            
-            if grep -q "root=" "/root/pw.conf"; then
-                sed -i "s/root=.*/root=$root/" "/root/pw.conf"
-            else
-                echo -e "root=$root" >> "/root/pw.conf"
-            fi
-            if grep -q "interface=" "/root/pw.conf"; then
-                sed -i "s/interface=.*/interface=$adapter/" "/root/pw.conf"
-            else
-                echo -e "interface=$adapter" >> "/root/pw.conf"
-            fi
-            if grep -q "version=" "/root/pw.conf"; then
-                sed -i "s/version=.*/version=$version/" "/root/pw.conf"
-            else
-                echo -e "version=$version" >> "/root/pw.conf"
-            fi
-            if grep -q "timeout=" "/root/pw.conf"; then
-                sed -i "s/timeout=.*/timeout=$timeout/" "/root/pw.conf"
-            else
-                echo -e "timeout=$timeout" >> "/root/pw.conf"
-            fi
-            if grep -q "stage1=" "/root/pw.conf"; then
-                sed -i "/stage1=.*/d" "/root/pw.conf"
-                echo -e "stage1=$stage1" >> "/root/pw.conf"
-            fi
-            if grep -q "stage2=" "/root/pw.conf"; then
-                sed -i "/stage2=.*/d" "/root/pw.conf"
-                echo -e "stage2=$stage2" >> "/root/pw.conf"
-            fi
-        else
-            echo -e "root=$root" > /root/pw.conf
-            echo -e "interface=$adapter" > /root/pw.conf
-            echo -e "version=$version" >> /root/pw.conf
-            echo -e "timeout=$timeout" >> /root/pw.conf
-            echo -e "stage1=$stage1" >> /root/pw.conf
-            echo -e "stage2=$stage2" >> /root/pw.conf
-        fi
+
+        set_params
 
         if [ "$auto" = 1 ]; then
 

@@ -2,7 +2,7 @@
 
 if ! pgrep pppwn > /dev/null; then
 
-    if [ -f /root/pw.conf ];then
+    if [ -f /root/pw.conf ]; then
 
         source /root/pw.conf
 
