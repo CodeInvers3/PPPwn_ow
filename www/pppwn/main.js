@@ -90,9 +90,6 @@ var appView = Backbone.View.extend({
                     timeout:this.inputTimeout.val()
                 }
             }).then(function(response){
-                if(response.output){
-                    $.modal.content(self.templates.msg({message: response.output}));
-                }
                 $.modal.close();
                 button.prop('task', 'start').addClass('active').text('Start');
             }).catch(function(err, textStatus, errorThrown){
@@ -454,8 +451,6 @@ var appView = Backbone.View.extend({
         }else{
             this.buttonAction.prop('task', 'start').text('Start');
         }
-
-        console.log(this.model.get('autorun'));
 
         if(this.model.get('autorun')){
             this.selectAuto.val(1);
