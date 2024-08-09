@@ -175,10 +175,34 @@ body{
 	animation: girar 2s infinite linear;
 }
 
+.preaction{
+	top: 0;
+	left: 50%;
+	right: 0;
+	position: absolute;
+	margin-top: 10px;
+	margin-left: -30px;
+	width: 60px;
+}
+
+.btn-stop{
+	width: 100%;
+	background-color: #760f0f;
+	color:#ffffff;
+	border-radius: 50px;
+	line-height: 50px;
+	cursor: pointer;
+	font-size: 9pt;
+}
+
 .btn-message{
 	padding: 12px;
 	margin: 5px;
 	cursor: pointer;
+}
+
+.btn-stop:focus{
+	background-color: #512323;
 }
 
 @keyframes girar {

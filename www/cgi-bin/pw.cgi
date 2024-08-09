@@ -96,44 +96,38 @@ case "$task" in
 
         repo_refs=""
         if [ "$option" = "aarch64-linux-musl" ]; then
-            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/aarch64-linux-musl.zip"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/aarch64-linux-musl.tar.gz"
         elif [ "$option" = "arm-linux-musleabi(cortex_a7)" ]; then
-            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/arm-linux-musleabi%28cortex_a7%29.zip"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/arm-linux-musleabi(cortex_a7).tar.gz"
         elif [ "$option" = "arm-linux-musleabi(pi_zero_w)" ]; then
-            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/arm-linux-musleabi%28pi_zero_w%29.zip"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/arm-linux-musleabi(pi_zero_w).tar.gz"
         elif [ "$option" = "arm-linux-musleabi(mpcorenovfp)" ]; then
-            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/arm-linux-musleabi%28mpcorenovfp%29.zip"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/arm-linux-musleabi(mpcorenovfp).tar.gz"
         elif [ "$option" = "x86_64-linux-musl" ]; then
-            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/x86_64-linux-musl.zip"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/x86_64-linux-musl.tar.gz"
         elif [ "$option" = "mipsel-linux-musl" ]; then
-            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/mipsel-linux-musl.zip"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/mipsel-linux-musl.tar.gz"
         elif [ "$option" = "mips-linux-musl" ]; then
-            repo_refs="https://nightly.link/xfangfang/PPPwn_cpp/workflows/ci.yaml/main/mips-linux-musl.zip"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/mips-linux-musl.tar.gz"
         elif [ "$option" = "custom-aarch64-linux-musl" ]; then
-            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/aarch64-linux-musl/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/compiled/aarch64-linux-musl/pppwn"
         elif [ "$option" = "custom-arm-linux-musleabi_cortex_a7" ]; then
-            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/arm-linux-musleabi_cortex_a7/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/compiled/arm-linux-musleabi_cortex_a7/pppwn"
         elif [ "$option" = "custom-arm-linux-musleabi_mpcorenovfp" ]; then
-            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/arm-linux-musleabi_mpcorenovfp/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/compiled/arm-linux-musleabi_mpcorenovfp/pppwn"
         elif [ "$option" = "custom-arm-linux-musleabi_pi_zero_w" ]; then
-            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/arm-linux-musleabi_pi_zero_w/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/compiled/arm-linux-musleabi_pi_zero_w/pppwn"
         elif [ "$option" = "custom-mips-linux-musl" ]; then
-            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/mips-linux-musl/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/compiled/mips-linux-musl/pppwn"
         elif [ "$option" = "custom-mipsel-linux-musl" ]; then
-            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/mipsel-linux-musl/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/compiled/mipsel-linux-musl/pppwn"
         elif [ "$option" = "custom-x86_64-linux-musl" ]; then
-            repo_refs="https://raw.githubusercontent.com/CodeInvers3/pppwn_custom/main/compiled/x86_64-linux-musl/pppwn"
+            repo_refs="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/compiled/x86_64-linux-musl/pppwn"
         fi
 
-        if [[ "$repo_refs" =~ \.zip$ ]]; then
-            if ! command -v "unzip" > /dev/null 2>&1; then
-                "$(opkg update)"
-                "$(opkg install unzip)"
-            fi
+        if [[ "$repo_refs" =~ tar\.gz$ ]]; then
             cd /tmp/
-            if wget -O pppwn_file.zip $repo_refs; then
-                "$(unzip pppwn_file.zip)"
-                "$(rm pppwn_file.zip)"
+            if wget -O pppwn.tar.gz $repo_refs; then
                 "$(tar -xzvf pppwn.tar.gz)"
                 "$(rm pppwn.tar.gz)"
                 "$(chmod +x pppwn)"
@@ -167,7 +161,7 @@ case "$task" in
         if [ -z "$latest_version" ]; then
             echo "\"update\":false,"
         else
-            if [ "$current_version" != "$latest_version" ]; then
+            if [ "$latest_version" -gt "$current_version" ]; then
                 echo "\"update\":true,"
             else
                 echo "\"update\":false,"

@@ -26,7 +26,7 @@ var SectionRouter = Backbone.Router.extend({
         payload: _.template($('#payloadTpl').html())
     },
     routes: {
-        'payloads': 'payloads'
+        'payloads':'payloads'
     },
     payloads: function(){
         
@@ -54,12 +54,7 @@ var appView = Backbone.View.extend({
             var self = this;
             var button = $(event.target);
             var task = button.prop('task');
-
-            if(task == 'stop'){
-
-                button.prop('task', 'start').addClass('active').text('Start');
-
-            }else
+            
             if(task == 'start'){
 
                 if(!this.inputRoot.val() || !this.inputAdapter.val() || !this.inputVersion.val()){
@@ -71,36 +66,17 @@ var appView = Backbone.View.extend({
                 
                 button.prop('task', 'stop').removeClass('active').text('Stop');
 
+                $.modal(function(modal){
+                    modal.content($('<div class="preloader center"></div><div class="center preaction"><button class="btn-stop" onclick="appweb.action(\'stop\')">STOP</button></div>'));
+                });
+
+            }else{
+                $.modal(function(modal){
+                    modal.content($('<div class="preloader center"></div>'));
+                });
             }
 
-            $.modal(function(modal){
-                modal.content($('<div class="preloader center"></div>'));
-            });
-
-            this.model.fetch({
-                method: 'POST',
-                data: {
-                    task:task,
-                    token:this.webToken,
-                    root:this.inputRoot.val(),
-                    adapter:this.inputAdapter.val(),
-                    version:this.inputVersion.val(),
-                    stage1:this.stage1[this.inputVersion.val()],
-                    stage2:this.stage2[this.inputVersion.val()],
-                    timeout:this.inputTimeout.val(),
-                    auto:this.selectAuto.val()
-                }
-            }).then(function(response){
-                $.modal.close();
-                button.prop('task', 'start').addClass('active').text('Start');
-            }).catch(function(err, textStatus, errorThrown){
-                if(err.responseJSON){
-                    $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
-                }else{
-                    $.modal.content(self.templates.msg({message: err.responseText, buttons:[]}));
-                }
-                button.prop('task', 'start').addClass('active').text('Start');
-            });
+            this.action(task);
 
         },
         'click button#params_pw': function(event){
@@ -160,6 +136,55 @@ var appView = Backbone.View.extend({
             });
 
         },
+        'click button#remove_rep': function(){
+
+            var self = this;
+
+            $.modal(function(modal){
+                modal.content(self.templates.msg({message: 'Uninstall PPPwn OW?', buttons: [
+                    {label:"Yes, uninstall", id: "remove_rep", onclick:"appweb.uninstall()"}
+                ]}));
+            });
+
+            
+
+        },
+        'click button#pppoe_pw': function(){
+
+            $.modal(function(modal){
+                modal.content($('<div class="preloader center"></div>'));
+            });
+
+            var self = this;
+            this.model.fetch({
+                method: 'POST',
+                data: {
+                    task:'connect',
+                    token:this.webToken,
+                    status:this.inputConnect.val()
+                }
+            }).then(function(res){
+                
+                var status = self.model.get('pppoe');
+
+                if(status == 'running'){
+                    self.inputConnect.text('PPPoe stop').val()
+                }else
+                if(status == 'inactive'){
+                    self.inputConnect.text('PPPoe start').val(status)
+                }
+
+                $.modal.content(self.templates.msg({message: res.output, buttons:[]}));
+                
+            }).catch(function(err){
+                if(err.responseJSON){
+                    $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
+                }else{
+                    $.modal.content(self.templates.msg({message: err.responseText, buttons:[]}));
+                }
+            });
+
+        },
         'click button#install_pw': function(event){
 
             var self = this;
@@ -192,51 +217,6 @@ var appView = Backbone.View.extend({
                 
             });
 
-        },
-        'click button#remove_rep': function(){
-
-            var self = this;
-
-            $.modal(function(modal){
-                modal.content(self.templates.msg({message: 'Uninstall PPPwn OW?', buttons: [
-                    {label:"Yes, uninstall", id: "remove_rep", onclick:"appweb.uninstall()"}
-                ]}));
-            });
-
-            
-
-        },
-        'click button#pppoe_pw': function(){
-            var self = this;
-            this.model.fetch({
-                method: 'POST',
-                data: {
-                    task:'connect',
-                    token:this.webToken,
-                    status:this.inputConnect.val()
-                }
-            }).then(function(res){
-                
-                var status = self.model.get('pppoe');
-
-                if(status == 'running'){
-                    self.inputConnect.text('PPPoe stop').val()
-                }else
-                if(status == 'inactive'){
-                    self.inputConnect.text('PPPoe start').val(status)
-                }
-                $.modal(function(modal){
-                    modal.content(self.templates.msg({message: res.output, buttons:[]}));
-                });
-            }).catch(function(err){
-                $.modal(function(modal){
-                    if(err.responseJSON){
-                        modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
-                    }else{
-                        modal.content(self.templates.msg({message: err.responseText, buttons:[]}));
-                    }
-                });
-            });
         },
         'click button.sent-payload': function(event){
 
@@ -293,6 +273,49 @@ var appView = Backbone.View.extend({
             });
 
         }
+    },
+    action: function(task = ''){
+
+        var self = this;
+        var button = this.buttonAction;
+
+        if(task == 'start' || task == 'stop'){
+
+            this.model.fetch({
+                method: 'POST',
+                data: {
+                    task:task,
+                    token:this.webToken,
+                    root:this.inputRoot.val(),
+                    adapter:this.inputAdapter.val(),
+                    version:this.inputVersion.val(),
+                    stage1:this.stage1[this.inputVersion.val()],
+                    stage2:this.stage2[this.inputVersion.val()],
+                    timeout:this.inputTimeout.val(),
+                    auto:this.selectAuto.val()
+                }
+            }).then(function(){
+
+                $.modal.close();
+                if(task == 'stop'){
+                    button.prop('task', 'start').removeClass('active').text('Start');
+                    console.log(button);
+                    console.log(task);
+                }else
+                if(task == 'start'){
+                    button.prop('task', 'start').addClass('active').text('Stop');
+                }
+
+            }).catch(function(err, textStatus, errorThrown){
+                if(err.responseJSON){
+                    $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
+                }else{
+                    $.modal.content(self.templates.msg({message: err.responseText, buttons:[]}));
+                }
+            });
+
+        }
+
     },
     ajax: function(options){
                     
