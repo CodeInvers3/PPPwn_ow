@@ -10,18 +10,19 @@ This activation method works for devices with the OpenWrt Linux system as long a
 - USB drive with 1GB or more of storage.
 - Tested model [GL-MT300N-V2 Mango](https://www.gl-inet.com/products/gl-mt300n-v2/)
 
-## Off-line Installation Download PPPwn_ow.zip
+## Offline Installation Download PPPwn_ow.zip (Requires installing rp-pppoe-server from LuCI before continuing)
 
-1. Download the `PPPwn_ow.zip` file.
-2. Extract the `PPPwn_ow.zip` file.
-3. Transfer the `PPPwn_ow` folder using WinSCP, use the SCP protocol with hostname `192.168.8.1` and port `22`.
-4. Open Git Bash or PuTTY and access the terminal. Navigate to the directory where `installer-offline.sh` is located using the command `cd /path`.
-5. Run the following command to perform the installation:
-   ```bash
-   chmod +x installer-offline.sh && ./installer-offline.sh
-   ```
-   You will receive the message "installation complete".
-6. Access the address http://192.168.8.1/pppwn.html to install PPPwn_cpp.
+1. Download the `PPPwn_ow.zip` and `pppwn.tar.gz` files from my repository.
+2. Extract the `PPPwn_ow.zip` and `pppwn.tar.gz` files.
+3. Copy the `pppwn` file to the `PPPwn_ow` folder.
+4. Transfer the `PPPwn_ow` folder using WinSCP. Use the SCP protocol with the host address 192.168.8.1 and port 22.
+5. Open Git Bash or PuTTY and access the terminal. Navigate to the directory where installer-offline.sh is located using the `cd /path` command.
+6. Run the following command to perform the installation:
+    ```sh
+    chmod +x installer-offline.sh && ./installer-offline.sh
+    ```
+    You will receive the "installation complete" message.
+7. Go to http://192.168.8.1/pppwn.html and setup.
 
 ## Common Installation 
 
@@ -69,18 +70,19 @@ Interfaz web para arrancar PPPwn_cpp desde el navegador web de PS4.
 - Descargar goldhen.bin para el Firmware de tu consola [Sistro](https://github.com/GoldHEN/GoldHEN/releases).
 - Memoria USB 1GB o más
 
-## Instalación fuera de línea
+## Instalación sin conexión (Requiere instalar rp-pppoe-server desde luCI antes se continuar)
 
-1. Descarga el archivo `PPPwn_ow.zip`.
-2. Descomprime el archivo `PPPwn_ow.zip`.
-3. Transfiere la carpeta `PPPwn_ow` utilizando WinSCP, usa el protocolo SCP con el nombre de host `192.168.8.1` y puerto `22`.
-4. Abre Git Bash o PuTTY y accede al terminal. Ubícate con el comando `cd /path` donde se encuentra `installer-offline.sh`.
-5. Ejecuta el siguiente comando para realizar la instalación:
+1. Descarga los archivos `PPPwn_ow.zip` y `pppwn.tar.gz` desde mi [repositorio](https://github.com/CodeInvers3/codeinvers3.github.io/tree/master/custom/stored).
+2. Descomprime los archivos `PPPwn_ow.zip` y `pppwn.tar.gz`.
+3. Copia el archivo `pppwn` a la carpeta `PPPwn_ow`.
+4. Transfiere la carpeta `PPPwn_ow` utilizando WinSCP. Usa el protocolo SCP con la dirección de host `192.168.8.1` y puerto `22`.
+5. Abre Git Bash o PuTTY y accede al terminal. Navega hasta el directorio donde se encuentra `installer-offline.sh` utilizando el comando `cd /path`.
+6. Ejecuta el siguiente comando para realizar la instalación:
    ```bash
    chmod +x installer-offline.sh && ./installer-offline.sh
    ```
    Recibirás el mensaje de "instalación completa".
-6. Accede a la dirección http://192.168.8.1/pppwn.html para instalar PPPwn_cpp.
+7. Accede a la dirección http://192.168.8.1/pppwn.html para configurar los ajustes.
 
 ## Instalación desde el repositorio
 
