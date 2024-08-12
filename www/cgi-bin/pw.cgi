@@ -5,6 +5,7 @@ echo "Content-Type: application/json"
 token="token_id"
 stoken=""
 token_file="/tmp/token"
+rspppoe=$(pgrep pppoe-server)
 
 if ! [ -f "$token_file" ]; then
     stoken=$(head -30 /dev/urandom | tr -dc "0123456789" | head -c20)
@@ -169,8 +170,9 @@ case "$task" in
         fi
 
         if command -v pppoe-server >/dev/null 2>&1; then
-            rspppoe=$(/etc/init.d/pppoe-server status)
-            echo "\"pppoe\":\"$rspppoe\","
+            if [ -n "$rspppoe" ]; then
+                echo "\"pppoe\":\"running\","
+            fi
         fi
         if command -v pppwn > /dev/null 2>&1; then
             echo "\"pppwn\":true,"
@@ -413,15 +415,18 @@ case "$task" in
 
         echo ""
         echo "{"
-        if /etc/init.d/pppoe-server status | grep -q "running"; then
+        if [ -n "$rspppoe" ]; then
             /etc/init.d/pppoe-server stop
             echo "\"output\":\"PPPoE service stopped\","
-        elif /etc/init.d/pppoe-server status | grep -q "inactive"; then
+        elif [ -z "$rspppoe" ]; then
             /etc/init.d/pppoe-server start
             echo "\"output\":\"PPPoE service started\","
         fi
-        rspppoe=$(/etc/init.d/pppoe-server status)
-        echo "\"pppoe\":\"$rspppoe\""
+        if [ -n "$rspppoe" ]; then
+            echo "\"pppoe\":\"running\""
+        else
+            echo "\"pppoe\":\"inactive\""
+        fi
         echo "}"
 
     ;;

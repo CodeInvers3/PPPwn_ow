@@ -41,31 +41,24 @@ fi
 if [ -f /www/cgi-bin/pw.cgi ]; then
     rm /www/cgi-bin/pw.cgi
 fi
-
-if [ ! -d /etc/ppp ]; then
-    mkdir /etc/ppp
-fi
-if [ ! -d /etc/init.d ]; then
-    mkdir /etc/init.d
-fi
-if [ ! -d /etc/config ]; then
-    mkdir /etc/config
+if [ -f /usr/bin/pppwn ]; then
+    rm /usr/bin/pppwn
 fi
 
-mv ./www/* /www
-mv ./www/cgi-bin/pw.cgi /www/cgi-bin/pw.cgi
-mv ./stage1 /root
-mv ./stage2 /root
+mv www/* /www
+mv www/cgi-bin/pw.cgi /www/cgi-bin
+mv stage1 /root
+mv stage2 /root
 
-mv ./version /root/version
-mv ./run.sh /root/run.sh
-mv ./pw.conf /root/pw.conf
+mv version /root/version
+mv run.sh /root/run.sh
+mv pw.conf /root/pw.conf
 
-mv ./pppoe/ppp/pap-secrets /etc/ppp/pap-secrets
-mv ./pppoe/ppp/chap-secrets /etc/ppp/chap-secrets
-mv ./pppoe/ppp/pppoe-server-options /etc/ppp/pppoe-server-options
-mv ./pppoe/init.d/pppoe-server /etc/init.d/pppoe-server
-mv ./pppoe/config/pppoe /etc/config/pppoe
+mv -f pppoe/ppp/pap-secrets /etc/ppp
+mv -f pppoe/ppp/chap-secrets /etc/ppp
+mv -f pppoe/ppp/pppoe-server-options /etc/ppp
+mv -f pppoe/init.d/pppoe-server /etc/init.d
+mv -f pppoe/config/pppoe /etc/config
 
 chmod +x /root/run.sh
 chmod +x /www/cgi-bin/pw.cgi
@@ -75,21 +68,28 @@ if ! grep -q "list device 'ppp+'" /etc/config/firewall; then
     sed -i "s/option name 'lan'/option name 'lan'\n\t list device 'ppp+'/" /etc/config/firewall
 fi
 
+if [ ! -f /etc/rc.button/switch ]; then
+    echo "#!/bin/sh\n action=on\n return 0" > /etc/rc.button/switch
+    chmod +x /etc/rc.button/switch
+fi
 if ! grep -q "/root/run.sh" /etc/rc.button/switch; then
     sed -i "s/action=on/action=on\n\n\/root\/run\.sh/" /etc/rc.button/switch
+fi
+if [ -f pppwn ]; then
+    mv pppwn /usr/bin
+    chmod +x /usr/bin/pppwn
 fi
 
 /etc/init.d/pppoe-server start
 
-rm ./README.md
-rm ./installer.sh
-rm ./installer-offline.sh
-
-cd ..
-rm -rf PPPwn_ow
+rm README.md
+rm installer.sh
+rm installer-offline.sh
 
 echo "PPPwn web is hosted at http://192.168.8.1/pppwn.html"
 echo "--- INSTALLATION COMPLETED! ---"
-cd /
+
+cd /root
+rm -rf ./PPPwn_ow
 
 exit 0
