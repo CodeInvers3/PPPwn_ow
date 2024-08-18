@@ -5,7 +5,6 @@ echo "Content-Type: application/json"
 token="token_id"
 stoken=""
 token_file="/tmp/token"
-rspppoe=$(pgrep pppoe-server)
 
 if ! [ -f "$token_file" ]; then
     stoken=$(head -30 /dev/urandom | tr -dc "0123456789" | head -c20)
@@ -40,43 +39,43 @@ fi
 
 set_params(){
 
-    if [ -f /root/pw.conf ]; then
+    if [ -f /etc/config/pw ]; then
             
-        if grep -q "root=" "/root/pw.conf"; then
-            sed -i "s/root=.*/root=\"$root\"/" "/root/pw.conf"
+        if grep -q "root=" "/etc/config/pw"; then
+            sed -i "s/root=.*/root=\"$root\"/" "/etc/config/pw"
         else
-            echo -e "root=\"$root\"" >> "/root/pw.conf"
+            echo -e "root=\"$root\"" >> "/etc/config/pw"
         fi
-        if grep -q "interface=" "/root/pw.conf"; then
-            sed -i "s/interface=.*/interface=\"$adapter\"/" "/root/pw.conf"
+        if grep -q "interface=" "/etc/config/pw"; then
+            sed -i "s/interface=.*/interface=\"$adapter\"/" "/etc/config/pw"
         else
-            echo -e "interface=\"$adapter\"" >> "/root/pw.conf"
+            echo -e "interface=\"$adapter\"" >> "/etc/config/pw"
         fi
-        if grep -q "version=" "/root/pw.conf"; then
-            sed -i "s/version=.*/version=\"$version\"/" "/root/pw.conf"
+        if grep -q "version=" "/etc/config/pw"; then
+            sed -i "s/version=.*/version=\"$version\"/" "/etc/config/pw"
         else
-            echo -e "version=\"$version\"" >> "/root/pw.conf"
+            echo -e "version=\"$version\"" >> "/etc/config/pw"
         fi
-        if grep -q "timeout=" "/root/pw.conf"; then
-            sed -i "s/timeout=.*/timeout=\"$timeout\"/" "/root/pw.conf"
+        if grep -q "timeout=" "/etc/config/pw"; then
+            sed -i "s/timeout=.*/timeout=\"$timeout\"/" "/etc/config/pw"
         else
-            echo -e "timeout=\"$timeout\"" >> "/root/pw.conf"
+            echo -e "timeout=\"$timeout\"" >> "/etc/config/pw"
         fi
-        if grep -q "stage1=" "/root/pw.conf"; then
-            sed -i "/stage1=.*/d" "/root/pw.conf"
-            echo -e "stage1=\"$stage1\"" >> "/root/pw.conf"
+        if grep -q "stage1=" "/etc/config/pw"; then
+            sed -i "/stage1=.*/d" "/etc/config/pw"
+            echo -e "stage1=\"$stage1\"" >> "/etc/config/pw"
         fi
-        if grep -q "stage2=" "/root/pw.conf"; then
-            sed -i "/stage2=.*/d" "/root/pw.conf"
-            echo -e "stage2=\"$stage2\"" >> "/root/pw.conf"
+        if grep -q "stage2=" "/etc/config/pw"; then
+            sed -i "/stage2=.*/d" "/etc/config/pw"
+            echo -e "stage2=\"$stage2\"" >> "/etc/config/pw"
         fi
     else
-        echo -e "root=\"$root\"" > /root/pw.conf
-        echo -e "interface=\"$adapter\"" > /root/pw.conf
-        echo -e "version=\"$version\"" >> /root/pw.conf
-        echo -e "timeout=\"$timeout\"" >> /root/pw.conf
-        echo -e "stage1=\"$stage1\"" >> /root/pw.conf
-        echo -e "stage2=\"$stage2\"" >> /root/pw.conf
+        echo -e "root=\"$root\"" > /etc/config/pw
+        echo -e "interface=\"$adapter\"" > /etc/config/pw
+        echo -e "version=\"$version\"" >> /etc/config/pw
+        echo -e "timeout=\"$timeout\"" >> /etc/config/pw
+        echo -e "stage1=\"$stage1\"" >> /etc/config/pw
+        echo -e "stage2=\"$stage2\"" >> /etc/config/pw
     fi
 
 }
@@ -169,10 +168,8 @@ case "$task" in
             fi
         fi
 
-        if command -v pppoe-server >/dev/null 2>&1; then
-            if [ -n "$rspppoe" ]; then
-                echo "\"pppoe\":\"running\","
-            fi
+        if pgrep pppoe-server > /dev/null; then
+            echo "\"pppoe\":\"running\","
         fi
         if command -v pppwn > /dev/null 2>&1; then
             echo "\"pppwn\":true,"
@@ -227,8 +224,8 @@ case "$task" in
             done
             echo "},"
 
-            if [ -f /root/pw.conf ]; then
-                source /root/pw.conf
+            if [ -f /etc/config/pw ]; then
+                source /etc/config/pw
             fi
 
             echo "\"adapter\":\"$interface\","
@@ -263,7 +260,7 @@ case "$task" in
             fi
             echo "],"
         fi
-        if grep -q "/root/run.sh" /etc/rc.local; then
+        if ls -l /etc/rc.d/ | grep -q pw; then
             echo "\"autorun\":true"
         else
             echo "\"autorun\":false"
@@ -285,7 +282,7 @@ case "$task" in
         echo ""
 
         set_params
-        /root/run.sh
+        /etc/init.d/pw start
 
     ;;
     "stop")
@@ -300,10 +297,8 @@ case "$task" in
         fi
 
         echo ""
-        pids=$(pgrep pppwn)
-        for pid in $pids; do
-            kill $pid
-        done
+        
+        /etc/init.d/pw stop
 
         echo "{"
         echo "\"root\":\"$root\","
@@ -313,7 +308,7 @@ case "$task" in
         echo "\"timeout\":\"$timeout\""
         echo "}"
 
-        exit 1
+        exit 0
 
     ;;
     "params")
@@ -332,23 +327,10 @@ case "$task" in
         set_params
 
         if [ "$auto" = 1 ]; then
-
-            if ! grep -q "/root/run.sh" /etc/rc.local; then
-                sed -i '/exit 0/d' /etc/rc.local
-                echo "/root/run.sh &" >> /etc/rc.local
-                echo "exit 0" >> /etc/rc.local
-            fi
-
-            chmod +x /etc/rc.local
-            chmod +x /root/run.sh
-
+            /etc/init.d/pw enable
         fi
         if [ "$auto" = 0 ]; then
-
-            if grep -q "/root/run.sh" /etc/rc.local; then
-                sed -i '/\/root\/run\.sh/d' /etc/rc.local
-            fi
-
+            /etc/init.d/pw disable
         fi
 
         echo "{"
@@ -415,14 +397,14 @@ case "$task" in
 
         echo ""
         echo "{"
-        if [ -n "$rspppoe" ]; then
+        if pgrep pppoe-server > /dev/null; then
             /etc/init.d/pppoe-server stop
             echo "\"output\":\"PPPoE service stopped\","
-        elif [ -z "$rspppoe" ]; then
+        elif ! pgrep pppoe-server > /dev/null; then
             /etc/init.d/pppoe-server start
             echo "\"output\":\"PPPoE service started\","
         fi
-        if [ -n "$rspppoe" ]; then
+        if pgrep pppoe-server > /dev/null; then
             echo "\"pppoe\":\"running\""
         else
             echo "\"pppoe\":\"inactive\""
@@ -430,7 +412,7 @@ case "$task" in
         echo "}"
 
     ;;
-    "add_func")
+    "button_rc")
 
         if ! [ "$token" = "$stoken" ]; then
 
@@ -442,9 +424,6 @@ case "$task" in
         fi
 
         echo ""
-        if ! grep -q "/root/run.sh" /etc/rc.button/switch; then
-            sed -i "s/action=on/action=on\n\n\/root\/run\.sh/" /etc/rc.button/switch
-        fi
 
     ;;
     *)

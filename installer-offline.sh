@@ -1,8 +1,32 @@
 #!/bin/sh
 
-if ! command -v pppoe-server >/dev/null 2>&1; then
-    opkg update
-    opkg install rp-pppoe-server
+if [ -f rp-pppoe-common.ipk ]; then
+    opkg install rp-pppoe-common.ipk
+fi
+if [ -f rp-pppoe-server.ipk ]; then
+    opkg install rp-pppoe-server.ipk
+fi
+
+if [ -f /etc/config/pppoe ]; then
+    rm -r /etc/config/pppoe
+fi
+if [ -f /etc/config/pw ]; then
+    rm -r /etc/config/pw
+fi
+if [ -f /etc/init.d/pppoe-server ]; then
+    rm -r /etc/init.d/pppoe-server
+fi
+if [ -f /etc/init.d/pw ]; then
+    rm -r /etc/init.d/pw
+fi
+if [ -f /etc/ppp/chap-secrets ]; then
+    rm -r /etc/ppp/chap-secrets
+fi
+if [ -f /etc/ppp/pap-secrets ]; then
+    rm -r /etc/ppp/pap-secrets
+fi
+if [ -f /etc/ppp/pppoe-server-options ]; then
+    rm -r /etc/ppp/pppoe-server-options
 fi
 
 if [ -d /etc/ppp ]; then
@@ -44,52 +68,49 @@ fi
 if [ -f /usr/bin/pppwn ]; then
     rm /usr/bin/pppwn
 fi
+if [ -f /etc/ppp ]; then
+    rm /etc/ppp
+    mkdir /etc/ppp
+fi
 
-mv www/* /www
-mv www/cgi-bin/pw.cgi /www/cgi-bin
-mv stage1 /root
-mv stage2 /root
+mv -f etc/config/pppoe /etc/config
+mv -f etc/config/pw /etc/config
+mv -f etc/init.d/pppoe-server /etc/init.d
+mv -f etc/init.d/pw /etc/init.d
+mv -f etc/ppp/pap-secrets /etc/ppp
+mv -f etc/ppp/chap-secrets /etc/ppp
+mv -f etc/ppp/pppoe-server-options /etc/ppp
 
-mv version /root/version
-mv run.sh /root/run.sh
-mv pw.conf /root/pw.conf
+mv -f www/pppwn /www
+mv -f www/pppwn.html /www
+mv -f www/cgi-bin/pw.cgi /www/cgi-bin
+mv -f stage1 /root
+mv -f stage2 /root
+mv -f version /root
 
-mv -f pppoe/ppp/pap-secrets /etc/ppp
-mv -f pppoe/ppp/chap-secrets /etc/ppp
-mv -f pppoe/ppp/pppoe-server-options /etc/ppp
-mv -f pppoe/init.d/pppoe-server /etc/init.d
-mv -f pppoe/config/pppoe /etc/config
-
-chmod +x /root/run.sh
-chmod +x /www/cgi-bin/pw.cgi
+chmod +x /etc/init.d/pw
 chmod +x /etc/init.d/pppoe-server
+chmod +x /www/cgi-bin/pw.cgi
+
+if [ -f pppwn ]; then
+    mv -f pppwn /usr/sbin
+    chmod +x /usr/sbin/pppwn
+fi
 
 if ! grep -q "list device 'ppp+'" /etc/config/firewall; then
     sed -i "s/option name 'lan'/option name 'lan'\n\t list device 'ppp+'/" /etc/config/firewall
 fi
 
-if [ ! -f /etc/rc.button/switch ]; then
-    echo "#!/bin/sh\n action=on\n return 0" > /etc/rc.button/switch
-    chmod +x /etc/rc.button/switch
-fi
-if ! grep -q "/root/run.sh" /etc/rc.button/switch; then
-    sed -i "s/action=on/action=on\n\n\/root\/run\.sh/" /etc/rc.button/switch
-fi
-if [ -f pppwn ]; then
-    mv pppwn /usr/bin
-    chmod +x /usr/bin/pppwn
-fi
-
+/etc/init.d/pppoe-server enable
 /etc/init.d/pppoe-server start
 
 rm README.md
 rm installer.sh
 rm installer-offline.sh
 
-echo "PPPwn web is hosted at http://192.168.8.1/pppwn.html"
+echo "PPPwn web is hosted at http://localhost/pppwn.html"
 echo "--- INSTALLATION COMPLETED! ---"
 
-cd /root
-rm -rf ./PPPwn_ow
+rm -rf ../PPPwn_ow
 
 exit 0

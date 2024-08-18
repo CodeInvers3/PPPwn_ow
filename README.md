@@ -10,19 +10,19 @@ This activation method works for devices with the OpenWrt Linux system as long a
 - USB drive with 1GB or more of storage.
 - Tested model [GL-MT300N-V2 Mango](https://www.gl-inet.com/products/gl-mt300n-v2/)
 
-## Offline Installation Download PPPwn_ow.zip (Requires installing rp-pppoe-server from LuCI before continuing)
+## Offline Installation Download PPPwn_ow.zip (Requires rp-pppoe-server and rp-pppoe-common from OpenWrt release version)
 
-1. Download the `PPPwn_ow.zip` and `pppwn.tar.gz` files from my repository.
-2. Extract the `PPPwn_ow.zip` and `pppwn.tar.gz` files.
-3. Copy the `pppwn` file to the `PPPwn_ow` folder.
+1. Search and download the compatible version of PPPoe-server and PPPoe-common from `https://downloads.openwrt.org/releases/`.
+2. Download and extract the `PPPwn_ow.zip` and `pppwn.tar.gz` files from my repository.
+3. Copy the `pppwn`, `rp-pppoe-common.ipk` and `rp-pppoe-server.ipk` files to the `PPPwn_ow` folder (The file names must be exactly as described).
 4. Transfer the `PPPwn_ow` folder using WinSCP. Use the SCP protocol with the host address 192.168.8.1 and port 22.
-5. Open Git Bash or PuTTY and access the terminal. Navigate to the directory where installer-offline.sh is located using the `cd /path` command.
+5. Open Git Bash or PuTTY and access the terminal. Navigate to the directory where `installer-offline.sh` is located using the `cd /path` command.
 6. Run the following command to perform the installation:
     ```sh
     chmod +x installer-offline.sh && ./installer-offline.sh
     ```
     You will receive the "installation complete" message.
-7. Go to http://192.168.8.1/pppwn.html and setup.
+7. Go to http://192.168.8.1/pppwn.html and complete the setup.
 
 ## Common Installation 
 
@@ -72,17 +72,17 @@ Interfaz web para arrancar PPPwn_cpp desde el navegador web de PS4.
 
 ## Instalación sin conexión (Requiere instalar rp-pppoe-server desde luCI antes se continuar)
 
-1. Descarga los archivos `PPPwn_ow.zip` y `pppwn.tar.gz` desde mi [repositorio](https://github.com/CodeInvers3/codeinvers3.github.io/tree/master/custom/stored).
-2. Descomprime los archivos `PPPwn_ow.zip` y `pppwn.tar.gz`.
-3. Copia el archivo `pppwn` a la carpeta `PPPwn_ow`.
-4. Transfiere la carpeta `PPPwn_ow` utilizando WinSCP. Usa el protocolo SCP con la dirección de host `192.168.8.1` y puerto `22`.
-5. Abre Git Bash o PuTTY y accede al terminal. Navega hasta el directorio donde se encuentra `installer-offline.sh` utilizando el comando `cd /path`.
+1. Busca y descarga la versión compatible de PPPoe-server y PPPoe-common desde `https://downloads.openwrt.org/releases/`.
+2. Descarga y extrae los archivos `PPPwn_ow.zip` y `pppwn.tar.gz` desde mi repositorio.
+3. Copia los archivos `pppwn`, `rp-pppoe-common.ipk` y `rp-pppoe-server.ipk` a la carpeta `PPPwn_ow` (Los nombres de los archivos deben ser tal como de describe).
+4. Transfiere la carpeta `PPPwn_ow` utilizando WinSCP. Usa el protocolo SCP con la dirección del host 192.168.8.1 y el puerto 22.
+5. Abre Git Bash o PuTTY y accede al terminal. Navega al directorio donde se encuentra `installer-offline.sh` utilizando el comando `cd /ruta`.
 6. Ejecuta el siguiente comando para realizar la instalación:
-   ```bash
-   chmod +x installer-offline.sh && ./installer-offline.sh
-   ```
-   Recibirás el mensaje de "instalación completa".
-7. Accede a la dirección http://192.168.8.1/pppwn.html para configurar los ajustes.
+    ```sh
+    chmod +x installer-offline.sh && ./installer-offline.sh
+    ```
+    Recibirás el mensaje "installation complete".
+7. Ve a http://192.168.8.1/pppwn.html y realiza la configuración.
 
 ## Instalación desde el repositorio
 
