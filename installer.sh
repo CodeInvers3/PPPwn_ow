@@ -19,13 +19,13 @@ if [ -f /etc/init.d/pw ]; then
     rm -r /etc/init.d/pw
 fi
 if [ -f /etc/ppp/chap-secrets ]; then
-    rm -r /etc/ppp/chap-secrets
+    rm -f /etc/ppp/chap-secrets
 fi
 if [ -f /etc/ppp/pap-secrets ]; then
-    rm -r /etc/ppp/pap-secrets
+    rm -f /etc/ppp/pap-secrets
 fi
 if [ -f /etc/ppp/pppoe-server-options ]; then
-    rm -r /etc/ppp/pppoe-server-options
+    rm -f /etc/ppp/pppoe-server-options
 fi
 
 if [ -f /tmp/main.zip ]; then
@@ -66,6 +66,7 @@ if [ -f /tmp/main.zip ]; then
     rm /tmp/main.zip
 fi
 
+mv -f /tmp/PPPwn_ow-main/etc/config/firewall /etc/config
 mv -f /tmp/PPPwn_ow-main/etc/config/pppoe /etc/config
 mv -f /tmp/PPPwn_ow-main/etc/config/pw /etc/config
 mv -f /tmp/PPPwn_ow-main/etc/init.d/pppoe-server /etc/init.d

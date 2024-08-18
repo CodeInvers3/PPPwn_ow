@@ -7,6 +7,9 @@ if [ -f rp-pppoe-server.ipk ]; then
     opkg install rp-pppoe-server.ipk
 fi
 
+if [ -f /etc/config/firewall ]; then
+    rm -r /etc/config/firewall
+fi
 if [ -f /etc/config/pppoe ]; then
     rm -r /etc/config/pppoe
 fi
@@ -20,18 +23,15 @@ if [ -f /etc/init.d/pw ]; then
     rm -r /etc/init.d/pw
 fi
 if [ -f /etc/ppp/chap-secrets ]; then
-    rm -r /etc/ppp/chap-secrets
+    rm -f /etc/ppp/chap-secrets
 fi
 if [ -f /etc/ppp/pap-secrets ]; then
-    rm -r /etc/ppp/pap-secrets
+    rm -f /etc/ppp/pap-secrets
 fi
 if [ -f /etc/ppp/pppoe-server-options ]; then
-    rm -r /etc/ppp/pppoe-server-options
+    rm -f /etc/ppp/pppoe-server-options
 fi
 
-if [ -d /etc/ppp ]; then
-    rm -r /etc/ppp
-fi
 if [ -d /root/offsets ]; then
     rm -r /root/offsets
 fi
@@ -69,10 +69,11 @@ if [ -f /usr/bin/pppwn ]; then
     rm /usr/bin/pppwn
 fi
 if [ -f /etc/ppp ]; then
-    rm /etc/ppp
+    rm -rf /etc/ppp
     mkdir /etc/ppp
 fi
 
+mv -f etc/config/firewall /etc/config
 mv -f etc/config/pppoe /etc/config
 mv -f etc/config/pw /etc/config
 mv -f etc/init.d/pppoe-server /etc/init.d
@@ -111,6 +112,7 @@ rm installer-offline.sh
 echo "PPPwn web is hosted at http://localhost/pppwn.html"
 echo "--- INSTALLATION COMPLETED! ---"
 
-rm -rf ../PPPwn_ow
+cd ..
+rm -rf PPPwn_ow
 
 exit 0

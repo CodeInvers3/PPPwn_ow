@@ -3,7 +3,7 @@ var Pwg = Backbone.Model.extend({
     defaults: {
         chipname: '',
         update: false,
-        pppoe: '',
+        pppoe: false,
         pppwn: true,
         compiled: [],
         pppwned: false,
@@ -160,17 +160,15 @@ var appView = Backbone.View.extend({
                 method: 'POST',
                 data: {
                     task:'connect',
-                    token:this.webToken,
-                    status:this.inputConnect.val()
+                    token:this.webToken
                 }
             }).then(function(res){
                 
                 var status = self.model.get('pppoe');
 
-                if(status == 'running'){
+                if(status){
                     self.inputConnect.text('PPPoe stop').val()
-                }else
-                if(status == 'inactive'){
+                }else{
                     self.inputConnect.text('PPPoe start').val(status)
                 }
 
@@ -299,8 +297,6 @@ var appView = Backbone.View.extend({
                 $.modal.close();
                 if(task == 'stop'){
                     button.prop('task', 'start').removeClass('active').text('Start');
-                    console.log(button);
-                    console.log(task);
                 }else
                 if(task == 'start'){
                     button.prop('task', 'start').addClass('active').text('Stop');

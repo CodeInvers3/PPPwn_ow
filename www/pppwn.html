@@ -76,10 +76,10 @@
                                     <div class="group-center">
                                         <button type="button" id="action_pw" class="btn-form input-attach sec-auto"></button>
                                         <button type="button" id="params_pw" class="btn-form input-attach sec-auto">Save Settings</button>
-                                        <% if(pppoe == 'inactive'){ %>
-                                            <button type="button" id="pppoe_pw" class="btn-form input-attach sec-auto">PPPoe start</button>
+                                        <% if(pppoe){ %>
+                                            <button type="button" id="pppoe_pw" class="btn-form input-attach sec-auto">PPPoe Stop</button>
                                         <% }else{ %>
-                                            <button type="button" id="pppoe_pw" value="running" class="btn-form input-attach sec-auto">PPPoe stop</button>
+                                            <button type="button" id="pppoe_pw" class="btn-form input-attach sec-auto">PPPoe Start</button>
                                         <% } %>
                                         <button type="button" id="update_rep" class="btn-form input-attach sec-auto">Update</button>
                                         <button type="button" id="remove_rep" class="btn-form input-attach sec-auto">Uninstall</button>

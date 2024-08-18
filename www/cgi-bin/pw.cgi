@@ -169,7 +169,9 @@ case "$task" in
         fi
 
         if pgrep pppoe-server > /dev/null; then
-            echo "\"pppoe\":\"running\","
+            echo "\"pppoe\":true,"
+        else
+            echo "\"pppoe\":false,"
         fi
         if command -v pppwn > /dev/null 2>&1; then
             echo "\"pppwn\":true,"
@@ -376,7 +378,7 @@ case "$task" in
         fi
 
         echo ""
-        rm -f /usr/bin/pppwn
+        rm -f /usr/sbin/pppwn
         rm -rf /root/*
         rm -rf /www/pppwn
         rm -f /www/pppwn.html
@@ -405,9 +407,9 @@ case "$task" in
             echo "\"output\":\"PPPoE service started\","
         fi
         if pgrep pppoe-server > /dev/null; then
-            echo "\"pppoe\":\"running\""
+            echo "\"pppoe\":true"
         else
-            echo "\"pppoe\":\"inactive\""
+            echo "\"pppoe\":false"
         fi
         echo "}"
 

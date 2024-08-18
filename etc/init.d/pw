@@ -4,22 +4,16 @@ START=20
 STOP=15
 
 start() {
-
     if ! pgrep pppwn > /dev/null; then
-
         source /etc/config/pw
-
         if pgrep pppoe-server > /dev/null; then
             /etc/init.d/pppoe-server stop
             sleep 3
         fi
-    
         ip link set $interface down
         sleep 5
         ip link set $interface up
-    
         result=$(pppwn --interface "$interface" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
-
         if [[ "$result" == *"\[\+\] Done\!"* ]]; then
             /etc/init.d/pppoe-server start
             sleep 3
@@ -29,25 +23,19 @@ start() {
             sleep 3
             exit 1
         fi
-
     fi
-
 }
 
 stop() {
-
     if ! pgrep pppoe-server > /dev/null; then
         /etc/init.d/pppoe-server start
         sleep 3
     fi
-
     ip link set $interface down
     sleep 5
     ip link set $interface up
-    
     pids=$(pgrep pppwn)
     for pid in $pids; do
         kill $pid
     done
-
 }
