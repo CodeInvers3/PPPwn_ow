@@ -15,12 +15,16 @@ start() {
         ip link set $interface up
         result=$(pppwn --interface "$interface" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
         if [[ "$result" == *"\[\+\] Done\!"* ]]; then
-            /etc/init.d/pppoe-server start
-            sleep 3
+            if ! pgrep pppoe-server > /dev/null; then
+                /etc/init.d/pppoe-server start
+                sleep 3
+            fi
             exit 0
         else
-            /etc/init.d/pppoe-server start
-            sleep 3
+            if ! pgrep pppoe-server > /dev/null; then
+                /etc/init.d/pppoe-server start
+                sleep 3
+            fi
             exit 1
         fi
     fi

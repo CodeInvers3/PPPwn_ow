@@ -61,17 +61,13 @@ set_params(){
         else
             echo -e "timeout=\"$timeout\"" >> "/etc/config/pw"
         fi
-        if grep -q "stage1=" "/etc/config/pw"; then
-            sed -i "/stage1=.*/d" "/etc/config/pw"
-            echo -e "stage1=\"$stage1\"" >> "/etc/config/pw"
-        fi
-        if grep -q "stage2=" "/etc/config/pw"; then
-            sed -i "/stage2=.*/d" "/etc/config/pw"
-            echo -e "stage2=\"$stage2\"" >> "/etc/config/pw"
-        fi
+        sed -i "/stage1=.*/d" "/etc/config/pw"
+        echo -e "stage1=\"$stage1\"" >> "/etc/config/pw"
+        sed -i "/stage2=.*/d" "/etc/config/pw"
+        echo -e "stage2=\"$stage2\"" >> "/etc/config/pw"
     else
         echo -e "root=\"$root\"" > /etc/config/pw
-        echo -e "interface=\"$adapter\"" > /etc/config/pw
+        echo -e "interface=\"$adapter\"" >> /etc/config/pw
         echo -e "version=\"$version\"" >> /etc/config/pw
         echo -e "timeout=\"$timeout\"" >> /etc/config/pw
         echo -e "stage1=\"$stage1\"" >> /etc/config/pw
@@ -131,7 +127,7 @@ case "$task" in
                 "$(tar -xzvf pppwn.tar.gz)"
                 "$(rm pppwn.tar.gz)"
                 "$(chmod +x pppwn)"
-                "$(mv pppwn /usr/bin)"
+                "$(mv pppwn /usr/sbin)"
                 echo "{\"output\":\"PPPwn installed\",\"pppwn\":true}"
                 exit 0
             else
@@ -139,8 +135,8 @@ case "$task" in
                 exit 1
             fi
         else
-            "$(wget -O /usr/bin/pppwn $repo_refs)"
-            "$(chmod +x /usr/bin/pppwn)"
+            "$(wget -O /usr/sbin/pppwn $repo_refs)"
+            "$(chmod +x /usr/sbin/pppwn)"
             echo "{\"output\":\"PPPwn installed\",\"pppwn\":true}"
             exit 0
         fi
@@ -359,7 +355,7 @@ case "$task" in
         "$(wget -O /tmp/installer.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer.sh)"
         chmod +x /tmp/installer.sh
         if command -v pppwn > /dev/null 2>&1; then
-            rm /usr/bin/pppwn
+            rm /usr/sbin/pppwn
         fi
         "$(/tmp/installer.sh)"
         if [ -f /tmp/installer.sh ]; then

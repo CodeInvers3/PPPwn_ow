@@ -68,6 +68,9 @@ fi
 if [ -f /usr/bin/pppwn ]; then
     rm /usr/bin/pppwn
 fi
+if [ -f /usr/sbin/pppwn ]; then
+    rm /usr/sbin/pppwn
+fi
 if [ -f /etc/ppp ]; then
     rm -rf /etc/ppp
     mkdir /etc/ppp
