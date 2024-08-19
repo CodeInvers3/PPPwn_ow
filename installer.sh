@@ -90,10 +90,6 @@ chmod +x /etc/init.d/pw
 chmod +x /etc/init.d/pppoe-server
 chmod +x /www/cgi-bin/pw.cgi
 
-if ! grep -q "list device 'ppp+'" /etc/config/firewall; then
-    sed -i "s/option name 'lan'/option name 'lan'\n\t list device 'ppp+'/" /etc/config/firewall
-fi
-
 /etc/init.d/pppoe-server enable
 /etc/init.d/pppoe-server start
 
