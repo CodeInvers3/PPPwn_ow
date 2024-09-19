@@ -21,27 +21,6 @@ var Pwg = Backbone.Model.extend({
     }
 });
 
-var SectionRouter = Backbone.Router.extend({
-    templates: {
-        payload: _.template($('#payloadTpl').html())
-    },
-    routes: {
-        'payloads':'payloads'
-    },
-    payloads: function(){
-        
-        var self = this,uname = document.location.hash.replace("#/","");
-        
-        $.modal(function(modal){
-            modal.content($('<div class="preloader center"></div>'));
-        });
-        $.get(`pppwn/payloads.json`, function(data){
-            $.modal.close();
-            $('#appWeb').html(self.templates.payload(data));
-        });
-    }
-});
-
 var pwg = new Pwg();
 var appView = Backbone.View.extend({
     templates: {
@@ -67,7 +46,7 @@ var appView = Backbone.View.extend({
                 button.prop('task', 'stop').removeClass('active').text('Stop');
 
                 $.modal(function(modal){
-                    modal.content($('<div class="preloader center"></div><div class="center preaction"><button class="btn-stop" onclick="appweb.action(\'stop\')">STOP</button></div>'));
+                    modal.content($('<div class="preloader center"></div>'));
                 });
 
             }else{
@@ -303,10 +282,10 @@ var appView = Backbone.View.extend({
                 }
 
             }).catch(function(err, textStatus, errorThrown){
-                if(err.responseJSON){
-                    $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
-                }else{
+                if(err.responseText){
                     $.modal.content(self.templates.msg({message: err.responseText, buttons:[]}));
+                }else{
+                    $.modal.close();
                 }
             });
 
@@ -534,9 +513,35 @@ var appView = Backbone.View.extend({
     }
 });
 
-var appweb = new appView({
-    model: pwg,
-    el: '#appWeb'
+var appweb;
+var SectionRouter = Backbone.Router.extend({
+    templates: {
+        payload: _.template($('#payloadTpl').html())
+    },
+    routes: {
+        '': 'index',
+        'payloads':'payloads'
+    },
+    index: function(){
+        
+        appweb = new appView({
+            model: pwg,
+            el: '#appWeb'
+        });
+
+    },
+    payloads: function(){
+        
+        var self = this,uname = document.location.hash.replace("#/","");
+        
+        $.modal(function(modal){
+            modal.content($('<div class="preloader center"></div>'));
+        });
+        $.get(`pppwn/payloads.json`, function(data){
+            $.modal.close();
+            $('#appWeb').html(self.templates.payload(data));
+        });
+    }
 });
 
 var sectionRouter = new SectionRouter();

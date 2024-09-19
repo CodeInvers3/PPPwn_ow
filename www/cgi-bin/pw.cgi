@@ -374,11 +374,16 @@ case "$task" in
         fi
 
         echo ""
+
+        opkg remove rp-pppoe-server
+        opkg remove rp-pppoe-common
         rm -f /usr/sbin/pppwn
         rm -rf /root/*
         rm -rf /www/pppwn
         rm -f /www/pppwn.html
         rm -f /www/cgi-bin/pw.cgi
+        rm -f /etc/init.d/pw
+        rm -f /etc/config/pw
         echo "{\"output\":\"Uninstalled\"}"
         
     ;;

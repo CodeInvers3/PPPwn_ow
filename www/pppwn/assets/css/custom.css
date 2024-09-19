@@ -123,6 +123,13 @@ body{
 	height: 15px;
 }
 
+.sent-payload{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background-color: #0c2378;
+	color: #FFF;
+}
+
 /* Message */
 .dialog-box{
 	background-color: #FFF;

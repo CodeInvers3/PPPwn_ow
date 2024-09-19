@@ -124,28 +124,19 @@
                 </script>
                 <script type="text/template" id="payloadTpl">
                     <form class="form">
-                        <legend><%= sec_title %></legend>
+                        <% list.forEach(function(payloads, index){ %>
+                        <legend><%= payloads.title %></legend>
                         <fieldset>
                             <div class="field-group">
+                                <label><%= payloads.label %></label>
                                 <div class="group-center box">
-                                    <% payloads.forEach(function(data, index){ %>
-                                    <button type="button" class="btn-basic sent-payload" value="<%= data.href %>"><%= data.name %></button>
+                                    <% payloads.refs.forEach(function(item, index){ %>
+                                    <button type="button" class="btn-basic sent-payload" value="<%= item.href %>"><%= item.title %></button>
                                     <% }); %>
                                 </div>
                             </div>
                         </fieldset>
-                        <fieldset>
-                            <% linux.forEach(function(data, index){ %>
-                            <div class="field-group">
-                                <label>Linux payloads <%= data.firmware %></label>
-                                <div class="group-center box">
-                                    <% data.refs.forEach(function(item, index){ %>
-                                    <button type="button" class="btn-basic sent-payload" value="<%= item.href %>"><%= item.name %></button>
-                                    <% }); %>
-                                </div>
-                            </div>
-                            <% }); %>
-                        </fieldset>
+                        <% }); %>
                     </form>
                 </script>
             </div>
