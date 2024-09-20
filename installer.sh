@@ -69,7 +69,6 @@ installer_setup(){
             if [ -f rp-pppoe-server.ipk ]; then
                 opkg install rp-pppoe-server.ipk
                 
-                mv -f etc/config/firewall /etc/config
                 mv -f etc/config/pppoe /etc/config
                 mv -f etc/init.d/pppoe-server /etc/init.d
                 mv -f etc/ppp/pap-secrets /etc/ppp
@@ -84,6 +83,9 @@ installer_setup(){
 
             chmod +x /etc/init.d/pppoe-server
             chmod +x /www/cgi-bin/pw.cgi
+
+            uci add_list firewall.@zone[0].device='ppp+'
+            uci commit firewall
 
             /etc/init.d/pppoe-server enable
             /etc/init.d/pppoe-server start
@@ -211,7 +213,6 @@ installer_setup(){
             rm /tmp/main.zip
         fi
 
-        mv -f /tmp/PPPwn_ow-main/etc/config/firewall /etc/config
         mv -f /tmp/PPPwn_ow-main/etc/config/pppoe /etc/config
         mv -f /tmp/PPPwn_ow-main/etc/config/pw /etc/config
         mv -f /tmp/PPPwn_ow-main/etc/init.d/pppoe-server /etc/init.d
@@ -314,6 +315,9 @@ installer_setup(){
 
         chmod +x /etc/init.d/pw
         chmod +x /etc/init.d/pppoe-server
+
+        uci add_list firewall.@zone[0].device='ppp+'
+        uci commit firewall
 
         /etc/init.d/pppoe-server enable
         /etc/init.d/pppoe-server start
