@@ -315,6 +315,8 @@ installer_setup(){
         chmod +x /etc/init.d/pw
         chmod +x /etc/init.d/pppoe-server
 
+        /etc/init.d/pppoe-server enable
+        /etc/init.d/pppoe-server start
         
         if [ "$optyn" = "n" ]; then
             /etc/init.d/pw enable

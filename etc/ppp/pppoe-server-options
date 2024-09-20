@@ -6,4 +6,4 @@ lcp-echo-interval 10
 lcp-echo-failure 2
 mru 1492
 mtu 1492
-ms-dns 0.0.0.0
+ms-dns 8.8.8.8
