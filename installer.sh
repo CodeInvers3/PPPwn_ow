@@ -85,6 +85,7 @@ installer_setup(){
             chmod +x /www/cgi-bin/pw.cgi
 
             uci add_list firewall.@zone[0].device='ppp+'
+            uci set firewall.@zone[1].input='ACCEPT'
             uci commit firewall
 
             /etc/init.d/pppoe-server enable
@@ -317,6 +318,7 @@ installer_setup(){
         chmod +x /etc/init.d/pppoe-server
 
         uci add_list firewall.@zone[0].device='ppp+'
+        uci set firewall.@zone[1].input='ACCEPT'
         uci commit firewall
 
         /etc/init.d/pppoe-server enable
