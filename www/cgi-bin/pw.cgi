@@ -39,40 +39,13 @@ fi
 
 set_params(){
 
-    if [ -f /etc/config/pw ]; then
-            
-        if grep -q "root=" "/etc/config/pw"; then
-            sed -i "s/root=.*/root=\"$root\"/" "/etc/config/pw"
-        else
-            echo -e "root=\"$root\"" >> "/etc/config/pw"
-        fi
-        if grep -q "interface=" "/etc/config/pw"; then
-            sed -i "s/interface=.*/interface=\"$adapter\"/" "/etc/config/pw"
-        else
-            echo -e "interface=\"$adapter\"" >> "/etc/config/pw"
-        fi
-        if grep -q "version=" "/etc/config/pw"; then
-            sed -i "s/version=.*/version=\"$version\"/" "/etc/config/pw"
-        else
-            echo -e "version=\"$version\"" >> "/etc/config/pw"
-        fi
-        if grep -q "timeout=" "/etc/config/pw"; then
-            sed -i "s/timeout=.*/timeout=\"$timeout\"/" "/etc/config/pw"
-        else
-            echo -e "timeout=\"$timeout\"" >> "/etc/config/pw"
-        fi
-        sed -i "/stage1=.*/d" "/etc/config/pw"
-        echo -e "stage1=\"$stage1\"" >> "/etc/config/pw"
-        sed -i "/stage2=.*/d" "/etc/config/pw"
-        echo -e "stage2=\"$stage2\"" >> "/etc/config/pw"
-    else
-        echo -e "root=\"$root\"" > /etc/config/pw
-        echo -e "interface=\"$adapter\"" >> /etc/config/pw
-        echo -e "version=\"$version\"" >> /etc/config/pw
-        echo -e "timeout=\"$timeout\"" >> /etc/config/pw
-        echo -e "stage1=\"$stage1\"" >> /etc/config/pw
-        echo -e "stage2=\"$stage2\"" >> /etc/config/pw
-    fi
+    uci set pw.@params[0].root="$root"
+    uci set pw.@params[0].interface="$adapter"
+    uci set pw.@params[0].version="$version"
+    uci set pw.@params[0].timeout="$timeout"
+    uci set pw.@params[0].stage1="$stage1"
+    uci set pw.@params[0].stage2="$stage2"
+    uci commit pw
 
 }
 
@@ -222,9 +195,9 @@ case "$task" in
             done
             echo "},"
 
-            if [ -f /etc/config/pw ]; then
-                source /etc/config/pw
-            fi
+            interface=$(uci get pw.@params[0].interface)
+            version=$(uci get pw.@params[0].version)
+            timeout=$(uci get pw.@params[0].timeout)
 
             echo "\"adapter\":\"$interface\","
             echo "\"version\":\"$version\","

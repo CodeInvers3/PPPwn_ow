@@ -4,16 +4,26 @@ START=20
 STOP=15
 
 start() {
+
     if ! pgrep pppwn > /dev/null; then
-        source /etc/config/pw
+
+        interface=$(uci get pw.@params[0].interface)
+        version=$(uci get pw.@params[0].version)
+        stage1=$(uci get pw.@params[0].stage1)
+        stage2=$(uci get pw.@params[0].stage2)
+        timeout=$(uci get pw.@params[0].timeout)
+
         if pgrep pppoe-server > /dev/null; then
             /etc/init.d/pppoe-server stop
             sleep 3
         fi
+
         ip link set $interface down
         sleep 5
         ip link set $interface up
+
         result=$(pppwn --interface "$interface" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
+
         if [[ "$result" == *"\[\+\] Done\!"* ]]; then
             if ! pgrep pppoe-server > /dev/null; then
                 /etc/init.d/pppoe-server start
@@ -27,19 +37,28 @@ start() {
             fi
             exit 1
         fi
+
     fi
+
 }
 
 stop() {
+
     if ! pgrep pppoe-server > /dev/null; then
         /etc/init.d/pppoe-server start
         sleep 3
     fi
+
+    interface=$(uci get pw.@params[0].interface)
+
     ip link set $interface down
     sleep 5
     ip link set $interface up
+
     pids=$(pgrep pppwn)
+    
     for pid in $pids; do
         kill $pid
     done
+
 }

@@ -1,4 +1,3 @@
-
 config pppoe_server
 	option interface 'br-lan'
 	option ac_name 'access-concentrator-name'
