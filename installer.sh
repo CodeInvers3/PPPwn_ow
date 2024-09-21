@@ -226,7 +226,7 @@ installer_setup(){
         fi
 
         wget -O ${dir_root}pppwn.tar.gz $repo_ref
-        tar -xvzf ${dir_root}pppwn.tar.gz
+        tar -xvzf ${dir_root}pppwn.tar.gz -C $dir_root
         rm ${dir_root}pppwn.tar.gz
 
         mv -f ${dir_root}etc/config/pw /etc/config
@@ -240,7 +240,7 @@ installer_setup(){
 
     fi
 
-    if [ -f "${dir_root}pppwn" ]; then
+    if [ -f ${dir_root}pppwn ]; then
         mv -f ${dir_root}pppwn /usr/sbin
         chmod +x /usr/sbin/pppwn
     fi
