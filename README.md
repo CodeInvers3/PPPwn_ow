@@ -14,7 +14,7 @@ This activation method works for devices with the OpenWrt Linux system as long a
 
 1. Search and download the compatible version of `pppoe-server` and `pppoe-common` from `https://downloads.openwrt.org/releases/`.
 2. Download and extract the files `PPPwn_ow.zip` and `pppwn.tar.gz` from my repository.
-3. Copy the files `pppwn`, `rp-pppoe-common.ipk`, and `rp-pppoe-server.ipk` to the `PPPwn_ow` folder (rename the files as described).
+3. Copy the files `pppwn`, `rp-pppoe-common.ipk`, and `rp-pppoe-server.ipk` to the `PPPwn_ow` folder.
 4. Transfer the `PPPwn_ow` folder using WinSCP. Use the SCP protocol with the host address `192.168.1.1` and port 22.
 5. Open Git Bash or PuTTY and access the terminal. Navigate to the directory where `installer.sh` is located using the command `cd PPPwn_ow`.
 6. Run the following command to proceed with the installation:
@@ -74,7 +74,7 @@ Interfaz web para arrancar PPPwn_cpp desde el navegador web de PS4.
 
 1. Busca y descarga la versión compatible de `pppoe-server` y `pppoe-common` desde `https://downloads.openwrt.org/releases/`.
 2. Descarga y extrae los archivos `PPPwn_ow.zip` y `pppwn.tar.gz` desde mi repositorio.
-3. Copia los archivos `pppwn`, `rp-pppoe-common.ipk` y `rp-pppoe-server.ipk` a la carpeta `PPPwn_ow` (cambia los nombres de los archivos según se describe).
+3. Copia los archivos `pppwn`, `rp-pppoe-common.ipk` y `rp-pppoe-server.ipk` a la carpeta `PPPwn_ow`.
 4. Transfiere la carpeta `PPPwn_ow` utilizando WinSCP. Usa el protocolo SCP con la dirección del host `192.168.1.1` y el puerto 22.
 5. Abre Git Bash o PuTTY y accede al terminal. Navega al directorio donde se encuentra `installer.sh` utilizando el comando `cd PPPwn_ow`.
 6. Ejecuta el siguiente comando para realizar la instalación:
