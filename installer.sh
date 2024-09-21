@@ -236,35 +236,15 @@ installer_setup(){
 }
 
 echo "PPPwn installer"
-echo "1) Offline (Require packages files)"
-echo "2) Download (Require internet connection)"
-echo "3) Cancel and exit"
+echo "- Offline (Require packages files)"
+echo "- Download (Require internet connection)"
 
-while true; do
-
-    read -p "Select option: " opt
-    
-    case $opt in
-        1)
-            installer_setup "offline"
-            continue
-            ;;
-        2)
-            if ping -c 1 www.google.com >/dev/null 2>&1; then
-                installer_setup "download"
-            else
-                echo "Require internet connection."
-                break
-            fi
-            continue
-            ;;
-        3)
-            echo "Finishing..."
-            break
-            ;;
-        *)
-            echo "Invalid option, please select a valid option."
-            ;;
-    esac
-
-done
+if ping -c 1 www.google.com >/dev/null 2>&1; then
+    if [ -f /tmp/installer.sh ]; then
+        installer_setup "download"
+    else
+        installer_setup "offline"
+    fi
+else
+    installer_setup "offline"
+fi

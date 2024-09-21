@@ -350,11 +350,23 @@ case "$task" in
 
         opkg remove rp-pppoe-server
         opkg remove rp-pppoe-common
-        rm -f /etc/init.d/pppoe-server
-        rm -f /etc/config/pppoe
-        rm -f /etc/ppp/chap-secrets
-        rm -f /etc/ppp/pap-secrets
-        rm -f /etc/ppp/pppoe-server-options
+        
+        if [ -f /etc/init.d/pppoe-server ]; then
+            rm -f /etc/init.d/pppoe-server
+        fi
+        if [ -f /etc/config/pppoe ]; then
+            rm -f /etc/config/pppoe
+        fi
+        if [ -f /etc/ppp/chap-secrets ]; then
+            rm -f /etc/ppp/chap-secrets
+        fi
+        if [ -f /etc/ppp/pap-secrets ]; then
+            rm -f /etc/ppp/pap-secrets
+        fi
+        if [ -f /etc/ppp/pppoe-server-options ]; then
+            rm -f /etc/ppp/pppoe-server-options
+        fi
+
         rm -f /usr/sbin/pppwn
         rm -rf /root/*
         rm -rf /www/pppwn
@@ -362,7 +374,9 @@ case "$task" in
         rm -f /www/cgi-bin/pw.cgi
         rm -f /etc/init.d/pw
         rm -f /etc/config/pw
+        
         echo "{\"output\":\"Uninstalled\"}"
+
         exit 0
         
     ;;
