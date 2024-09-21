@@ -74,10 +74,10 @@ installer_setup(){
 
         if [ "$1" = "offline" ]; then
 
-            if [ -f rp-pppoe-common.ipk ]; then
+            if [ -f rp-pppoe-common*.ipk ]; then
                 opkg install rp-pppoe-common*.ipk
             fi
-            if [ -f rp-pppoe-server.ipk ]; then
+            if [ -f rp-pppoe-server*.ipk ]; then
                 opkg install rp-pppoe-server*.ipk
             fi
         fi
