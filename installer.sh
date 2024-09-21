@@ -75,37 +75,37 @@ installer_setup(){
         echo "5) x86_64-linux-musl"
         echo "6) mipsel-linux-musl"
         echo "7) mips-linux-musl"
-        read -p "Select a option: " optdwn
 
         while true; do
+        read -p "Select a option: " optdwn
         case $optdwn in
             1)
                 repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/aarch64-linux-musl.tar.gz"
-                continue
+                break
                 ;;
             2)
                 repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/arm-linux-musleabi(cortex_a7).tar.gz"
-                continue
+                break
                 ;;
             3)
                 repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/arm-linux-musleabi(pi_zero_w).tar.gz"
-                continue
+                break
                 ;;
             4)
                 repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/arm-linux-musleabi(mpcorenovfp).tar.gz"
-                continue
+                break
                 ;;
             5)
                 repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/x86_64-linux-musl.tar.gz"
-                continue
+                break
                 ;;
             6)
                 repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/mipsel-linux-musl.tar.gz"
-                continue
+                break
                 ;;
             7)
                 repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/mips-linux-musl.tar.gz"
-                continue
+                break
                 ;;
             *)
                 echo "Invalid selection, retry again."
