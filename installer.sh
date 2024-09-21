@@ -64,6 +64,58 @@ installer_setup(){
         wget -O /tmp/main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip
         unzip /tmp/main.zip -d /tmp
         rm /tmp/main.zip
+
+        mtype=$(uname -m)
+        echo "Download PPPWN that is compatible with your chip."
+        echo "Your machine type: $mtype"
+        echo "1) aarch64-linux-musl"
+        echo "2) arm-linux-musleabi(cortex_a7)"
+        echo "3) arm-linux-musleabi(pi_zero_w)"
+        echo "4) arm-linux-musleabi(mpcorenovfp)"
+        echo "5) x86_64-linux-musl"
+        echo "6) mipsel-linux-musl"
+        echo "7) mips-linux-musl"
+        read -p "Select a option: " optdwn
+
+        while true; do
+        case $optdwn in
+            1)
+                repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/aarch64-linux-musl.tar.gz"
+                continue
+                ;;
+            2)
+                repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/arm-linux-musleabi(cortex_a7).tar.gz"
+                continue
+                ;;
+            3)
+                repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/arm-linux-musleabi(pi_zero_w).tar.gz"
+                continue
+                ;;
+            4)
+                repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/arm-linux-musleabi(mpcorenovfp).tar.gz"
+                continue
+                ;;
+            5)
+                repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/x86_64-linux-musl.tar.gz"
+                continue
+                ;;
+            6)
+                repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/mipsel-linux-musl.tar.gz"
+                continue
+                ;;
+            7)
+                repo_ref="https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/custom/stored/mips-linux-musl.tar.gz"
+                continue
+                ;;
+            *)
+                echo "Invalid selection, retry again."
+                ;;
+        esac
+        done
+
+        wget -O ${dir_root}pppwn.tar.gz $repo_ref
+        tar -xvzf ${dir_root}pppwn.tar.gz
+        rm ${dir_root}pppwn.tar.gz
         
     fi
 
