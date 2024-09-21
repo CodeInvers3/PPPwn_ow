@@ -194,6 +194,7 @@ installer_setup(){
 
     if [ -f "${dir_root}pppwn" ]; then
         mv -f ${dir_root}pppwn /usr/sbin
+        chmod +x /usr/sbin/pppwn
     fi
     mv -f ${dir_root}etc/init.d/pw /etc/init.d
     mv -f ${dir_root}version /root
@@ -201,7 +202,6 @@ installer_setup(){
     mv -f ${dir_root}stage2 /root
 
     chmod +x /etc/init.d/pw
-    chmod +x /usr/sbin/pppwn
 
     if [ "$optyn" = "n" ]; then
         /etc/init.d/pw enable
