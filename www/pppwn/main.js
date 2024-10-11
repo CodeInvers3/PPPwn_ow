@@ -104,17 +104,6 @@ var appView = Backbone.View.extend({
             });
 
         },
-        'click button#update_rep': function(event){
-
-            var self = this;
-
-            $.modal(function(modal){
-                modal.content(self.templates.msg({message: 'Install Update?', buttons: [
-                    {label:"Yes, continue", id: "update_rep", onclick:"appweb.update()"}
-                ]}));
-            });
-
-        },
         'click button#remove_rep': function(){
 
             var self = this;
@@ -432,7 +421,9 @@ var appView = Backbone.View.extend({
         var self = this, interfaces = [], data = response.toJSON();
 
         if(data.update){
-            $.modal.content(self.templates.msg({message: 'Update available.<br>Click in UPDATE button to continue.', buttons:[]}));
+            $.modal.content(self.templates.msg({message: 'Update available.<br>Click in continue to update.', buttons:[
+                {label:"Yes, continue", id: "update_rep", onclick:"appweb.update()"}
+            ]}));
         }else{
             $.modal.close();
         }
