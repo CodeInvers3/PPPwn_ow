@@ -353,13 +353,12 @@ case "$task" in
         fi
 
         echo ""
-
-        check_pppwn=false
-        if [ -d /www/pppwn ]; then
-            check_pppwn=true
-        fi
-
+        
         rm_files
+
+        mkdir /www/pppwn
+        mkdir /root/stage1
+        mkdir /root/stage2
 
         "$(opkg update)"
         "$(opkg install rp-pppoe-common)"
@@ -389,6 +388,25 @@ case "$task" in
         "$(wget -O /www/pppwn/main.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/main.js)"
         "$(wget -O /www/pppwn/payloads.json https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/payloads.json)"
         "$(wget -O /www/pppwn.html https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn.html)"
+
+        "$(wget -O /stage1/1000.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/1000.bin)"
+        "$(wget -O /stage1/1001.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/1001.bin)"
+        "$(wget -O /stage1/1100.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/1100.bin)"
+        "$(wget -O /stage1/900.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/900.bin)"
+        "$(wget -O /stage1/950.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/950.bin)"
+        "$(wget -O /stage1/951.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/951.bin)"
+        "$(wget -O /stage1/960.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/960.bin)"
+        "$(wget -O /stage2/1000.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/1000.bin)"
+        "$(wget -O /stage2/1001.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/1001.bin)"
+        "$(wget -O /stage2/1100.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/1100.bin)"
+        "$(wget -O /stage2/900.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/900.bin)"
+        "$(wget -O /stage2/950.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/950.bin)"
+        "$(wget -O /stage2/951.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/951.bin)"
+        "$(wget -O /stage2/960.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/960.bin)"
+
+        chmod +x /etc/init.d/pw
+        chmod +x /etc/init.d/pppoe-server
+        chmod +x /www/cgi-bin/pw.cgi
         
         echo "{\"output\":\"Update completed\"}"
         
