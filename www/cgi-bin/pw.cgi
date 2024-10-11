@@ -368,45 +368,26 @@ case "$task" in
         "$(rm -f /etc/config/pppoe)"
         "$(rm -f /etc/init.d/pppoe-server)"
 
-        "$(wget -O /etc/ppp/chap-secrets https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/ppp/chap-secrets)"
-        "$(wget -O /etc/ppp/pap-secrets https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/ppp/pap-secrets)"
-        "$(wget -O /etc/ppp/pppoe-server-options https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/ppp/pppoe-server-options)"
-        "$(wget -O /etc/config/pppoe https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/config/pppoe)"
-        "$(wget -O /etc/config/pw https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/config/pw)"
-        "$(wget -O /etc/init.d/pppoe-server https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/init.d/pppoe-server)"
-        "$(wget -O /etc/init.d/pw https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/init.d/pw)"
+        "$(wget -O /tmp/main.zip https://github.com/CodeInvers3/PPPwn_ow/archive/refs/heads/main.zip)"
+        "$(unzip /tmp/main.zip -d /tmp)"
 
-        "$(wget -O /www/cgi-bin/pw.cgi https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/cgi-bin/pw.cgi)"
-        "$(wget -O /www/pppwn/assets/css/base.css https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/css/base.css)"
-        "$(wget -O /www/pppwn/assets/css/custom.css https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/css/custom.css)"
-        "$(wget -O /www/pppwn/assets/js/backbone-min.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/js/backbone-min.js)"
-        "$(wget -O /www/pppwn/assets/js/jquery.min.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/js/jquery.min.js)"
-        "$(wget -O /www/pppwn/assets/js/plugin.modal.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/js/plugin.modal.js)"
-        "$(wget -O /www/pppwn/assets/js/underscore-min.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/js/underscore-min.js)"
-        "$(wget -O /www/pppwn/main.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/main.js)"
-        "$(wget -O /www/pppwn/payloads.json https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/payloads.json)"
-        "$(wget -O /www/pppwn.html https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn.html)"
+        rm /tmp/main.zip
 
-        "$(wget -O /root/stage1/1000.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/1000.bin)"
-        "$(wget -O /root/stage1/1001.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/1001.bin)"
-        "$(wget -O /root/stage1/1100.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/1100.bin)"
-        "$(wget -O /root/stage1/900.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/900.bin)"
-        "$(wget -O /root/stage1/950.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/950.bin)"
-        "$(wget -O /root/stage1/951.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/951.bin)"
-        "$(wget -O /root/stage1/960.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/960.bin)"
-        "$(wget -O /root/stage2/1000.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/1000.bin)"
-        "$(wget -O /root/stage2/1001.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/1001.bin)"
-        "$(wget -O /root/stage2/1100.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/1100.bin)"
-        "$(wget -O /root/stage2/900.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/900.bin)"
-        "$(wget -O /root/stage2/950.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/950.bin)"
-        "$(wget -O /root/stage2/951.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/951.bin)"
-        "$(wget -O /root/stage2/960.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/960.bin)"
+        mv /tmp/PPPwn_ow-main/version /root/
+        mv /tmp/PPPwn_ow-main/stage1/* /root/stage1/
+        mv /tmp/PPPwn_ow-main/stage2/* /root/stage2/
+        mv /tmp/PPPwn_ow-main/etc/ppp/* /etc/ppp/
+        mv /tmp/PPPwn_ow-main/etc/config/* /etc/config/
+        mv /tmp/PPPwn_ow-main/etc/init.d/* /etc/init.d/
+        mv /tmp/PPPwn_ow-main/www/cgi-bin/pw.cgi /www/cgi-bin/
+        mv /tmp/PPPwn_ow-main/www/pppwn/* /www/pppwn/
+        mv /tmp/PPPwn_ow-main/www/pppwn.html /www/
 
-        "$(wget -O /root/version https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/version)"
-
+        chmod +x /www/cgi-bin/pw.cgi
         chmod +x /etc/init.d/pw
         chmod +x /etc/init.d/pppoe-server
-        chmod +x /www/cgi-bin/pw.cgi
+
+        "$(wget -O /root/version https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/version)"
         
         echo "{\"output\":\"Update completed\"}"
         
