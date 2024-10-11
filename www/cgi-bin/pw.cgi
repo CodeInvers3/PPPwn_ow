@@ -49,6 +49,34 @@ set_params(){
 
 }
 
+rm_files(){
+
+    if [ -f /etc/init.d/pppoe-server ]; then
+        rm /etc/init.d/pppoe-server
+    fi
+    if [ -f /etc/config/pppoe ]; then
+        rm /etc/config/pppoe
+    fi
+    if [ -d /etc/ppp ]; then
+        rm -rf /etc/ppp/*
+    fi
+
+    "$(opkg remove rp-pppoe-server)"
+    "$(opkg remove rp-pppoe-common)"
+        
+    rm -f /usr/sbin/pppwn
+    rm -rf /root/*
+    rm -f /etc/init.d/pw
+    rm -f /etc/config/pw
+
+    if [ -d /www/pppwn ]; then
+        rm -rf /www/pppwn
+        rm -f /www/pppwn.html
+        rm -f /www/cgi-bin/pw.cgi
+    fi
+
+}
+
 case "$task" in
     "setup")
 
@@ -325,15 +353,43 @@ case "$task" in
         fi
 
         echo ""
-        "$(wget -O /tmp/installer.sh https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/main/installer.sh)"
-        chmod +x /tmp/installer.sh
-        if command -v pppwn > /dev/null 2>&1; then
-            rm /usr/sbin/pppwn
+
+        check_pppwn=false
+        if [ -d /www/pppwn ]; then
+            check_pppwn=true
         fi
-        "$(/tmp/installer.sh)"
-        if [ -f /tmp/installer.sh ]; then
-            rm -r /tmp/installer.sh
-        fi
+
+        rm_files
+
+        "$(opkg update)"
+        "$(opkg install rp-pppoe-common)"
+        "$(opkg install rp-pppoe-server)"
+
+        "$(rm -f /etc/ppp/chap-secrets)"
+        "$(rm -f /etc/ppp/pap-secrets)"
+        "$(rm -f /etc/ppp/pppoe-server-options)"
+        "$(rm -f /etc/config/pppoe)"
+        "$(rm -f /etc/init.d/pppoe-server)"
+
+        "$(wget -O /etc/ppp/chap-secrets https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/ppp/chap-secrets)"
+        "$(wget -O /etc/ppp/pap-secrets https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/ppp/pap-secrets)"
+        "$(wget -O /etc/ppp/pppoe-server-options https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/ppp/pppoe-server-options)"
+        "$(wget -O /etc/config/pppoe https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/config/pppoe)"
+        "$(wget -O /etc/config/pw https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/config/pw)"
+        "$(wget -O /etc/init.d/pppoe-server https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/init.d/pppoe-server)"
+        "$(wget -O /etc/init.d/pw https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/init.d/pw)"
+
+        "$(wget -O /www/cgi-bin/pw.cgi https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/cgi-bin/pw.cgi)"
+        "$(wget -O /www/pppwn/assets/css/base.css https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/css/base.css)"
+        "$(wget -O /www/pppwn/assets/css/custom.css https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/css/custom.css)"
+        "$(wget -O /www/pppwn/assets/js/backbone-min.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/js/backbone-min.js)"
+        "$(wget -O /www/pppwn/assets/js/jquery.min.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/js/jquery.min.js)"
+        "$(wget -O /www/pppwn/assets/js/plugin.modal.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/js/plugin.modal.js)"
+        "$(wget -O /www/pppwn/assets/js/underscore-min.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/js/underscore-min.js)"
+        "$(wget -O /www/pppwn/main.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/main.js)"
+        "$(wget -O /www/pppwn/payloads.json https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/payloads.json)"
+        "$(wget -O /www/pppwn.html https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn.html)"
+        
         echo "{\"output\":\"Update completed\"}"
         
     ;;
@@ -348,32 +404,7 @@ case "$task" in
 
         echo ""
 
-        if [ -f /etc/init.d/pppoe-server ]; then
-            rm /etc/init.d/pppoe-server
-        fi
-        if [ -f /etc/config/pppoe ]; then
-            rm /etc/config/pppoe
-        fi
-        if [ -f /etc/ppp/chap-secrets ]; then
-            rm /etc/ppp/chap-secrets
-        fi
-        if [ -f /etc/ppp/pap-secrets ]; then
-            rm /etc/ppp/pap-secrets
-        fi
-        if [ -f /etc/ppp/pppoe-server-options ]; then
-            rm /etc/ppp/pppoe-server-options
-        fi
-
-        "$(opkg remove rp-pppoe-server)"
-        "$(opkg remove rp-pppoe-common)"
-        
-        rm -f /usr/sbin/pppwn
-        rm -rf /root/*
-        rm -rf /www/pppwn
-        rm -f /www/pppwn.html
-        rm -f /www/cgi-bin/pw.cgi
-        rm -f /etc/init.d/pw
-        rm -f /etc/config/pw
+        rm_files
         
         echo "{\"output\":\"Uninstalled\"}"
 
@@ -406,20 +437,6 @@ case "$task" in
             echo "\"pppoe\":false"
         fi
         echo "}"
-
-    ;;
-    "button_rc")
-
-        if ! [ "$token" = "$stoken" ]; then
-
-            echo "Status: 400 Bad Request"
-            echo ""
-            echo "{\"output\":\"Invalid token\"}"
-            exit 1
-            
-        fi
-
-        echo ""
 
     ;;
     *)

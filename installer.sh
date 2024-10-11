@@ -275,6 +275,17 @@ installer_setup(){
         
     fi
 
+    if [ -f /etc/rc.button/switch ]; then
+        if ! grep -q "/etc/init.d/pw" /etc/rc.button/switch; then
+            sed -i "/return 0/d" /etc/rc.button/switch
+            echo "/etc/init.d/pw start" >> /etc/rc.button/switch
+            echo "return 0" >> /etc/rc.button/switch
+        fi
+    else
+        echo "/etc/init.d/pw start" > /etc/rc.button/switch
+        echo "return 0" >> /etc/rc.button/switch
+    fi
+
     echo "PPPwn web is hosted at http://ip_address/pppwn.html"
     echo "--- INSTALLATION COMPLETED! ---"
 
