@@ -402,6 +402,8 @@ case "$task" in
         "$(wget -O /root/stage2/951.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/951.bin)"
         "$(wget -O /root/stage2/960.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/960.bin)"
 
+        "$(wget -O /root/version https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/version)"
+
         chmod +x /etc/init.d/pw
         chmod +x /etc/init.d/pppoe-server
         chmod +x /www/cgi-bin/pw.cgi
