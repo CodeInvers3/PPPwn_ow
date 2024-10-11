@@ -356,9 +356,7 @@ case "$task" in
         
         rm_files
 
-        mkdir /www/pppwn
-        mkdir /root/stage1
-        mkdir /root/stage2
+        mkdir /www/pppwn  /www/pppwn/assets /www/pppwn/assets/css /www/pppwn/assets/js /root/stage1 /root/stage2
 
         "$(opkg update)"
         "$(opkg install rp-pppoe-common)"
