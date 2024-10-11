@@ -51,6 +51,9 @@ set_params(){
 
 rm_files(){
 
+    "$(opkg remove rp-pppoe-server)"
+    "$(opkg remove rp-pppoe-common)"
+
     if [ -f /etc/init.d/pppoe-server ]; then
         rm /etc/init.d/pppoe-server
     fi
@@ -60,10 +63,7 @@ rm_files(){
     if [ -d /etc/ppp ]; then
         rm -rf /etc/ppp/*
     fi
-
-    "$(opkg remove rp-pppoe-server)"
-    "$(opkg remove rp-pppoe-common)"
-        
+      
     rm -f /usr/sbin/pppwn
     rm -rf /root/*
     rm -f /etc/init.d/pw
