@@ -373,8 +373,9 @@ case "$task" in
         "$(opkg install rp-pppoe-common)"
         "$(opkg install rp-pppoe-server)"
 
+        mkdir /tmp/PPPwn_ow
         "$(wget -O /tmp/pppwn.tar https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/refs/heads/master/files/PPPwn_ow.tar)"
-        "$(tar -xvf /tmp/pppwn.tar -C /tmp/)"
+        "$(tar -xvf /tmp/pppwn.tar -C /tmp/PPPwn_ow)"
         rm /tmp/pppwn.tar
 
         mv -f /tmp/PPPwn_ow/etc/config/* /etc/config
