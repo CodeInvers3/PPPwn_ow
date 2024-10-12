@@ -1,5 +1,5 @@
 var Pwg = Backbone.Model.extend({
-    urlRoot: '/cgi-bin/pw.cgi',
+    urlRoot: '/cgi-bin/pppwn.cgi',
     defaults: {
         chipname: '',
         update: false,
