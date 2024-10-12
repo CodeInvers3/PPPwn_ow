@@ -60,10 +60,16 @@ rm_files(){
     if [ -f /etc/config/pppoe ]; then
         rm /etc/config/pppoe
     fi
-    if [ -d /etc/ppp ]; then
-        rm -rf /etc/ppp/*
+    if [ -f /etc/ppp/chap-secrets ]; then
+        rm /etc/ppp/chap-secrets
     fi
-      
+    if [ -f /etc/ppp/pap-secrets ]; then
+        rm /etc/ppp/pap-secrets
+    fi
+    if [ -f /etc/ppp/pppoe-server-options ]; then
+        rm /etc/ppp/pppoe-server-options
+    fi
+    
     rm -f /usr/sbin/pppwn
     rm -rf /root/*
     rm -f /etc/init.d/pw
@@ -71,8 +77,15 @@ rm_files(){
 
     if [ -d /www/pppwn ]; then
         rm -rf /www/pppwn
+    fi
+    if [ -f /www/cgi-bin/pppwn.cgi ]; then
         rm -f /www/pppwn.html
+    fi
+    if [ -f /www/cgi-bin/pw.cgi ]; then
         rm -f /www/cgi-bin/pw.cgi
+    fi
+    if [ -f /www/cgi-bin/pppwn.cgi ]; then
+        rm /www/cgi-bin/pppwn.cgi
     fi
 
 }
@@ -360,63 +373,24 @@ case "$task" in
         "$(opkg install rp-pppoe-common)"
         "$(opkg install rp-pppoe-server)"
 
-        "$(rm -f /etc/ppp/chap-secrets)"
-        "$(rm -f /etc/ppp/pap-secrets)"
-        "$(rm -f /etc/ppp/pppoe-server-options)"
-        "$(rm -f /etc/config/pppoe)"
-        "$(rm -f /etc/init.d/pppoe-server)"
+        "$(wget -O /tmp/pppwn.tar https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/refs/heads/master/files/PPPwn_ow.tar)"
+        "$(tar -xvf /tmp/pppwn.tar)"
+        rm /tmp/pppwn.tar
 
-        mkdir /www/pppwn  /www/pppwn/assets /www/pppwn/assets/css /www/pppwn/assets/js /root/stage1 /root/stage2 
-        mkdir /tmp/PPPwn_ow /tmp/PPPwn_ow/etc /tmp/PPPwn_ow/stage1 /tmp/PPPwn_ow/stage2 /tmp/PPPwn_ow/www
-        mkdir /tmp/PPPwn_ow/etc/config /tmp/PPPwn_ow/etc/init.d /tmp/PPPwn_ow/etc/ppp
-        mkdir /tmp/PPPwn_ow/www /tmp/PPPwn_ow/www/cgi-bin /tmp/PPPwn_ow/www/assets /tmp/PPPwn_ow/www/assets/js /tmp/PPPwn_ow/www/assets/css
-        mkdir /tmp/PPPwn_ow/stage1 /tmp/PPPwn_ow/stage2
+        mv -f /root/PPPwn_ow/etc/config/* /etc/config
+        mv -f /root/PPPwn_ow/etc/init.d/* /etc/init.d
+        mv -f /root/PPPwn_ow/etc/ppp/* /etc/ppp
+        mv -f /root/PPPwn_ow/stage1 /root
+        mv -f /root/PPPwn_ow/stage2 /root
+        mv -f /root/PPPwn_ow/version /root
+        mv -f /root/PPPwn_ow/www/pppwn /www
+        mv -f /root/PPPwn_ow/www/pppwn.html /www
+        mv -f /root/PPPwn_ow/www/cgi-bin/pw.cgi /www/cgi-bin
+        rm -r /root/PPPwn_ow
 
-        "$(wget -O /tmp/PPPwn_ow/etc/ppp/chap-secrets https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/ppp/chap-secrets)"
-        "$(wget -O /tmp/PPPwn_ow/etc/ppp/pap-secrets https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/ppp/pap-secrets)"
-        "$(wget -O /tmp/PPPwn_ow/etc/ppp/pppoe-server-options https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/ppp/pppoe-server-options)"
-        mv /tmp/PPPwn_ow/etc/ppp/* /etc/ppp/
-        "$(wget -O /tmp/pppwn_ow/etc/config/pppoe https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/config/pppoe)"
-        "$(wget -O /tmp/pppwn_ow/etc/config/pw https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/config/pw)"
-        mv /tmp/PPPwn_ow/etc/config/* /etc/config/
-        "$(wget -O /tmp/PPPwn_ow/etc/init.d/pppoe-server https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/init.d/pppoe-server)"
-        "$(wget -O /tmp/PPPwn_ow/etc/init.d/pw https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/etc/init.d/pw)"
-        mv /tmp/PPPwn_ow/etc/init.d/* /etc/init.d/
-        "$(wget -O /tmp/PPPwn_ow/www/cgi-bin/pw.cgi https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/cgi-bin/pw.cgi)"
-        mv /tmp/PPPwn_ow/www/cgi-bin/* /www/cgi-bin/
-        "$(wget -O /tmp/PPPwn_ow/www/pppwn/assets/css/base.css https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/css/base.css)"
-        "$(wget -O /tmp/PPPwn_ow/www/pppwn/assets/css/custom.css https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/css/custom.css)"
-        "$(wget -O /tmp/PPPwn_ow/www/pppwn/assets/js/backbone-min.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/js/backbone-min.js)"
-        "$(wget -O /tmp/PPPwn_ow/www/pppwn/assets/js/jquery.min.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/js/jquery.min.js)"
-        "$(wget -O /tmp/PPPwn_ow/www/pppwn/assets/js/plugin.modal.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/js/plugin.modal.js)"
-        "$(wget -O /tmp/PPPwn_ow/www/pppwn/assets/js/underscore-min.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/assets/js/underscore-min.js)"
-        "$(wget -O /tmp/PPPwn_ow/www/pppwn/main.js https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/main.js)"
-        "$(wget -O /tmp/PPPwn_ow/www/pppwn/payloads.json https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn/payloads.json)"
-        mv -f /tmp/PPPwn_ow/www/pppwn/* /www/pppwn/
-        "$(wget -O /tmp/PPPwn_ow/www/pppwn.html https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/www/pppwn.html)"
-        mv -f /tmp/PPPwn_ow/www/pppwn.html /www/
-        "$(wget -O /tmp/PPPwn_ow/stage1/1000.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/1000.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage1/1001.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/1001.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage1/1100.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/1100.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage1/900.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/900.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage1/950.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/950.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage1/951.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/951.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage1/960.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage1/960.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage2/1000.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/1000.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage2/1001.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/1001.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage2/1100.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/1100.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage2/900.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/900.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage2/950.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/950.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage2/951.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/951.bin)"
-        "$(wget -O /tmp/PPPwn_ow/stage2/960.bin https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/stage2/960.bin)"
-        mv /tmp/PPPwn_ow-main/stage1/* /root/stage1/
-        mv /tmp/PPPwn_ow-main/stage2/* /root/stage2/
-        "$(wget -O /tmp/PPPwn_ow-main/version https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/version)"
-        mv /tmp/PPPwn_ow-main/version /root/
-
-        chmod +x /www/cgi-bin/pw.cgi
         chmod +x /etc/init.d/pw
         chmod +x /etc/init.d/pppoe-server
+        chmod +x /www/cgi-bin/pppwn.cgi
         
         echo "{\"output\":\"Update completed\"}"
         
