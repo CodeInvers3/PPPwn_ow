@@ -374,19 +374,19 @@ case "$task" in
         "$(opkg install rp-pppoe-server)"
 
         "$(wget -O /tmp/pppwn.tar https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/refs/heads/master/files/PPPwn_ow.tar)"
-        "$(tar -xvf /tmp/pppwn.tar)"
+        "$(tar -xvf /tmp/pppwn.tar -C /tmp/)"
         rm /tmp/pppwn.tar
 
-        mv -f /root/PPPwn_ow/etc/config/* /etc/config
-        mv -f /root/PPPwn_ow/etc/init.d/* /etc/init.d
-        mv -f /root/PPPwn_ow/etc/ppp/* /etc/ppp
-        mv -f /root/PPPwn_ow/stage1 /root
-        mv -f /root/PPPwn_ow/stage2 /root
-        mv -f /root/PPPwn_ow/version /root
-        mv -f /root/PPPwn_ow/www/pppwn /www
-        mv -f /root/PPPwn_ow/www/pppwn.html /www
-        mv -f /root/PPPwn_ow/www/cgi-bin/pw.cgi /www/cgi-bin
-        rm -r /root/PPPwn_ow
+        mv -f /tmp/PPPwn_ow/etc/config/* /etc/config
+        mv -f /tmp/PPPwn_ow/etc/init.d/* /etc/init.d
+        mv -f /tmp/PPPwn_ow/etc/ppp/* /etc/ppp
+        mv -f /tmp/PPPwn_ow/stage1 /root
+        mv -f /tmp/PPPwn_ow/stage2 /root
+        mv -f /tmp/PPPwn_ow/version /root
+        mv -f /tmp/PPPwn_ow/www/pppwn /www
+        mv -f /tmp/PPPwn_ow/www/pppwn.html /www
+        mv -f /tmp/PPPwn_ow/www/cgi-bin/pw.cgi /www/cgi-bin
+        rm -r /tmp/PPPwn_ow
 
         chmod +x /etc/init.d/pw
         chmod +x /etc/init.d/pppoe-server
