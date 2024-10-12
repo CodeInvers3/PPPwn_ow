@@ -192,7 +192,7 @@ case "$task" in
                 echo $eths | sed "s/,$//"
             fi
             echo "],";
-            if pgrep pppwn > /dev/null; then
+            if pgrep /usr/sbin/pppwn > /dev/null; then
                 echo "\"running\":true,"
             else
                 echo "\"running\":false,"
