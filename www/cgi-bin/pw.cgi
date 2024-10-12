@@ -78,14 +78,11 @@ rm_files(){
     if [ -d /www/pppwn ]; then
         rm -rf /www/pppwn
     fi
-    if [ -f /www/cgi-bin/pppwn.cgi ]; then
+    if [ -f /www/pppwn.html ]; then
         rm -f /www/pppwn.html
     fi
     if [ -f /www/cgi-bin/pw.cgi ]; then
         rm -f /www/cgi-bin/pw.cgi
-    fi
-    if [ -f /www/cgi-bin/pppwn.cgi ]; then
-        rm /www/cgi-bin/pppwn.cgi
     fi
 
 }
@@ -192,7 +189,7 @@ case "$task" in
                 echo $eths | sed "s/,$//"
             fi
             echo "],";
-            if pgrep /usr/sbin/pppwn > /dev/null; then
+            if pgrep pppwn > /dev/null; then
                 echo "\"running\":true,"
             else
                 echo "\"running\":false,"
@@ -386,12 +383,12 @@ case "$task" in
         mv -f /tmp/PPPwn_ow/version /root
         mv -f /tmp/PPPwn_ow/www/pppwn /www
         mv -f /tmp/PPPwn_ow/www/pppwn.html /www
-        mv -f /tmp/PPPwn_ow/www/cgi-bin/pppwn.cgi /www/cgi-bin
+        mv -f /tmp/PPPwn_ow/www/cgi-bin/pw.cgi /www/cgi-bin
         rm -r /tmp/PPPwn_ow
 
         chmod +x /etc/init.d/pw
         chmod +x /etc/init.d/pppoe-server
-        chmod +x /www/cgi-bin/pppwn.cgi
+        chmod +x /www/cgi-bin/pw.cgi
         
         echo "{\"output\":\"Update completed\"}"
         

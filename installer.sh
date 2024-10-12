@@ -52,9 +52,6 @@ fi
 if [ -f /www/cgi-bin/pw.cgi ]; then
     rm /www/cgi-bin/pw.cgi
 fi
-if [ -f /www/cgi-bin/pppwn.cgi ]; then
-    rm /www/cgi-bin/pppwn.cgi
-fi
 
 installer_setup(){
 
@@ -103,10 +100,10 @@ installer_setup(){
         mv -f ${dir_root}etc/ppp/pppoe-server-options /etc/ppp
         mv -f ${dir_root}www/pppwn /www
         mv -f ${dir_root}www/pppwn.html /www
-        mv -f ${dir_root}www/cgi-bin/pppwn.cgi /www/cgi-bin
+        mv -f ${dir_root}www/cgi-bin/pw.cgi /www/cgi-bin
 
         chmod +x /etc/init.d/pppoe-server
-        chmod +x /www/cgi-bin/pppwn.cgi
+        chmod +x /www/cgi-bin/pw.cgi
 
         uci del_list firewall.@zone[0].device='ppp+'
         uci add_list firewall.@zone[0].device='ppp+'
