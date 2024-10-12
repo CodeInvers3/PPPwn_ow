@@ -383,7 +383,7 @@ case "$task" in
         mv -f /tmp/PPPwn_ow/version /root
         mv -f /tmp/PPPwn_ow/www/pppwn /www
         mv -f /tmp/PPPwn_ow/www/pppwn.html /www
-        mv -f /tmp/PPPwn_ow/www/cgi-bin/pw.cgi /www/cgi-bin
+        mv -f /tmp/PPPwn_ow/www/cgi-bin/* /www/cgi-bin
         rm -r /tmp/PPPwn_ow
 
         chmod +x /etc/init.d/pw
