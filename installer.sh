@@ -105,11 +105,16 @@ installer_setup(){
         chmod +x /etc/init.d/pppoe-server
         chmod +x /www/cgi-bin/pw.cgi
 
+        uci set uhttpd.usb=uhttpd
+        uci set uhttpd.usb.listen_http="8080"
+        uci set uhttpd.usb.home="/root"
+        uci commit uhttpd
         uci del_list firewall.@zone[0].device='ppp+'
         uci add_list firewall.@zone[0].device='ppp+'
         uci set firewall.@zone[1].input='ACCEPT'
         uci commit firewall
 
+        /etc/init.d/uhttpd restart
         /etc/init.d/pppoe-server enable
         /etc/init.d/pppoe-server start
             
@@ -284,8 +289,8 @@ installer_setup(){
 }
 
 echo "PPPwn installer"
-echo "- Offline (Require packages files)"
-echo "- Download (Require internet connection)"
+echo "The complete installation includes settings from a web interface."
+echo "the minimal installation only includes the necessary executables."
 
 if ping -c 1 www.google.com >/dev/null 2>&1; then
     if [ -f /tmp/installer.sh ]; then

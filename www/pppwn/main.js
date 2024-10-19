@@ -17,7 +17,8 @@ var Pwg = Backbone.Model.extend({
         stage1: {},
         stage2: {},
         theme: 'default',
-        adapter: ''
+        adapter: '',
+        address: location.protocol+"//"+location.hostname+":8080"
     }
 });
 
@@ -25,7 +26,8 @@ var pwg = new Pwg();
 var appView = Backbone.View.extend({
     templates: {
         web: _.template($('#webTpl').html()),
-        msg: _.template($('#msgTpl').html())
+        msg: _.template($('#msgTpl').html()),
+        pyd: _.template($('#payloadTpl').html())
     },
     events: {
         'click button#action_pw': function(event){
@@ -373,7 +375,7 @@ var appView = Backbone.View.extend({
                 token:this.webToken
             }
         }).then(function(res){
-            location.assign("/");
+            //location.assign("/");
         }).catch(function(err){
             if(err.responseJSON){
                 $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
@@ -493,45 +495,56 @@ var appView = Backbone.View.extend({
         });
         
         return this;
-
     },
-    initialize: function(){
+    index: function(){
 
         this.loading = this.$('#loading_ide');
         this.state();
         this.listenTo(this.model, 'change', this.render);
 
-    }
-});
-
-var appweb;
-var SectionRouter = Backbone.Router.extend({
-    templates: {
-        payload: _.template($('#payloadTpl').html())
-    },
-    routes: {
-        '': 'index',
-        'payloads':'payloads'
-    },
-    index: function(){
-        
-        appweb = new appView({
-            model: pwg,
-            el: '#appWeb'
-        });
-
     },
     payloads: function(){
-        
-        var self = this,uname = document.location.hash.replace("#/","");
-        
+
+        var self = this;
+
         $.modal(function(modal){
             modal.content($('<div class="preloader center"></div>'));
         });
-        $.get(`pppwn/payloads.json`, function(data){
+        $.modal.close();
+        this.model.fetch({
+            method: 'POST',
+            data: {
+                task:'payloads',
+                token:this.webToken
+            }
+        }).then(function(response){
             $.modal.close();
-            $('#appWeb').html(self.templates.payload(data));
+            response.address=self.model.get('address');
+            self.$el.html(self.templates.pyd(response));
+        }).catch(function(err){
+            if(err.responseJSON){
+                $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
+            }else{
+                $.modal.content(self.templates.msg({message: err.responseText, buttons:[]}));
+            }
         });
+
+    }
+});
+
+var appweb = new appView({
+    model: pwg,
+    el: '#appWeb'
+});
+
+var SectionRouter = Backbone.Router.extend({
+    routes: {
+        '': function(){
+            appweb.index();
+        },
+        'payloads': function(){
+            appweb.payloads();
+        }
     }
 });
 

@@ -32,7 +32,7 @@
                                 <div class="row">
                                     <div class="field-group col-4">
                                         <div class="full">
-                                            <div class="top-label"><label for="inputRoot">Root</label></div>
+                                            <div class="top-label"><label for="inputRoot">Payload path</label></div>
                                             <input name="root" required type="text" id="inputRoot" class="sec-auto box" value="<%= root %>">
                                         </div>
                                         <div class="full">
@@ -123,19 +123,23 @@
                 </script>
                 <script type="text/template" id="payloadTpl">
                     <form class="form">
-                        <% list.forEach(function(payloads, index){ %>
-                        <legend><%= payloads.title %></legend>
                         <fieldset>
-                            <div class="field-group">
-                                <label><%= payloads.label %></label>
-                                <div class="group-center box">
-                                    <% payloads.refs.forEach(function(item, index){ %>
-                                    <button type="button" class="btn-basic sent-payload" value="<%= item.href %>"><%= item.title %></button>
-                                    <% }); %>
-                                </div>
-                            </div>
-                        </fieldset>
+                        <% file_list.forEach(function(payloads, index){ %>
+                        <% if(!payloads.sub){ %>
+                            <button type="button" class="btn-basic sent-payload" value="<%= address+'/payloads/'+payloads.path %>"><%= payloads.label %></button>
+                        <% } %>
                         <% }); %>
+                        </fieldset>
+                        <fieldset>
+                        <% file_list.forEach(function(payloads, index){ %>
+                        <% if(payloads.sub){ %>
+                            <legend><%= payloads.label %></legend>
+                            <% payloads.dir.forEach(function(payloads, index){ %>
+                                <button type="button" class="btn-basic sent-payload" value="<%= address+'/payloads/'+payloads.path %>"><%= payloads.label %></button>
+                            <% }); %>
+                        <% } %>
+                        <% }); %>
+                        </fieldset>
                     </form>
                 </script>
             </div>

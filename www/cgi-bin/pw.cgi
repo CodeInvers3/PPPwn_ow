@@ -87,19 +87,46 @@ rm_files(){
 
 }
 
-case "$task" in
-    "setup")
+ls_dir(){
 
-        if ! [ "$token" = "$stoken" ]; then
+    dir="$1"
+    dir_name="$2"
+    sp="$3"
+    list_dir=$(ls "/$dir")
 
-            echo "Status: 400 Bad Request"
-            echo ""
-            echo "{\"output\":\"Invalid token\"}"
-            exit 1
-            
+    for index in $list_dir; do
+        
+        echo "$sp{"
+        echo "\"label\":\"$index\","
+        if [ -f "/$dir/$index" ]; then
+            echo "\"sub\":false,"
+            echo "\"path\":\"$dir_name$index\""
+        elif [ -d "/$dir/$index" ]; then
+            echo "\"sub\":true,"
+            echo "\"dir\":[$(ls_dir "$dir/$index" "$index/" "")]"
         fi
 
-        echo ""
+        if [ "$sp" = "" ]; then
+            sp=","
+        fi
+        echo "}"
+
+    done
+
+}
+
+#if ! [ "$token" = "$stoken" ] && ! [ "$task" = "state" ]; then
+    #echo "Status: 400 Bad Request"
+    #echo ""
+    #echo "{\"output\":\"Invalid token\"}"
+    #exit 1       
+#fi
+
+echo ""
+
+case "$task" in
+
+    "setup")
 
         repo_refs=""
         if [ "$option" = "aarch64-linux-musl" ]; then
@@ -163,7 +190,7 @@ case "$task" in
 
         echo "\"stored_token\":\"$stoken\","
         echo "\"chipname\":\"$(uname -m)\","
-        echo "\"root\":\"$root\","
+        echo "\"root\":\"$(uci get pw.@params[0].root)\","
 
         if [ -z "$latest_version" ]; then
             echo "\"update\":false,"
@@ -279,33 +306,11 @@ case "$task" in
     ;;
     "start")
 
-        if ! [ "$token" = "$stoken" ]; then
-
-            echo "Status: 400 Bad Request"
-            echo ""
-            echo "{\"output\":\"Invalid token\"}"
-            exit 1
-            
-        fi
-
-        echo ""
-
         set_params
         /etc/init.d/pw start
 
     ;;
     "stop")
-
-        if ! [ "$token" = "$stoken" ]; then
-
-            echo "Status: 400 Bad Request"
-            echo ""
-            echo "{\"output\":\"Invalid token\"}"
-            exit 1
-            
-        fi
-
-        echo ""
         
         /etc/init.d/pw stop
 
@@ -321,17 +326,6 @@ case "$task" in
 
     ;;
     "params")
-
-        if ! [ "$token" = "$stoken" ]; then
-
-            echo "Status: 400 Bad Request"
-            echo ""
-            echo "{\"output\":\"Invalid token\"}"
-            exit 1
-            
-        fi
-
-        echo ""
 
         set_params
 
@@ -352,17 +346,6 @@ case "$task" in
 
     ;;
     "update")
-
-        if ! [ "$token" = "$stoken" ]; then
-
-            echo "Status: 400 Bad Request"
-            echo ""
-            echo "{\"output\":\"Invalid token\"}"
-            exit 1
-            
-        fi
-
-        echo ""
         
         rm_files
 
@@ -395,15 +378,6 @@ case "$task" in
     ;;
     "remove")
 
-        if ! [ "$token" = "$stoken" ]; then
-             echo "Status: 400 Bad Request"
-             echo ""
-             echo "{\"output\":\"Invalid token\"}"
-             exit 1
-        fi
-
-        echo ""
-
         rm_files
         
         echo "{\"output\":\"Uninstalled\"}"
@@ -413,16 +387,6 @@ case "$task" in
     ;;
     "connect")
 
-        if ! [ "$token" = "$stoken" ]; then
-
-            echo "Status: 400 Bad Request"
-            echo ""
-            echo "{\"output\":\"Invalid token\"}"
-            exit 1
-            
-        fi
-
-        echo ""
         echo "{"
         if pgrep pppoe-server > /dev/null; then
             /etc/init.d/pppoe-server stop
@@ -439,12 +403,25 @@ case "$task" in
         echo "}"
 
     ;;
-    *)
+    "payloads")
+        
+        root="$(uci get pw.@params[0].root)"
+        
+        echo "{"
+        echo "\"file_list\":["
+        if [ -d "$root/payloads" ]; then
+            ls_dir "$root/payloads" "" ""
+        fi
+        echo "]"
+        echo "}"
 
+        exit 0
+
+    ;;
+    *)
         echo "Status: 400 Bad Request"
         echo ""
         echo "{\"output\":\"Invalid task\"}"
         exit 1
-
     ;;
 esac
