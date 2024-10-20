@@ -51,8 +51,7 @@ set_params(){
 
 rm_files(){
 
-    "$(opkg remove rp-pppoe-server)"
-    "$(opkg remove rp-pppoe-common)"
+    "$(opkg remove rp-pppoe-server && rp-pppoe-common)"
 
     if [ -f /etc/init.d/pppoe-server ]; then
         rm /etc/init.d/pppoe-server
@@ -70,10 +69,7 @@ rm_files(){
         rm /etc/ppp/pppoe-server-options
     fi
     
-    rm -f /usr/sbin/pppwn
-    rm -rf /root/*
-    rm -f /etc/init.d/pw
-    rm -f /etc/config/pw
+    rm -f /usr/sbin/pppwn /etc/init.d/pw /etc/config/pw && rm -rf /root/*
 
     if [ -d /www/pppwn ]; then
         rm -rf /www/pppwn
@@ -348,16 +344,15 @@ case "$task" in
     "update")
         
         rm_files
-
-        "$(opkg update)"
-        "$(opkg install rp-pppoe-common)"
-        "$(opkg install rp-pppoe-server)"
+        
+        "$(opkg update && opkg install rp-pppoe-common rp-pppoe-server)"
+        wait
 
         mkdir /tmp/PPPwn_ow
-        "$(wget -O /tmp/pppwn.tar https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/refs/heads/master/files/PPPwn_ow.tar)"
-        "$(tar -xvf /tmp/pppwn.tar -C /tmp/PPPwn_ow)"
-        rm /tmp/pppwn.tar
-
+        "$(wget -O /tmp/pw.tar https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/refs/heads/master/files/PPPwn_ow.tar &)"
+        wait
+        
+        "$(tar -xvf /tmp/pw.tar -C /tmp/PPPwn_ow && rm /tmp/pw.tar)"
         mv -f /tmp/PPPwn_ow/etc/config/* /etc/config
         mv -f /tmp/PPPwn_ow/etc/init.d/* /etc/init.d
         mv -f /tmp/PPPwn_ow/etc/ppp/* /etc/ppp
@@ -368,10 +363,7 @@ case "$task" in
         mv -f /tmp/PPPwn_ow/www/pppwn.html /www
         mv -f /tmp/PPPwn_ow/www/cgi-bin/* /www/cgi-bin
         rm -r /tmp/PPPwn_ow
-
-        chmod +x /etc/init.d/pw
-        chmod +x /etc/init.d/pppoe-server
-        chmod +x /www/cgi-bin/pw.cgi
+        chmod +x /etc/init.d/pw /etc/init.d/pppoe-server /www/cgi-bin/pw.cgi
         
         echo "{\"output\":\"Update completed\"}"
         
