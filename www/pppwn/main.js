@@ -153,6 +153,24 @@ var appView = Backbone.View.extend({
             });
 
         },
+        'click button#restart_http': function(event){
+
+            $.modal(function(modal){
+                modal.content($('<div class="preloader center"></div>'));
+            });
+            this.model.fetch({
+                method: 'POST',
+                data: {
+                    task:'restartHttp',
+                    token:this.webToken
+                }
+            }).then(function(res){
+                $.modal.close();
+            }).catch(function(err){
+                $.modal.close();
+            });
+
+        },
         'click button#install_pw': function(event){
 
             var self = this;

@@ -331,6 +331,9 @@ case "$task" in
         if [ "$auto" = 0 ]; then
             /etc/init.d/pw disable
         fi
+        
+        uci set uhttpd.usb.home="$root"
+        uci commit uhttpd
 
         echo "{"
         echo "\"root\":\"$root\","
@@ -339,6 +342,8 @@ case "$task" in
         echo "\"version\":\"$version\","
         echo "\"timeout\":\"$timeout\""
         echo "}"
+
+        exit 0
 
     ;;
     "update")
@@ -395,6 +400,12 @@ case "$task" in
         echo "}"
 
     ;;
+    "restartHttp")
+
+        /etc/init.d/uhttpd restart
+        exit 0
+
+    ;;
     "payloads")
         
         root="$(uci get pw.@params[0].root)"
@@ -411,9 +422,11 @@ case "$task" in
 
     ;;
     *)
+
         echo "Status: 400 Bad Request"
         echo ""
         echo "{\"output\":\"Invalid task\"}"
         exit 1
+
     ;;
 esac
