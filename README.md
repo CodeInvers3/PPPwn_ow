@@ -52,6 +52,14 @@ This activation method works for devices with the OpenWrt Linux system as long a
 9. Select the build compatible with your router and click "Install". Wait for the installation to complete.
 10. If you encounter an error or don't get the expected result in Ethernet, you can restart the installation by clicking "Update".
 
+## Add payloads to the web interface
+
+1. Create a directory named `payloads` in root, it should look like this: `/root/payloads`.
+2. Copy your `payload.bin` files to the `/root/payloads` directory. You can add subdirectories, for example: `/root/payloads/linux`.
+3. If your device has USB ports, mount your storage device to `/mnt/sda1`.
+4. On your USB storage device, create the `/payloads` directory.
+5. Copy your `payload.bin` files to the `/payloads` directory.
+
 PPPwn from https://github.com/xfangfang/PPPwn_cpp
 
 ### Credits: TheFlowTheOfficialFloW / Sistro / Xfangfang
@@ -110,6 +118,14 @@ Interfaz web para arrancar PPPwn_cpp desde el navegador web de PS4.
 7. Desde tu consola PS4, configura una conexión de red en PPPoE usando `ppp` como usuario y contraseña.
 8. Espera unos segundos hasta que se establezca la conexión y, desde el navegador web de la consola, accede a la dirección `http://<router_ip>/pppwn.html`.
 9. Selecciona la compilación compatible con tu router y haz clic en "Instalar". Espera hasta que se complete la instalación.
-10. En caso de que haya un error o no obtengas el resultado esperado en Ethernet, puedes reiniciar la instalación haciendo clic en "Actualizar".
+10. En caso de que haya un error o no obtengas el resultado esperado, puedes reiniciar la instalación haciendo clic en "Uninstall".
+
+## Añadir payloads a la interfaz web
+
+1. Crea un directorio llamado `payloads` en root, debe quedar así: `/root/payloads`.
+2. Copia tus archivos `payload.bin` en el directorio `/root/payloads`. Puedes añadir subdirectorios, por ejemplo: `/root/payloads/linux`.
+3. Si tu dispositivo tiene puertos USB, monta tu dispositivo de almacenamiento en `/mnt/sda1`.
+4. En tu dispositivo de almacenamiento USB debes crear el directorio `/payloads`.
+5. Copia tus archivos `payload.bin` en el directorio `/payloads`.
 
 Probado en mini router [GL-MT300N-V2 Mango](https://www.gl-inet.com/products/gl-mt300n-v2/)
