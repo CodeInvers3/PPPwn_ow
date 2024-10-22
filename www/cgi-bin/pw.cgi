@@ -93,12 +93,13 @@ ls_dir(){
         
         echo "$sp{"
         echo "\"label\":\"$(basename $index | sed 's/\.bin$//')\","
-        if [ -f "/$dirpath/$index" ]; then
+        echo "\"test\":\"$dirpath/$index\","
+        if [ -f "$dirpath/$index" ]; then
             echo "\"sub\":false,"
             echo "\"path\":\"$path/$index\""
-        elif [ -d "/$dirpath/$index" ]; then
+        elif [ -d "$dirpath/$index" ]; then
             echo "\"sub\":true,"
-            echo "\"dir\":[$(ls_dir "$dirpath/$index" "$index/" "")]"
+            echo "\"dir\":[$(ls_dir "$dirpath/$index" "" "")]"
         fi
 
         if [ "$sp" = "" ]; then
