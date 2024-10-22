@@ -3,12 +3,12 @@
     <head>
         <title>PPPWN OpenWRT PS4</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="pppwn/assets/css/base.css" />
-        <link rel="stylesheet" href="pppwn/assets/css/custom.css" />
-        <script type="text/javascript" src="pppwn/assets/js/jquery.min.js"></script>
-        <script type="text/javascript" src="pppwn/assets/js/underscore-min.js"></script>
-        <script type="text/javascript" src="pppwn/assets/js/backbone-min.js"></script>
-        <script type="text/javascript" src="pppwn/assets/js/plugin.modal.js"></script>
+        <link rel="stylesheet" href="/assets/css/base.css" />
+        <link rel="stylesheet" href="/assets/css/custom.css" />
+        <script type="text/javascript" src="/assets/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/assets/js/underscore-min.js"></script>
+        <script type="text/javascript" src="/assets/js/backbone-min.js"></script>
+        <script type="text/javascript" src="/assets/js/plugin.modal.js"></script>
     </head>
     <body>
         <div class="container">
@@ -33,7 +33,7 @@
                                     <div class="field-group col-4">
                                         <div class="full">
                                             <div class="top-label"><label for="inputRoot">Payload path</label></div>
-                                            <input name="root" required type="text" id="inputRoot" class="sec-auto box" value="<%= root %>">
+                                            <input name="path" required type="text" id="inputRoot" class="sec-auto box" value="<%= path %>">
                                         </div>
                                         <div class="full">
                                             <div class="top-label"><label for="inputTimeout" title="Timeout execution">Timeout</label></div>
@@ -75,8 +75,7 @@
                                 <div class="field-group box">
                                     <div class="group-center">
                                         <button type="button" id="action_pw" class="btn-form input-attach sec-auto"></button>
-                                        <button type="button" id="params_pw" class="btn-form input-attach sec-auto">Save Settings</button>
-                                        <button type="button" id="restart_http" class="btn-form input-attach sec-auto">Restart Payloads</button>
+                                        <button type="button" id="save_pw" class="btn-form input-attach sec-auto">Save Settings</button>
                                         <% if(pppoe){ %>
                                             <button type="button" id="pppoe_pw" class="btn-form input-attach sec-auto">PPPoe Stop</button>
                                         <% }else{ %>
@@ -127,7 +126,7 @@
                         <fieldset>
                         <% file_list.forEach(function(payloads, index){ %>
                         <% if(!payloads.sub){ %>
-                            <button type="button" class="btn-basic sent-payload" value="<%= address+'/payloads/'+payloads.path %>"><%= payloads.label %></button>
+                            <button type="button" class="btn-basic sent-payload" value="<%= payloads.path %>"><%= payloads.label %></button>
                         <% } %>
                         <% }); %>
                         </fieldset>
@@ -136,7 +135,7 @@
                         <% if(payloads.sub){ %>
                             <legend><%= payloads.label %></legend>
                             <% payloads.dir.forEach(function(payloads, index){ %>
-                                <button type="button" class="btn-basic sent-payload" value="<%= address+'/payloads/'+payloads.path %>"><%= payloads.label %></button>
+                                <button type="button" class="btn-basic sent-payload" value="<%= '/'+payloads.path %>"><%= payloads.label %></button>
                             <% }); %>
                         <% } %>
                         <% }); %>
@@ -156,6 +155,6 @@
                 <sub><a target="_blank" href="https://github.com/CodeInvers3/">Github</a></sub>
             </div>
         </div>
-        <script src="pppwn/main.js"></script>
+        <script src="/assets/js/main.js"></script>
     </body>
 </html>

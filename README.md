@@ -22,7 +22,7 @@ This activation method works for devices with the OpenWrt Linux system as long a
     chmod +x installer.sh && ./installer.sh
     ```
     You will receive a message about the type of installation. If you require the full installation, enter `y`. For minimal installation, select the corresponding option.
-7. Go to `http://192.168.1.1/pppwn.html` and complete the necessary configuration.
+7. Go to `http://192.168.1.1:81` and complete the necessary configuration.
 8. The minimal installation requires additional adjustments and does not install the web interface.
 
 ## Installation with Download (Requires Internet Connection)
@@ -54,11 +54,10 @@ This activation method works for devices with the OpenWrt Linux system as long a
 
 ## Add payloads to the web interface
 
-1. Create a directory named `payloads` in root, it should look like this: `/root/payloads`.
-2. Copy your `payload.bin` files to the `/root/payloads` directory. You can add subdirectories, for example: `/root/payloads/linux`.
-3. If your device has USB ports, mount your storage device to `/mnt/sda1`.
-4. On your USB storage device, create the `/payloads` directory.
-5. Copy your `payload.bin` files to the `/payloads` directory.
+1. Create a directory named `payloads` in root, it should look like this: `/www/pppwn/payloads`.
+2. Copy your `payload.bin` files to the `/www/pppwn/payloads` directory. You can add subdirectories, for example: `/www/pppwn/payloads/linux`.
+3. If your device has USB ports, mount your storage device to `/www/pppwn/payloads`.
+5. Copy your `payload.bin` files to USB storage device.
 
 PPPwn from https://github.com/xfangfang/PPPwn_cpp
 
@@ -90,7 +89,7 @@ Interfaz web para arrancar PPPwn_cpp desde el navegador web de PS4.
     chmod +x installer.sh && ./installer.sh
     ```
     Recibirás un mensaje con el tipo de instalación. Si requieres la instalación completa, ingresa `y`. Si prefieres la mínima, elige la opción correspondiente.
-7. Ve a `http://192.168.1.1/pppwn.html` y realiza la configuración necesaria.
+7. Ve a `http://192.168.1.1:81` y realiza la configuración necesaria.
 8. La instalación mínima requiere ajustes adicionales y no incluye la interfaz web.
 
 ## Instalación con descarga (Requiere conexión a Internet)
@@ -122,10 +121,9 @@ Interfaz web para arrancar PPPwn_cpp desde el navegador web de PS4.
 
 ## Añadir payloads a la interfaz web
 
-1. Crea un directorio llamado `payloads` en root, debe quedar así: `/root/payloads`.
-2. Copia tus archivos `payload.bin` en el directorio `/root/payloads`. Puedes añadir subdirectorios, por ejemplo: `/root/payloads/linux`.
-3. Si tu dispositivo tiene puertos USB, monta tu dispositivo de almacenamiento en `/mnt/sda1`.
-4. En tu dispositivo de almacenamiento USB debes crear el directorio `/payloads`.
-5. Copia tus archivos `payload.bin` en el directorio `/payloads`.
+1. Crea un directorio llamado `payloads` en root, debe quedar así: `/www/pppwn/payloads`.
+2. Copia tus archivos `payload.bin` en el directorio `/www/pppwn/payloads`. Puedes añadir subdirectorios, por ejemplo: `/root/payloads/linux`.
+3. Si tu dispositivo tiene puertos USB, monta tu dispositivo de almacenamiento en `/www/pppwn/payloads`.
+4. Copia tus archivos `payload.bin` tu dispositivo de almacenamiento USB.
 
 Probado en mini router [GL-MT300N-V2 Mango](https://www.gl-inet.com/products/gl-mt300n-v2/)

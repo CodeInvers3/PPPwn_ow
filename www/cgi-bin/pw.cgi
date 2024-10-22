@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo "Content-Type: application/json"
-
 token="token_id"
 stoken=""
 token_file="/tmp/token"
@@ -27,19 +25,19 @@ timeout=$(echo $postData | sed -n 's/^.*timeout=\([^&]*\).*$/\1/p' | sed "s/%20/
 auto=$(echo $postData | sed -n 's/^.*auto=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 task=$(echo $postData | sed -n 's/^.*task=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 option=$(echo $postData | sed -n 's/^.*option=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
-root=$(echo $postData | sed -n 's/^.*root=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
-root=$(echo "$root" | sed 's/%2F/\//g')
+path=$(echo $postData | sed -n 's/^.*path=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
+path=$(echo "$path" | sed 's/%2F/\//g')
 
 if [ -z "$timeout" ]; then
     timeout=0
 fi
-if [ -z "$root" ]; then
-    root="/root"
+if [ -z "$path" ]; then
+    path="/payloads"
 fi
 
 set_params(){
 
-    uci set pw.@params[0].root="$root"
+    uci set pw.@params[0].path="$path"
     uci set pw.@params[0].interface="$adapter"
     uci set pw.@params[0].version="$version"
     uci set pw.@params[0].timeout="$timeout"
@@ -86,20 +84,21 @@ rm_files(){
 ls_dir(){
 
     dir="$1"
-    dir_name="$2"
+    path="$2"
+    dirpath="$1$2"
     sp="$3"
-    list_dir=$(ls "/$dir")
+    list_dir=$(ls "$dirpath")
 
     for index in $list_dir; do
         
         echo "$sp{"
-        echo "\"label\":\"$index\","
-        if [ -f "/$dir/$index" ]; then
+        echo "\"label\":\"$(basename $index | sed 's/\.bin$//')\","
+        if [ -f "/$dirpath/$index" ]; then
             echo "\"sub\":false,"
-            echo "\"path\":\"$dir_name$index\""
-        elif [ -d "/$dir/$index" ]; then
+            echo "\"path\":\"$path/$index\""
+        elif [ -d "/$dirpath/$index" ]; then
             echo "\"sub\":true,"
-            echo "\"dir\":[$(ls_dir "$dir/$index" "$index/" "")]"
+            echo "\"dir\":[$(ls_dir "$dirpath/$index" "$index/" "")]"
         fi
 
         if [ "$sp" = "" ]; then
@@ -111,18 +110,12 @@ ls_dir(){
 
 }
 
-#if ! [ "$token" = "$stoken" ] && ! [ "$task" = "state" ]; then
-    #echo "Status: 400 Bad Request"
-    #echo ""
-    #echo "{\"output\":\"Invalid token\"}"
-    #exit 1       
-#fi
-
-echo ""
-
 case "$task" in
 
     "setup")
+
+        echo "Content-Type: application/json"
+        echo ""
 
         repo_refs=""
         if [ "$option" = "aarch64-linux-musl" ]; then
@@ -178,7 +171,9 @@ case "$task" in
     ;;
     "state")
 
+        echo "Content-Type: application/json"
         echo ""
+
         echo "{"
 
         current_version=$(cat /root/version)
@@ -186,7 +181,7 @@ case "$task" in
 
         echo "\"stored_token\":\"$stoken\","
         echo "\"chipname\":\"$(uname -m)\","
-        echo "\"root\":\"$(uci get pw.@params[0].root)\","
+        echo "\"path\":\"$(uci get pw.@params[0].path)\","
 
         if [ -z "$latest_version" ]; then
             echo "\"update\":false,"
@@ -307,11 +302,14 @@ case "$task" in
 
     ;;
     "stop")
+
+        echo "Content-Type: application/json"
+        echo ""
         
         /etc/init.d/pw stop
 
         echo "{"
-        echo "\"root\":\"$root\","
+        echo "\"path\":\"$path\","
         echo "\"autorun\":$auto,"
         echo "\"adapter\":\"$adapter\","
         echo "\"version\":\"$version\","
@@ -321,7 +319,10 @@ case "$task" in
         exit 0
 
     ;;
-    "params")
+    "save")
+
+        echo "Content-Type: application/json"
+        echo ""
 
         set_params
 
@@ -331,12 +332,9 @@ case "$task" in
         if [ "$auto" = 0 ]; then
             /etc/init.d/pw disable
         fi
-        
-        uci set uhttpd.usb.home="$root"
-        uci commit uhttpd
 
         echo "{"
-        echo "\"root\":\"$root\","
+        echo "\"path\":\"$path\","
         echo "\"autorun\":$auto,"
         echo "\"adapter\":\"$adapter\","
         echo "\"version\":\"$version\","
@@ -347,13 +345,16 @@ case "$task" in
 
     ;;
     "update")
+
+        echo "Content-Type: application/json"
+        echo ""
         
         rm_files
         
         "$(opkg update && opkg install rp-pppoe-common rp-pppoe-server)"
         wait
 
-        mkdir /tmp/PPPwn_ow
+        mkdir /tmp/PPPwn_ow /www/pppwn
         "$(wget -O /tmp/pw.tar https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/refs/heads/master/files/PPPwn_ow.tar &)"
         wait
         
@@ -364,16 +365,35 @@ case "$task" in
         mv -f /tmp/PPPwn_ow/stage1 /root
         mv -f /tmp/PPPwn_ow/stage2 /root
         mv -f /tmp/PPPwn_ow/version /root
-        mv -f /tmp/PPPwn_ow/www/pppwn /www
-        mv -f /tmp/PPPwn_ow/www/pppwn.html /www
-        mv -f /tmp/PPPwn_ow/www/cgi-bin/* /www/cgi-bin
+        mv -f /tmp/PPPwn_ow/www/* /www/pppwn &
+        wait
         rm -r /tmp/PPPwn_ow
-        chmod +x /etc/init.d/pw /etc/init.d/pppoe-server /www/cgi-bin/pw.cgi
+        chmod +x /etc/init.d/pw /etc/init.d/pppoe-server /www/pppwn/cgi-bin/pw.cgi
+
+        if uci get uhttpd.pppwn > /dev/null 2>&1; then
+            if [ "$(uci get uhttpd.pppwn)" = "uhttpd" ]; then
+                uci set uhttpd.pppwn=uhttpd
+                uci set uhttpd.pppwn.listen_http='81'
+                uci set uhttpd.pppwn.home='/www/pppwn'
+                uci set uhttpd.pppwn.cgi_prefix='/cgi-bin'
+                uci set uhttpd.pppwn.script_timeout='90'
+                uci set uhttpd.pppwn.network_timeout='60'
+                uci set uhttpd.pppwn.tcp_keepalive='1'
+                uci add_list uhttpd.pppwn.interpreter='.sh=/bin/sh'
+                uci add_list uhttpd.pppwn.interpreter='.cgi=/bin/sh'
+                uci commit uhttpd
+                /etc/init.d/uhttpd restart &
+                wait
+            fi
+        fi
         
         echo "{\"output\":\"Update completed\"}"
         
     ;;
     "remove")
+
+        echo "Content-Type: application/json"
+        echo ""
 
         rm_files
         
@@ -382,7 +402,10 @@ case "$task" in
         exit 0
         
     ;;
-    "connect")
+    "reconnect")
+
+        echo "Content-Type: application/json"
+        echo ""
 
         echo "{"
         if pgrep pppoe-server > /dev/null; then
@@ -400,20 +423,17 @@ case "$task" in
         echo "}"
 
     ;;
-    "restartHttp")
-
-        /etc/init.d/uhttpd restart
-        exit 0
-
-    ;;
     "payloads")
+
+        echo "Content-Type: application/json"
+        echo ""
         
-        root="$(uci get pw.@params[0].root)"
+        path="$(uci get pw.@params[0].path)"
         
         echo "{"
         echo "\"file_list\":["
-        if [ -d "$root/payloads" ]; then
-            ls_dir "$root/payloads" "" ""
+        if [ -d "/www/pppwn$path" ]; then
+            ls_dir "/www/pppwn" "$path" ""
         fi
         echo "]"
         echo "}"
@@ -425,7 +445,7 @@ case "$task" in
 
         echo "Status: 400 Bad Request"
         echo ""
-        echo "{\"output\":\"Invalid task\"}"
+        echo "Invalid task"
         exit 1
 
     ;;

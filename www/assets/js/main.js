@@ -9,7 +9,7 @@ var Pwg = Backbone.Model.extend({
         pppwned: false,
         running: false,
         autorun: false,
-        root: '',
+        path: '',
         interfaces: [],
         timeout: 0,
         version: '',
@@ -38,7 +38,7 @@ var appView = Backbone.View.extend({
             
             if(task == 'start'){
 
-                if(!this.inputRoot.val() || !this.inputAdapter.val() || !this.inputVersion.val()){
+                if(!this.inputPath.val() || !this.inputAdapter.val() || !this.inputVersion.val()){
                     $.modal(function (modal) {
                         modal.content(self.templates.msg({message: 'Interface and firmware are required to execute.', buttons:[]}));
                     });
@@ -60,11 +60,11 @@ var appView = Backbone.View.extend({
             this.action(task);
 
         },
-        'click button#params_pw': function(event){
+        'click button#save_pw': function(event){
 
             var self = this;
 
-            if(!this.inputRoot.val() || !this.inputTimeout.val() || !this.inputAdapter.val() || !this.inputVersion.val()){
+            if(!this.inputPath.val() || !this.inputTimeout.val() || !this.inputAdapter.val() || !this.inputVersion.val()){
                 $.modal(function (modal) {
                     modal.content(self.templates.msg({message: 'Required options fields.', buttons:[]}));
                 });
@@ -78,9 +78,9 @@ var appView = Backbone.View.extend({
             this.model.fetch({
                 method: 'POST',
                 data: {
-                    task:'params',
+                    task:'save',
                     token:this.webToken,
-                    root:this.inputRoot.val(),
+                    path:this.inputPath.val(),
                     stage1:this.stage1[this.inputVersion.val()],
                     stage2:this.stage2[this.inputVersion.val()],
                     timeout:this.inputTimeout.val(),
@@ -129,7 +129,7 @@ var appView = Backbone.View.extend({
             this.model.fetch({
                 method: 'POST',
                 data: {
-                    task:'connect',
+                    task:'reconnect',
                     token:this.webToken
                 }
             }).then(function(res){
@@ -228,6 +228,7 @@ var appView = Backbone.View.extend({
                     }).done(function(req){
 
                         if((req.status === 200 || req.status === 304) && req.response){
+
                             
                             self.ajax({
                                 method: 'POST',
@@ -272,7 +273,7 @@ var appView = Backbone.View.extend({
                 data: {
                     task:task,
                     token:this.webToken,
-                    root:this.inputRoot.val(),
+                    path:this.inputPath.val(),
                     adapter:this.inputAdapter.val(),
                     version:this.inputVersion.val(),
                     stage1:this.stage1[this.inputVersion.val()],
@@ -377,7 +378,8 @@ var appView = Backbone.View.extend({
             document.cookie = 'token=; path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
             $.modal.close();
         }).catch(function(err){
-            $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
+            $.modal.content(self.templates.msg({message: err.statusText, buttons:[]}));
+            location.assign("/");
         });
 
     },
@@ -393,7 +395,7 @@ var appView = Backbone.View.extend({
                 token:this.webToken
             }
         }).then(function(res){
-            //location.assign("/");
+            location.assign("/");
         }).catch(function(err){
             if(err.responseJSON){
                 $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
@@ -471,7 +473,7 @@ var appView = Backbone.View.extend({
         this.selectAuto = this.$('select#switch_pw');
         this.buttonUpdate = this.$('button#update_rep');
         this.buttonInstall = this.$('button#install_pw');
-        this.inputRoot = this.$('[name=root]');
+        this.inputPath = this.$('[name=path]');
         this.inputTimeout = this.$('[name=timeout]');
         this.inputAdapter = this.$('[name=adapter]');
         this.inputVersion = this.$('[name=version]');

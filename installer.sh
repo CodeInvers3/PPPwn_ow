@@ -105,15 +105,22 @@ installer_setup(){
         chmod +x /etc/init.d/pppoe-server
         chmod +x /www/cgi-bin/pw.cgi
 
-        uci set uhttpd.usb=uhttpd
-        uci set uhttpd.usb.listen_http="8080"
-        uci set uhttpd.usb.home="/root"
+        uci set uhttpd.pppwn=uhttpd
+        uci set uhttpd.pppwn.listen_http='81'
+        uci set uhttpd.pppwn.home='/www/pppwn'
+        uci set uhttpd.pppwn.cgi_prefix='/cgi-bin'
+        uci set uhttpd.pppwn.script_timeout='90'
+        uci set uhttpd.pppwn.network_timeout='60'
+        uci set uhttpd.pppwn.tcp_keepalive='1'
+        uci add_list uhttpd.pppwn.interpreter='.sh=/bin/sh'
+        uci add_list uhttpd.pppwn.interpreter='.cgi=/bin/sh'
         uci commit uhttpd
+
         uci del_list firewall.@zone[0].device='ppp+'
         uci add_list firewall.@zone[0].device='ppp+'
         uci set firewall.@zone[1].input='ACCEPT'
         uci commit firewall
-
+        
         /etc/init.d/uhttpd restart
         /etc/init.d/pppoe-server enable
         /etc/init.d/pppoe-server start
