@@ -46,12 +46,10 @@ fi
 if [ -f /root/run.sh ]; then
     rm /root/run.sh
 fi
-if [ -f /www/pppwn.html ]; then
-    rm /www/pppwn.html
-fi
 if [ -f /www/cgi-bin/pw.cgi ]; then
     rm /www/cgi-bin/pw.cgi
 fi
+
 
 installer_setup(){
 
@@ -92,18 +90,17 @@ installer_setup(){
 
         fi
 
+        mkdir /www/pppwn
+
         mv -f ${dir_root}etc/config/pw /etc/config
         mv -f ${dir_root}etc/config/pppoe /etc/config
         mv -f ${dir_root}etc/init.d/pppoe-server /etc/init.d
         mv -f ${dir_root}etc/ppp/pap-secrets /etc/ppp
         mv -f ${dir_root}etc/ppp/chap-secrets /etc/ppp
         mv -f ${dir_root}etc/ppp/pppoe-server-options /etc/ppp
-        mv -f ${dir_root}www/pppwn /www
-        mv -f ${dir_root}www/pppwn.html /www
-        mv -f ${dir_root}www/cgi-bin/pw.cgi /www/cgi-bin
+        mv -f ${dir_root}www/* /www/pppwn
 
-        chmod +x /etc/init.d/pppoe-server
-        chmod +x /www/cgi-bin/pw.cgi
+        chmod +x /etc/init.d/pppoe-server /www/cgi-bin/pw.cgi
 
         uci set uhttpd.pppwn=uhttpd
         uci set uhttpd.pppwn.listen_http='81'
