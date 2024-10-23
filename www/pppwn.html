@@ -30,46 +30,66 @@
                         <% if(pppwn){ %>
                             <fieldset>
                                 <div class="row">
-                                    <div class="field-group col-4">
-                                        <div class="full">
+                                    <div class="field-group col-6">
+                                        <div class="row">
                                             <div class="top-label"><label for="inputRoot">Payload path</label></div>
                                             <input name="path" required type="text" id="inputRoot" class="sec-auto box" value="<%= path %>">
                                         </div>
-                                        <div class="full">
+                                        <div class="row">
                                             <div class="top-label"><label for="inputTimeout" title="Timeout execution">Timeout</label></div>
                                             <input name="timeout" required type="number" id="inputTimeout" class="sec-auto box" value="<%= timeout %>">
                                         </div>
-                                        <div class="full">
-                                            <div class="top-label"><label for="inputTimeout" title="Enable auto executable">Autorun</label></div>
-                                            <select name="auto" id="switch_pw" class="sec-auto box">
-                                                <option <% if(autorun){ %>selected <% } %>value="1">On</option>
-                                                <option <% if(!autorun){ %>selected <% } %>value="0">Off</option>
-                                            </select>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="top-label"><label for="inputAutorun" title="Enable auto executable">Auto Run</label></div>
+                                                <select name="auto-run" id="switch_pw" class="sec-auto box">
+                                                    <option <% if(autorun){ %>selected <% } %>value="1">On</option>
+                                                    <option <% if(!autorun){ %>selected <% } %>value="0">Off</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="top-label"><label for="inputAutoretry" title="Enable auto executable">Auto Retry</label></div>
+                                                <select name="auto-retry" id="retry_pw" class="sec-auto box">
+                                                    <option <% if(retry){ %>selected <% } %>value="yes">On</option>
+                                                    <option <% if(!retry){ %>selected <% } %>value="no">Off</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="top-label"><label for="inputRealsleep" title="Enable auto executable">Real Sleep</label></div>
+                                                <select name="real-sleep" id="sleep_pw" class="sec-auto box">
+                                                    <option <% if(sleep){ %>selected <% } %>value="yes">On</option>
+                                                    <option <% if(!sleep){ %>selected <% } %>value="no">Off</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="field-group col-4">
-                                        <div class="top-label"><label for="select-ifc">Ethernet</label></div>
-                                        <select required id="select-ifc" size="11" class="expand-slc box" name="adapter">
-                                        <% interfaces.forEach(function(option, index){ %>
-                                            <% if(adapter == option.adapter){ %>
-                                            <option selected value="<%= option.adapter %>"><%= option.adapter %></option>
-                                            <% }else{ %>
-                                            <option value="<%= option.adapter %>"><%= option.adapter %></option>
-                                            <% } %>
-                                        <% }); %>
-                                        </select>
-                                    </div>
-                                    <div class="field-group col-4">
-                                        <div class="top-label"><label for="select-fw">Firmware</label></div>
-                                        <select required id="select-fw" class="expand-slc box" size="11" name="version">
-                                        <% versions.forEach(function(_version, index){ %>
-                                            <% if(version == _version){ %>
-                                            <option selected value="<%= _version %>"><%= _version %></option>
-                                            <% }else{ %>
-                                            <option value="<%= _version %>"><%= _version %></option>
-                                            <% } %>
-                                        <% }); %>
-                                        </select>
+                                    <div class="field-group col-6">
+                                        <div class="full">
+                                            <div class="top-label"><label for="select-ifc">Ethernet</label></div>
+                                            <select required id="select-ifc" size="8" class="expand-slc box" name="adapter">
+                                            <% interfaces.forEach(function(option, index){ %>
+                                                <% if(adapter == option.adapter){ %>
+                                                <option selected value="<%= option.adapter %>"><%= option.adapter %></option>
+                                                <% }else{ %>
+                                                <option value="<%= option.adapter %>"><%= option.adapter %></option>
+                                                <% } %>
+                                            <% }); %>
+                                            </select>
+                                        </div>
+                                        <div class="full">
+                                            <div class="top-label"><label for="select-fw">Firmware</label></div>
+                                            <select required id="select-fw" class="expand-slc box" size="8" name="version">
+                                            <% versions.forEach(function(_version, index){ %>
+                                                <% if(version == _version){ %>
+                                                <option selected value="<%= _version %>"><%= _version %></option>
+                                                <% }else{ %>
+                                                <option value="<%= _version %>"><%= _version %></option>
+                                                <% } %>
+                                            <% }); %>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="field-group box">
@@ -124,21 +144,25 @@
                 <script type="text/template" id="payloadTpl">
                     <form class="form">
                         <fieldset>
-                        <% file_list.forEach(function(payloads, index){ %>
-                        <% if(!payloads.sub){ %>
-                            <button type="button" class="btn-basic sent-payload" value="<%= payloads.path %>"><%= payloads.label %></button>
-                        <% } %>
-                        <% }); %>
-                        </fieldset>
-                        <fieldset>
-                        <% file_list.forEach(function(payloads, index){ %>
-                        <% if(payloads.sub){ %>
-                            <legend><%= payloads.label %></legend>
-                            <% payloads.dir.forEach(function(payloads, index){ %>
-                                <button type="button" class="btn-basic sent-payload" value="<%= payloads.path %>"><%= payloads.label %></button>
+                        <% if(file_list.length > 0){ %>
+                            <% file_list.forEach(function(payloads, index){ %>
+                                <% if(!payloads.sub){ %>
+                                    <button type="button" class="btn-basic sent-payload" value="<%= payloads.path %>"><%= payloads.label %></button>
+                                <% } %>
+                                <% }); %>
+                                </fieldset>
+                                <fieldset>
+                                <% file_list.forEach(function(payloads, index){ %>
+                                <% if(payloads.sub){ %>
+                                    <legend><%= payloads.label %></legend>
+                                    <% payloads.dir.forEach(function(payloads, index){ %>
+                                        <button type="button" class="btn-basic sent-payload" value="<%= payloads.path %>"><%= payloads.label %></button>
+                                    <% }); %>
+                                <% } %>
                             <% }); %>
+                        <% }else{ %>
+                            <p>Put your payloads in /www/payloads or mount your usb device in /www/usb</p>
                         <% } %>
-                        <% }); %>
                         </fieldset>
                     </form>
                 </script>

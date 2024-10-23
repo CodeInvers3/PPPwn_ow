@@ -4,5 +4,7 @@ config params
     option interface 'br-lan'
     option version '1100'
     option timeout '0'
+    option retry 'no'
+    option sleep 'yes'
     option stage1 '/root/stage1/1100.bin'
     option stage2 '/root/stage2/1100.bin'

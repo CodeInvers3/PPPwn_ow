@@ -34,8 +34,14 @@ fi
 if [ -d /root/stage2 ]; then
     rm -r /root/stage2
 fi
-if [ -d /www/pppwn ]; then
-    rm -r /www/pppwn
+if [ -d /www/assets ]; then
+    rm -r /www/assets
+fi
+if [ -f /www/cgi-bin/pw.cgi ]; then
+    rm /www/cgi-bin/pw.cgi
+fi
+if [ -f /www/pppwn.html ]; then
+    rm /www/pppwn.html
 fi
 if [ -f /root/pw.conf ]; then
     rm /root/pw.conf
@@ -46,10 +52,6 @@ fi
 if [ -f /root/run.sh ]; then
     rm /root/run.sh
 fi
-if [ -f /www/cgi-bin/pw.cgi ]; then
-    rm /www/cgi-bin/pw.cgi
-fi
-
 
 installer_setup(){
 
@@ -90,38 +92,26 @@ installer_setup(){
 
         fi
 
-        mkdir /www/pppwn
-
         mv -f ${dir_root}etc/config/pw /etc/config
         mv -f ${dir_root}etc/config/pppoe /etc/config
         mv -f ${dir_root}etc/init.d/pppoe-server /etc/init.d
         mv -f ${dir_root}etc/ppp/pap-secrets /etc/ppp
         mv -f ${dir_root}etc/ppp/chap-secrets /etc/ppp
         mv -f ${dir_root}etc/ppp/pppoe-server-options /etc/ppp
-        mv -f ${dir_root}www/* /www/pppwn
+        mv -f ${dir_root}www/cgi-bin/pw.cgi /www/cgi-bin/
+        mv -f ${dir_root}www/pppwn.html /www/
+        mv -f ${dir_root}www/assets /www/
 
         chmod +x /etc/init.d/pppoe-server /www/cgi-bin/pw.cgi
-
-        uci set uhttpd.pppwn=uhttpd
-        uci set uhttpd.pppwn.listen_http='81'
-        uci set uhttpd.pppwn.home='/www/pppwn'
-        uci set uhttpd.pppwn.cgi_prefix='/cgi-bin'
-        uci set uhttpd.pppwn.script_timeout='90'
-        uci set uhttpd.pppwn.network_timeout='60'
-        uci set uhttpd.pppwn.tcp_keepalive='1'
-        uci add_list uhttpd.pppwn.interpreter='.sh=/bin/sh'
-        uci add_list uhttpd.pppwn.interpreter='.cgi=/bin/sh'
-        uci commit uhttpd
 
         uci del_list firewall.@zone[0].device='ppp+'
         uci add_list firewall.@zone[0].device='ppp+'
         uci set firewall.@zone[1].input='ACCEPT'
         uci commit firewall
         
-        /etc/init.d/uhttpd restart
         /etc/init.d/pppoe-server enable
         /etc/init.d/pppoe-server start
-            
+        
     else
 
         mtype=$(uname -m)

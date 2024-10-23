@@ -18,7 +18,8 @@ var Pwg = Backbone.Model.extend({
         stage2: {},
         theme: 'default',
         adapter: '',
-        address: location.protocol+"//"+location.hostname+":8080"
+        retry: 'no',
+        sleep: 'no'
     }
 });
 
@@ -86,7 +87,9 @@ var appView = Backbone.View.extend({
                     timeout:this.inputTimeout.val(),
                     adapter:this.inputAdapter.val(),
                     version:this.inputVersion.val(),
-                    auto:this.selectAuto.val()
+                    auto:this.selectAuto.val(),
+                    retry: this.selectRetry.val(),
+                    sleep: this.selectSleep.val()
                 }
             }).then(function(response){
 
@@ -279,7 +282,9 @@ var appView = Backbone.View.extend({
                     stage1:this.stage1[this.inputVersion.val()],
                     stage2:this.stage2[this.inputVersion.val()],
                     timeout:this.inputTimeout.val(),
-                    auto:this.selectAuto.val()
+                    auto:this.selectAuto.val(),
+                    retry: this.selectRetry.val(),
+                    sleep: this.selectSleep.val()
                 }
             }).then(function(){
 
@@ -471,6 +476,8 @@ var appView = Backbone.View.extend({
         this.textareaOut = this.$('#task-log .output');
         this.buttonAction = this.$('button#action_pw');
         this.selectAuto = this.$('select#switch_pw');
+        this.selectRetry = this.$('select#retry_pw');
+        this.selectSleep = this.$('select#sleep_pw');
         this.buttonUpdate = this.$('button#update_rep');
         this.buttonInstall = this.$('button#install_pw');
         this.inputPath = this.$('[name=path]');
@@ -508,6 +515,9 @@ var appView = Backbone.View.extend({
             this.selectAuto.val(0);
         }
 
+        this.selectRetry.val(this.model.get('retry'));
+        this.selectSleep.val(this.model.get('sleep'));
+
         $('a#credits').click(function(){
             $.modal(function(modal){
                 modal.content(self.templates.msg({message: 'TheOfficialFloW / SiSTR0 / xfangfang', buttons:[]}));
@@ -539,7 +549,6 @@ var appView = Backbone.View.extend({
             }
         }).then(function(response){
             $.modal.close();
-            response.address=self.model.get('address');
             self.$el.html(self.templates.pyd(response));
         }).catch(function(err){
             if(err.responseJSON){

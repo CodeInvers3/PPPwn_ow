@@ -8,6 +8,8 @@ start() {
     if ! pgrep pppwn > /dev/null; then
 
         interface=$(uci get pw.@params[0].interface)
+        retry=$(uci get pw.@params[0].retry)
+        sleep=$(uci get pw.@params[0].sleep)
         version=$(uci get pw.@params[0].version)
         stage1=$(uci get pw.@params[0].stage1)
         stage2=$(uci get pw.@params[0].stage2)
@@ -22,7 +24,18 @@ start() {
         sleep 5
         ip link set $interface up
 
-        result=$(pppwn --interface "$interface" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout --auto-retry)
+        if [ "$sleep" = "yes" ]; then
+            sleep="--real-sleep"
+        elif [ "$sleep" = "no" ]; then
+            sleep=""
+        fi
+        if [ "$retry" = "yes" ]; then
+            retry="--auto-retry"
+        elif [ "$retry" = "no" ]; then
+            retry=""
+        fi
+
+        result=$(pppwn --interface "$interface" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout $sleep $retry)
 
         if [[ "$result" == *"\[\+\] Done\!"* ]]; then
             if ! pgrep pppoe-server > /dev/null; then

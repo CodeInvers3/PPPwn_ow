@@ -22,7 +22,7 @@ This activation method works for devices with the OpenWrt Linux system as long a
     chmod +x installer.sh && ./installer.sh
     ```
     You will receive a message about the type of installation. If you require the full installation, enter `y`. For minimal installation, select the corresponding option.
-7. Go to `http://192.168.1.1:81` and complete the necessary configuration.
+7. Go to `http://192.168.1.1/pppwn.html` and complete the necessary configuration.
 8. The minimal installation requires additional adjustments and does not install the web interface.
 
 ## Installation with Download (Requires Internet Connection)
@@ -89,7 +89,7 @@ Interfaz web para arrancar PPPwn_cpp desde el navegador web de PS4.
     chmod +x installer.sh && ./installer.sh
     ```
     Recibirás un mensaje con el tipo de instalación. Si requieres la instalación completa, ingresa `y`. Si prefieres la mínima, elige la opción correspondiente.
-7. Ve a `http://192.168.1.1:81` y realiza la configuración necesaria.
+7. Ve a `http://192.168.1.1/pppwn.html` y realiza la configuración necesaria.
 8. La instalación mínima requiere ajustes adicionales y no incluye la interfaz web.
 
 ## Instalación con descarga (Requiere conexión a Internet)

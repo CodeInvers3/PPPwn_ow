@@ -23,6 +23,8 @@ stage2=$(echo $postData | sed -n 's/^.*stage2=\([^&]*\).*$/\1/p' | sed "s/%20/ /
 stage2=$(echo "$stage2" | sed 's/%2F/\//g')
 timeout=$(echo $postData | sed -n 's/^.*timeout=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 auto=$(echo $postData | sed -n 's/^.*auto=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
+retry=$(echo $postData | sed -n 's/^.*retry=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
+sleep=$(echo $postData | sed -n 's/^.*sleep=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 task=$(echo $postData | sed -n 's/^.*task=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 option=$(echo $postData | sed -n 's/^.*option=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
 path=$(echo $postData | sed -n 's/^.*path=\([^&]*\).*$/\1/p' | sed "s/%20/ /g")
@@ -38,6 +40,8 @@ fi
 set_params(){
 
     uci set pw.@params[0].path="$path"
+    uci set pw.@params[0].retry="$retry"
+    uci set pw.@params[0].sleep="$sleep"
     uci set pw.@params[0].interface="$adapter"
     uci set pw.@params[0].version="$version"
     uci set pw.@params[0].timeout="$timeout"
@@ -69,8 +73,8 @@ rm_files(){
     
     rm -f /usr/sbin/pppwn /etc/init.d/pw /etc/config/pw && rm -rf /root/*
 
-    if [ -d /www/pppwn ]; then
-        rm -rf /www/pppwn
+    if [ -d /www/assets ]; then
+        rm -rf /www/assets
     fi
     if [ -f /www/pppwn.html ]; then
         rm -f /www/pppwn.html
@@ -184,14 +188,11 @@ case "$task" in
         echo "\"chipname\":\"$(uname -m)\","
         echo "\"path\":\"$(uci get pw.@params[0].path)\","
 
-        if [ -z "$latest_version" ]; then
-            echo "\"update\":false,"
+        if [ "$latest_version" -gt "$current_version" ]; then
+            "$(wget -O /tmp/updater.sh https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/refs/heads/master/files/updater.sh)"
+            echo "\"update\":true,"
         else
-            if [ "$latest_version" -gt "$current_version" ]; then
-                echo "\"update\":true,"
-            else
-                echo "\"update\":false,"
-            fi
+            echo "\"update\":false,"
         fi
 
         if pgrep pppoe-server > /dev/null; then
@@ -252,13 +253,11 @@ case "$task" in
             done
             echo "},"
 
-            interface=$(uci get pw.@params[0].interface)
-            version=$(uci get pw.@params[0].version)
-            timeout=$(uci get pw.@params[0].timeout)
-
-            echo "\"adapter\":\"$interface\","
-            echo "\"version\":\"$version\","
-            echo "\"timeout\":\"$timeout\","
+            echo "\"retry\":\"$(uci get pw.@params[0].retry)\","
+            echo "\"sleep\":\"$(uci get pw.@params[0].sleep)\","
+            echo "\"adapter\":\"$(uci get pw.@params[0].interface)\","
+            echo "\"version\":\"$(uci get pw.@params[0].version)\","
+            echo "\"timeout\":\"$(uci get pw.@params[0].timeout)\","
 
         else
             echo "\"pppwn\":false,"
@@ -310,6 +309,8 @@ case "$task" in
         /etc/init.d/pw stop
 
         echo "{"
+        echo "\"retry\":\"$retry\","
+        echo "\"sleep\":\"$sleep\","
         echo "\"path\":\"$path\","
         echo "\"autorun\":$auto,"
         echo "\"adapter\":\"$adapter\","
@@ -335,6 +336,8 @@ case "$task" in
         fi
 
         echo "{"
+        echo "\"retry\":\"$retry\","
+        echo "\"sleep\":\"$sleep\","
         echo "\"path\":\"$path\","
         echo "\"autorun\":$auto,"
         echo "\"adapter\":\"$adapter\","
@@ -350,45 +353,12 @@ case "$task" in
         echo "Content-Type: application/json"
         echo ""
         
-        rm_files
-        
-        "$(opkg update && opkg install rp-pppoe-common rp-pppoe-server)"
+        /tmp/updater.sh
         wait
-
-        mkdir /tmp/PPPwn_ow /www/pppwn
-        "$(wget -O /tmp/pw.tar https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/refs/heads/master/files/PPPwn_ow.tar &)"
-        wait
-        
-        "$(tar -xvf /tmp/pw.tar -C /tmp/PPPwn_ow && rm /tmp/pw.tar)"
-        mv -f /tmp/PPPwn_ow/etc/config/* /etc/config
-        mv -f /tmp/PPPwn_ow/etc/init.d/* /etc/init.d
-        mv -f /tmp/PPPwn_ow/etc/ppp/* /etc/ppp
-        mv -f /tmp/PPPwn_ow/stage1 /root
-        mv -f /tmp/PPPwn_ow/stage2 /root
-        mv -f /tmp/PPPwn_ow/version /root
-        mv -f /tmp/PPPwn_ow/www/* /www/pppwn &
-        wait
-        rm -r /tmp/PPPwn_ow
-        chmod +x /etc/init.d/pw /etc/init.d/pppoe-server /www/pppwn/cgi-bin/pw.cgi
-
-        if uci get uhttpd.pppwn > /dev/null 2>&1; then
-            if [ "$(uci get uhttpd.pppwn)" = "uhttpd" ]; then
-                uci set uhttpd.pppwn=uhttpd
-                uci set uhttpd.pppwn.listen_http='81'
-                uci set uhttpd.pppwn.home='/www/pppwn'
-                uci set uhttpd.pppwn.cgi_prefix='/cgi-bin'
-                uci set uhttpd.pppwn.script_timeout='90'
-                uci set uhttpd.pppwn.network_timeout='60'
-                uci set uhttpd.pppwn.tcp_keepalive='1'
-                uci add_list uhttpd.pppwn.interpreter='.sh=/bin/sh'
-                uci add_list uhttpd.pppwn.interpreter='.cgi=/bin/sh'
-                uci commit uhttpd
-                /etc/init.d/uhttpd restart &
-                wait
-            fi
-        fi
         
         echo "{\"output\":\"Update completed\"}"
+
+        exit 0
         
     ;;
     "remove")
@@ -422,6 +392,8 @@ case "$task" in
             echo "\"pppoe\":false"
         fi
         echo "}"
+
+        exit 0
 
     ;;
     "payloads")
