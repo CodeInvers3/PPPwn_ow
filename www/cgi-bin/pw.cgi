@@ -405,8 +405,8 @@ case "$task" in
         
         echo "{"
         echo "\"file_list\":["
-        if [ -d "/www/pppwn$path" ]; then
-            ls_dir "/www/pppwn" "$path" ""
+        if [ -d "/www$path" ]; then
+            ls_dir "/www" "$path" ""
         fi
         echo "]"
         echo "}"
