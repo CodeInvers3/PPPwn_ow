@@ -119,8 +119,6 @@ var appView = Backbone.View.extend({
                 ]}));
             });
 
-            
-
         },
         'click button#pppoe_pw': function(){
 
@@ -156,21 +154,14 @@ var appView = Backbone.View.extend({
             });
 
         },
-        'click button#restart_http': function(event){
+        'click button#updater_rep': function(event){
+
+            var self = this;
 
             $.modal(function(modal){
-                modal.content($('<div class="preloader center"></div>'));
-            });
-            this.model.fetch({
-                method: 'POST',
-                data: {
-                    task:'restartHttp',
-                    token:this.webToken
-                }
-            }).then(function(res){
-                $.modal.close();
-            }).catch(function(err){
-                $.modal.close();
+                modal.content(self.templates.msg({message: 'Update PPPwn OpenWrt?', buttons: [
+                    {label:"Yes, Install update", id: "update_rep", onclick:"appweb.update()"}
+                ]}));
             });
 
         },
@@ -377,14 +368,12 @@ var appView = Backbone.View.extend({
             data: {
                 task:'update',
                 token:this.webToken
-            },
-            success: this.state.bind(this)
-        }).then(function(){
+            }
+        }).then(function(response){
+            location.assign("/pppwn.html")
             document.cookie = 'token=; path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-            $.modal.close();
         }).catch(function(err){
             $.modal.content(self.templates.msg({message: err.statusText, buttons:[]}));
-            location.assign("/");
         });
 
     },
@@ -446,14 +435,6 @@ var appView = Backbone.View.extend({
     render: function(response){
 
         var self = this, interfaces = [], data = response.toJSON();
-
-        if(data.update){
-            $.modal.content(self.templates.msg({message: 'Update available.<br>Click in continue to update.', buttons:[
-                {label:"Yes, continue", id: "update_rep", onclick:"appweb.update()"}
-            ]}));
-        }else{
-            $.modal.close();
-        }
 
         if (this.model.get('stored_token')) {
             document.cookie = 'token=; path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -523,6 +504,8 @@ var appView = Backbone.View.extend({
                 modal.content(self.templates.msg({message: 'TheOfficialFloW / SiSTR0 / xfangfang', buttons:[]}));
             });
         });
+
+        $.modal.close();
         
         return this;
     },

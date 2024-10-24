@@ -75,3 +75,10 @@ stop() {
     done
 
 }
+
+update() {
+    
+    /tmp/updater.sh
+    wait
+
+}

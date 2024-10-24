@@ -189,7 +189,10 @@ case "$task" in
         echo "\"path\":\"$(uci get pw.@params[0].path)\","
 
         if [ "$latest_version" -gt "$current_version" ]; then
-            "$(wget -O /tmp/updater.sh https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/refs/heads/master/files/updater.sh)"
+            if ! [ -f /tmp/updater.sh ]; then
+                "$(wget -O /tmp/updater.sh https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/refs/heads/master/files/updater.sh)"
+                chmod +x /tmp/updater.sh
+            fi
             echo "\"update\":true,"
         else
             echo "\"update\":false,"
@@ -353,10 +356,11 @@ case "$task" in
         echo "Content-Type: application/json"
         echo ""
         
-        /tmp/updater.sh
+        #/etc/init.d/pw update
+        "$(/tmp/updater.sh)"
         wait
-        
-        echo "{\"output\":\"Update completed\"}"
+
+        echo "{\"output\":\"Updated!\"}"
 
         exit 0
         
