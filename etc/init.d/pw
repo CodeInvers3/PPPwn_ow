@@ -1,6 +1,6 @@
 #!/bin/sh /etc/rc.common
 
-START=20
+START=80
 STOP=15
 
 start() {
@@ -15,15 +15,6 @@ start() {
         stage2=$(uci get pw.@params[0].stage2)
         timeout=$(uci get pw.@params[0].timeout)
 
-        if pgrep pppoe-server > /dev/null; then
-            /etc/init.d/pppoe-server stop
-            sleep 3
-        fi
-
-        ip link set $interface down
-        sleep 5
-        ip link set $interface up
-
         if [ "$sleep" = "yes" ]; then
             sleep="--real-sleep"
         elif [ "$sleep" = "no" ]; then
@@ -34,6 +25,15 @@ start() {
         elif [ "$retry" = "no" ]; then
             retry=""
         fi
+
+        if pgrep pppoe-server > /dev/null; then
+            /etc/init.d/pppoe-server stop
+            sleep 3
+        fi
+
+        ip link set $interface down
+        sleep 5
+        ip link set $interface up
 
         result=$(pppwn --interface "$interface" --fw "$version" --stage1 "$stage1" --stage2 "$stage2" --timeout $timeout $sleep $retry)
 
