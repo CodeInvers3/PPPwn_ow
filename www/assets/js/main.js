@@ -450,6 +450,7 @@ var appView = Backbone.View.extend({
         data.interfaces = interfaces;
 
         this.$el.html(this.templates.web(data));
+        $.modal.close();
 
         this.webToken = this.cookie('token');
         this.stage1 = data.stage1;
@@ -504,8 +505,6 @@ var appView = Backbone.View.extend({
                 modal.content(self.templates.msg({message: 'TheOfficialFloW / SiSTR0 / xfangfang', buttons:[]}));
             });
         });
-
-        $.modal.close();
         
         return this;
     },
@@ -531,8 +530,8 @@ var appView = Backbone.View.extend({
                 token:this.webToken
             }
         }).then(function(response){
-            $.modal.close();
             self.$el.html(self.templates.pyd(response));
+            $.modal.close();
         }).catch(function(err){
             if(err.responseJSON){
                 $.modal.content(self.templates.msg({message: err.responseJSON.output, buttons:[]}));
