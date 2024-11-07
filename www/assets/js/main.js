@@ -8,7 +8,6 @@ var Pwg = Backbone.Model.extend({
         compiled: [],
         pppwned: false,
         running: false,
-        autorun: false,
         path: '',
         interfaces: [],
         timeout: 0,
@@ -18,6 +17,7 @@ var Pwg = Backbone.Model.extend({
         stage2: {},
         theme: 'default',
         adapter: '',
+        autorun: 'no',
         retry: 'no',
         sleep: 'no'
     }
@@ -87,9 +87,9 @@ var appView = Backbone.View.extend({
                     timeout:this.inputTimeout.val(),
                     adapter:this.inputAdapter.val(),
                     version:this.inputVersion.val(),
-                    auto:this.selectAuto.val(),
-                    retry: this.selectRetry.val(),
-                    sleep: this.selectSleep.val()
+                    auto:this.buttonAuto.val(),
+                    retry: this.buttonRetry.val(),
+                    sleep: this.buttonSleep.val()
                 }
             }).then(function(response){
 
@@ -273,9 +273,9 @@ var appView = Backbone.View.extend({
                     stage1:this.stage1[this.inputVersion.val()],
                     stage2:this.stage2[this.inputVersion.val()],
                     timeout:this.inputTimeout.val(),
-                    auto:this.selectAuto.val(),
-                    retry: this.selectRetry.val(),
-                    sleep: this.selectSleep.val()
+                    auto:this.buttonAuto.val(),
+                    retry: this.buttonRetry.val(),
+                    sleep: this.buttonSleep.val()
                 }
             }).then(function(){
 
@@ -457,9 +457,9 @@ var appView = Backbone.View.extend({
         this.stage2 = data.stage2;
         this.textareaOut = this.$('#task-log .output');
         this.buttonAction = this.$('button#action_pw');
-        this.selectAuto = this.$('select#switch_pw');
-        this.selectRetry = this.$('select#retry_pw');
-        this.selectSleep = this.$('select#sleep_pw');
+        this.buttonAuto = this.$('button#switch_pw');
+        this.buttonRetry = this.$('button#retry_pw');
+        this.buttonSleep = this.$('button#sleep_pw');
         this.buttonUpdate = this.$('button#update_rep');
         this.buttonInstall = this.$('button#install_pw');
         this.inputPath = this.$('[name=path]');
@@ -491,14 +491,43 @@ var appView = Backbone.View.extend({
             this.buttonAction.prop('task', 'start').text('Start');
         }
 
-        if(this.model.get('autorun')){
-            this.selectAuto.val(1);
-        }else{
-            this.selectAuto.val(0);
-        }
+        console.log(this.model.get('autorun'));
+        console.log(this.model.get('retry'));
+        console.log(this.model.get('sleep'));
 
-        this.selectRetry.val(this.model.get('retry'));
-        this.selectSleep.val(this.model.get('sleep'));
+        this.buttonAuto.val(this.model.get('autorun'));
+        this.buttonRetry.val(this.model.get('retry'));
+        this.buttonSleep.val(this.model.get('sleep'));
+
+        $('button.input-switch').each(function(index, iterator){
+            var on = {
+                color: {backgroundColor: '#FFFFFF'},
+                align: {marginLeft: 35}
+            },
+            off = {
+                color: {backgroundColor: '#606060'},
+                align: {marginLeft: 5}
+            }
+            var circle = $(iterator).find('.push-circle');
+            if($(iterator).val() == 'yes'){
+                circle.css(on.color).css(on.align);
+            }else{
+                circle.css(off.color).css(off.align);
+            }
+            $(iterator).click(function(){
+                var valueTag = $(iterator).val();
+                if(valueTag == 'yes'){
+                    circle.css(off.color).stop().animate(off.align, 120, function(){
+                        $(iterator).val('no');
+                    });
+                }else
+                if(valueTag == 'no'){
+                    circle.css(on.color).stop().animate(on.align, 120, function(){
+                        $(iterator).val('yes');
+                    });
+                }
+            });
+        });
 
         $('a#credits').click(function(){
             $.modal(function(modal){

@@ -291,9 +291,9 @@ case "$task" in
             echo "],"
         fi
         if ls -l /etc/rc.d/ | grep -q pw; then
-            echo "\"autorun\":true"
+            echo "\"autorun\":\"yes\""
         else
-            echo "\"autorun\":false"
+            echo "\"autorun\":\"no\""
         fi
         echo "}"
 
@@ -312,10 +312,10 @@ case "$task" in
         /etc/init.d/pw stop
 
         echo "{"
+        echo "\"autorun\":\"$auto\","
         echo "\"retry\":\"$retry\","
         echo "\"sleep\":\"$sleep\","
         echo "\"path\":\"$path\","
-        echo "\"autorun\":$auto,"
         echo "\"adapter\":\"$adapter\","
         echo "\"version\":\"$version\","
         echo "\"timeout\":\"$timeout\""
@@ -331,18 +331,18 @@ case "$task" in
 
         set_params
 
-        if [ "$auto" = 1 ]; then
+        if [ "$auto" = "yes" ]; then
             /etc/init.d/pw enable
         fi
-        if [ "$auto" = 0 ]; then
+        if [ "$auto" = "no" ]; then
             /etc/init.d/pw disable
         fi
 
         echo "{"
+        echo "\"autorun\":\"$auto\","
         echo "\"retry\":\"$retry\","
         echo "\"sleep\":\"$sleep\","
         echo "\"path\":\"$path\","
-        echo "\"autorun\":$auto,"
         echo "\"adapter\":\"$adapter\","
         echo "\"version\":\"$version\","
         echo "\"timeout\":\"$timeout\""

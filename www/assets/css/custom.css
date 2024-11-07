@@ -5,27 +5,28 @@
 body{
 	font-family: Arial;
 	color: #000000;
-	background-color: #090a76c5;
-	background-image: url(https://raw.githubusercontent.com/CodeInvers3/codeinvers3.github.io/master/images/playstation/pstore-top-1.png);
-	background-position: left top;
+	background-color: #0A1855;
+	background-image: url(/assets/img/home1600_bg-nhasset.jpg);
+	background-position: center top;
 	background-repeat: no-repeat;
 	font-size: 18px;
+	width: 100%;
 }
 
 #appWeb, #footer, #header{
 	max-width: 750px;
-	background-color: #ffffffa1;
-	color: #fcec8f;
+	background-color: #ffffffe0;
+	color: #000000;
 }
 
 #appWeb fieldset{
-	color: #0c2378;
-	background-color: #f1fbff88;
+	color: #000000;
+	background-color: #ffffff;
 	border:none;
 }
 
 #header{
-	background: #ffffff63;
+	background: #ffffffa2;
 	text-transform: uppercase;
 	margin-left: auto;
 	margin-right: auto;
@@ -52,13 +53,13 @@ body{
 }
 
 .btn-form{
-	background-color: #0c2378 !important;
-	color: aliceblue !important;
-	border-color: #e3e9ff !important;
+	background-color: #383838 !important;
+	color: rgb(255, 255, 255) !important;
+	border-color: #b9b9b9 !important;
 }
 
 .btn-form:focus{
-	background-color: rgb(21, 109, 234) !important;
+	background-color: rgb(15, 15, 15) !important;
 }
 
 .group-center{
@@ -91,7 +92,7 @@ body{
 }
 
 .form input, .form select{
-	background-color: #0c2378;
+	background-color: #343434;
 	color: #FFF;
 }
 
@@ -108,25 +109,28 @@ body{
 }
 
 /* Custom buttons */
-.box-button{
+.input-switch{
 	display: block;
-	background-color: #1eb4c2;
-	width: 40px;
+	width: 60px;
 	height: 30px;
-	position: relative;
+	background-color: #1b1b1b;
+	border-radius: 15px;
+	cursor: pointer;
 }
 
-.box-button .btn-switch{
-	padding: 10px !important;
-	width: 15px;
-	margin: 0px;
-	height: 15px;
+.input-switch .push-circle{
+	width: 20px;
+	height: 20px;
+	display: block;
+	background-color: #606060;
+	margin: 5px;
+	border-radius: 10px;
 }
 
 .sent-payload{
 	margin-top: 5px;
 	margin-bottom: 5px;
-	background-color: #0c2378;
+	background-color: #434343;
 	color: #FFF;
 }
 
@@ -153,7 +157,7 @@ body{
 }
 
 #footer a{
-	color: rgb(101, 44, 248);
+	color:#000a29;
 }
 
 .expand-slc{
@@ -178,7 +182,7 @@ body{
 	height: 70px;
 	border: 10px solid rgb(236, 247, 255);
 	border-radius: 50%;
-	border-top-color: rgb(13, 141, 205); /* Color del cuarto de círculo */
+	border-top-color: rgb(191, 191, 191); /* Color del cuarto de círculo */
 	animation: girar 2s infinite linear;
 }
 
