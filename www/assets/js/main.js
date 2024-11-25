@@ -491,10 +491,6 @@ var appView = Backbone.View.extend({
             this.buttonAction.prop('task', 'start').text('Start');
         }
 
-        console.log(this.model.get('autorun'));
-        console.log(this.model.get('retry'));
-        console.log(this.model.get('sleep'));
-
         this.buttonAuto.val(this.model.get('autorun'));
         this.buttonRetry.val(this.model.get('retry'));
         this.buttonSleep.val(this.model.get('sleep'));
