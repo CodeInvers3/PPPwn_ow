@@ -59,6 +59,15 @@ This activation method works for devices with the OpenWrt Linux system as long a
 3. If your device has USB ports, mount your storage device to `/www/pppwn/payloads`.
 5. Copy your `payload.bin` files to USB storage device.
 
+## How enable ftp local network
+
+The screenshots show the necessary settings to enable the local network connection.
+
+![In the firewall, you will find the option](https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/captures/203007.png)
+![In WAN input zones, it should be set to 'reject' by default](https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/captures/203047.png)
+![Select 'accept' for input, and you will be able to access it from the local network](https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/captures/203056.png)
+![In the Port Forwarding tabs, you can find out the local IP of the device or check it from the main modem](https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/captures/203525.png)
+
 PPPwn from https://github.com/xfangfang/PPPwn_cpp
 
 ### Credits: TheFlowTheOfficialFloW / Sistro / Xfangfang
