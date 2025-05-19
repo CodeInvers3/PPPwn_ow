@@ -71,6 +71,11 @@ Select 'accept' for input, and you will be able to access it from the local netw
 ![Select 'accept' for input, and you will be able to access it from the local network](https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/captures/203056.png)
 In the Port Forwarding tabs, you can find out the local IP of the device or check it from the main modem.
 ![In the Port Forwarding tabs, you can find out the local IP of the device or check it from the main modem](https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/captures/203525.png)
+To transfer via FTP to the PS4, it is necessary to redirect the IP address to the PS4 as shown in the screenshots.
+![024138](https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/captures/024138.png)
+![024114](https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/captures/024114.png)
+You can now connect via FTP from your PC to the console using the IP address of the mini router, as in this example: 192.168.1.17:2121
+![024203](https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/captures/024203.png)
 
 PPPwn from https://github.com/xfangfang/PPPwn_cpp
 
