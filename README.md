@@ -75,7 +75,8 @@ To transfer via FTP to the PS4, it is necessary to redirect the IP address to th
 ![024138](https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/captures/024138.png)
 The PS4's IP is selected as the internal IP address.
 ![024114](https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/captures/024114.png)
-You can now connect via FTP from your PC to the console using the IP address of the mini router, as in this example: 192.168.1.17:2121
+- You can now connect via FTP from your PC to the console using the IP address of the mini router, as in this example: 192.168.1.17:2121
+- Lastly, you will need to enable active mode / disable passive mode for the FTP connection.
 ![024203](https://raw.githubusercontent.com/CodeInvers3/PPPwn_ow/refs/heads/main/captures/024203.png)
 
 PPPwn from https://github.com/xfangfang/PPPwn_cpp
